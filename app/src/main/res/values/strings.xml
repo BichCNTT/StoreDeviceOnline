@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">StoreDeviceOnline</string>
+    <string name="main_site">Trang chính</string>
+    <string name="new_device">Sản phẩm mới nhất</string>
+</resources>

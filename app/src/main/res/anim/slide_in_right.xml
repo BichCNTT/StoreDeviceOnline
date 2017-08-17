@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<set xmlns:android="http://schemas.android.com/apk/res/android" android:shareInterpolator="false">
+<translate android:duration="2000" android:fromXDelta="-100%" android:toXDelta="0%"/>
+    <!--duration la thoi gian hoan thanh-->
+    <!--translate de thay doi vi tri cua doi tuong fromXDelta la di theo hang ngang tuong tu voi fromYDelta la di theo hang doc-->
+    <alpha android:duration="2000" android:fromAlpha="0.0" android:toAlpha="1.0"/>
+    <!--gia tri alpha chi tang tu 0->1 de lam mo fade in hoac fade out-->
+</set>

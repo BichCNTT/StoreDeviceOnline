@@ -28,16 +28,19 @@ public class ProductTypeAdapter extends BaseAdapter {
         this.context = context;
     }
 
+    //lấy số lượng pt có trong list kiểu "loại sản phẩm"
     @Override
     public int getCount() {
         return productTypeArrayList.size();
     }
 
+    // lấy ra đối tượng kiểu object ở vị trí thứ i
     @Override
     public Object getItem(int i) {
         return productTypeArrayList.get(i);
     }
 
+    // lấy ra id của mục
     @Override
     public long getItemId(int i) {
         return i;
@@ -48,24 +51,30 @@ public class ProductTypeAdapter extends BaseAdapter {
         TextView tvProductType;
     }
 
+    // lấy ra view
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
-        ViewHolder holder = null;
+        ViewHolder holder;
+//        nếu ko giữ view thì ktạo 1 đtượng kiểu view holder, set view bằng 1 dòng của listview loại sp. giữ gtrị của tv và img của list view hiện tại
         if (view == null) {
             holder = new ViewHolder();
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             view = inflater.inflate(R.layout.row_listview_producttype, null);
-            holder.tvProductType=(TextView)view.findViewById(R.id.tv_product_type);
-            holder.imgProductType=(ImageView)view.findViewById(R.id.img_product_type);
+            holder.tvProductType = (TextView) view.findViewById(R.id.tv_product_type);
+            holder.imgProductType = (ImageView) view.findViewById(R.id.img_product_type);
+//            set tag để xoay màn hình k bị mất view
             view.setTag(holder);
         } else {
-            holder=(ViewHolder)view.getTag();
+//            ngược lại nếu giữ view thì lấy ra
+            holder = (ViewHolder) view.getTag();
 
         }
-        ProductType productType=(ProductType)getItem(i);
+//        lấy ra loại sản phẩm thứ i set giá trị cho chúng, dùng picasso để chuyển từ link ảnh sang ảnh, rồi trả kq về view (dòng)
+        ProductType productType = (ProductType) getItem(i);
         holder.tvProductType.setText(productType.getNameProductType());
         Picasso.with(context).load(productType.getImageProductType())
-                .placeholder(R.drawable.ic_camera).error(R.drawable.ic_cancel)
+                .placeholder(R.drawable.ic_camera)
+                .error(R.drawable.ic_cancel)
                 .into(holder.imgProductType);
         return view;
     }

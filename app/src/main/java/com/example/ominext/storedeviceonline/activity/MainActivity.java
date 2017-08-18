@@ -25,7 +25,6 @@ import com.example.ominext.storedeviceonline.model.ProductType;
 import com.example.ominext.storedeviceonline.until.CheckConnection;
 import com.example.ominext.storedeviceonline.until.Server;
 import com.squareup.picasso.Picasso;
-import com.squareup.picasso.Request;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -71,6 +70,7 @@ public class MainActivity extends AppCompatActivity {
             getProductType();
         } else {
             CheckConnection.showToast(getApplicationContext(), "Haven't internet");
+            Log.e("==============>", "Haven't internet");
             finish();
         }
 
@@ -109,6 +109,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onErrorResponse(VolleyError error) {
                 CheckConnection.showToast(getApplicationContext(), error.toString());
+                Log.e("==============>", error.toString());
             }
         });
         requestQueue.add(arrayRequest);

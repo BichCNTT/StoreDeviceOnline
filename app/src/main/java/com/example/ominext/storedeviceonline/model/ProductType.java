@@ -9,10 +9,6 @@ public class ProductType {
     private String mNameProductType;
     private String mImageProductType;
 
-    public ProductType() {
-
-    }
-
     public ProductType(int mId, String mNameProductType, String mImageProductType) {
         this.mId = mId;
         this.mNameProductType = mNameProductType;

@@ -5,6 +5,8 @@ import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
@@ -20,11 +22,13 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.ominext.storedeviceonline.R;
+import com.example.ominext.storedeviceonline.adapter.NewProductAdapter;
 import com.example.ominext.storedeviceonline.adapter.ProductTypeAdapter;
+import com.example.ominext.storedeviceonline.helper.ImageViewUtil;
+import com.example.ominext.storedeviceonline.model.NewProduct;
 import com.example.ominext.storedeviceonline.model.ProductType;
 import com.example.ominext.storedeviceonline.until.CheckConnection;
 import com.example.ominext.storedeviceonline.until.Server;
-import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -42,24 +46,42 @@ public class MainActivity extends AppCompatActivity {
     @BindView(R.id.view_flipper)
     ViewFlipper viewFlipper;
     @BindView(R.id.view_main)
-    ListView recyclerViewMain;
+    RecyclerView recyclerViewMain;
     @BindView(R.id.list_item)
     ListView listItem;
     @BindView(R.id.navigation_view_main)
     NavigationView navigationViewMain;
     @BindView(R.id.drawer_layout)
     DrawerLayout drawerLayout;
+
     ArrayList<ProductType> listProductType;
-    ProductTypeAdapter adapter;
+    ArrayList<NewProduct> listNewProduct;
+    ProductTypeAdapter productTypeAdapter;
+    NewProductAdapter productAdapter;
+
     int id = 0;
     String nameProductType = "";
     String imageProductType = "";
+
+    int idProduct = 0;
+    String nameProduct = "";
+    int priceProduct = 0;
+    String imageProduct = "";
+    String describeProduct = "";
+    int idProductType = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
+        listNewProduct = new ArrayList<>();
+        RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getApplicationContext(), 2);
+        recyclerViewMain.setLayoutManager(layoutManager);
+        recyclerViewMain.setHasFixedSize(true);
+        productAdapter = new NewProductAdapter(getApplicationContext(),listNewProduct);
+        recyclerViewMain.setAdapter(productAdapter);
+        productAdapter.notifyDataSetChanged();
         init();
     }
 
@@ -68,18 +90,50 @@ public class MainActivity extends AppCompatActivity {
             ActionBar();
             ActionViewFlipper();
             getProductType();
+            getNewProduct();
         } else {
             CheckConnection.showToast(getApplicationContext(), "Haven't internet");
             Log.e("==============>", "Haven't internet");
             finish();
         }
-
         listProductType = new ArrayList<>();
         listProductType.add(new ProductType(0, "Trang chính", "https://image.flaticon.com/icons/png/512/25/25694.png"));
+        productTypeAdapter = new ProductTypeAdapter(listProductType, getApplicationContext());
+        listItem.setAdapter(productTypeAdapter);
+        productTypeAdapter.notifyDataSetChanged();
+    }
 
-        adapter = new ProductTypeAdapter(listProductType, getApplicationContext());
-        listItem.setAdapter(adapter);
-        adapter.notifyDataSetChanged();
+    private void getNewProduct() {
+        final RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+        JsonArrayRequest arrayRequest = new JsonArrayRequest(Server.urlNewProduct, new Response.Listener<JSONArray>() {
+            @Override
+            public void onResponse(JSONArray response) {
+                if (response != null) {
+                    for (int i = 0; i < response.length(); i++) {
+                        try {
+                            JSONObject jsonObject = response.getJSONObject(i);
+                            idProduct = jsonObject.getInt("IdProduct");
+                            nameProduct = jsonObject.getString("nameProduct");
+                            priceProduct = jsonObject.getInt("priceProduct");
+                            imageProduct = jsonObject.getString("imageProduct");
+                            describeProduct = jsonObject.getString("describeProduct");
+                            idProductType = jsonObject.getInt("idProductType");
+                            listNewProduct.add(new NewProduct(idProduct, nameProduct, priceProduct, imageProduct, describeProduct, idProductType));
+                            productAdapter.notifyDataSetChanged();
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                CheckConnection.showToast(getApplicationContext(), error.toString());
+                Log.e("==============>", error.toString());
+            }
+        });
+        requestQueue.add(arrayRequest);
     }
 
     //lấy dữ liệu từ server
@@ -96,7 +150,7 @@ public class MainActivity extends AppCompatActivity {
                             nameProductType = jsonObject.getString("NameProductType");
                             imageProductType = jsonObject.getString("ImageProductType");
                             listProductType.add(new ProductType(id, nameProductType, imageProductType));
-                            adapter.notifyDataSetChanged();
+                            productTypeAdapter.notifyDataSetChanged();
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -125,7 +179,7 @@ public class MainActivity extends AppCompatActivity {
         urlImageList.add("http://kenh14cdn.com/Images/Uploaded/Share/2011/06/27/110627tekLG5.jpg");
         for (int i = 0; i < urlImageList.size(); i++) {
             ImageView imageView = new ImageView(getApplicationContext());
-            Picasso.with(getApplicationContext()).load(urlImageList.get(i)).into(imageView);
+            ImageViewUtil.loadImg(getApplicationContext(), urlImageList.get(i), imageView);
             imageView.setScaleType(ImageView.ScaleType.FIT_CENTER);
             viewFlipper.addView(imageView);
         }

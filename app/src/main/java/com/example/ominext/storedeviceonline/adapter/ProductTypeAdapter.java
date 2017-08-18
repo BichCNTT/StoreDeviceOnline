@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.ominext.storedeviceonline.R;
+import com.example.ominext.storedeviceonline.helper.ImageViewUtil;
 import com.example.ominext.storedeviceonline.model.ProductType;
 import com.squareup.picasso.Picasso;
 
@@ -72,10 +73,7 @@ public class ProductTypeAdapter extends BaseAdapter {
 //        lấy ra loại sản phẩm thứ i set giá trị cho chúng, dùng picasso để chuyển từ link ảnh sang ảnh, rồi trả kq về view (dòng)
         ProductType productType = (ProductType) getItem(i);
         holder.tvProductType.setText(productType.getNameProductType());
-        Picasso.with(context).load(productType.getImageProductType())
-                .placeholder(R.drawable.ic_camera)
-                .error(R.drawable.ic_cancel)
-                .into(holder.imgProductType);
+        ImageViewUtil.loadImg(context,productType.getImageProductType(),holder.imgProductType);
         return view;
     }
 

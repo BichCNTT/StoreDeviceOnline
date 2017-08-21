@@ -1,4 +1,4 @@
-package com.example.ominext.storedeviceonline.model;
+package com.example.ominext.storedeviceonline.data.model;
 
 /**
  * Created by Ominext on 8/18/2017.
@@ -11,22 +11,16 @@ public class NewProduct {
 
 
     @SerializedName("IdProduct")
-    @Expose
     private int idProduct;
     @SerializedName("nameProduct")
-    @Expose
     private String nameProduct;
     @SerializedName("priceProduct")
-    @Expose
     private int priceProduct;
     @SerializedName("imageProduct")
-    @Expose
     private String imageProduct;
     @SerializedName("describeProduct")
-    @Expose
     private String describeProduct;
     @SerializedName("IdProductType")
-    @Expose
     private int idProductType;
 
     public NewProduct(int idProduct, String nameProduct, int priceProduct, String imageProduct, String describeProduct, int idProductType) {

@@ -1,71 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     tools:context="com.example.ominext.storedeviceonline.activity.MainActivity">
-
-    <android.support.v4.widget.DrawerLayout
-        android:id="@+id/drawer_layout"
+    <LinearLayout
+        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/tool_bar_main"
+            android:layout_width="match_parent"
+            android:layout_height="?android:attr/actionBarSize"
+            android:background="@color/blue"
+            app:title="@string/main_site"></android.support.v7.widget.Toolbar>
+        <FrameLayout
+            android:id="@+id/frame_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+        </FrameLayout>
 
-        <LinearLayout
+    </LinearLayout>
+
+    <android.support.design.widget.NavigationView
+        android:id="@+id/navigation_view_main"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="start">
+
+        <ListView
+            android:id="@+id/list_item"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:layout_gravity="start"
+            android:choiceMode="singleChoice"></ListView>
+    </android.support.design.widget.NavigationView>
 
-            <android.support.v7.widget.Toolbar
-                android:id="@+id/tool_bar_main"
-                android:layout_width="match_parent"
-                android:layout_height="?android:attr/actionBarSize"
-                android:background="@color/blue"
-                app:title="@string/main_site"></android.support.v7.widget.Toolbar>
-
-            <ViewFlipper
-                android:id="@+id/view_flipper"
-                android:layout_width="match_parent"
-                android:layout_height="250dp" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@color/yellow"
-                android:orientation="vertical">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/new_device"
-                    android:textColor="@color/red"
-                    android:textSize="20sp"
-                    android:textStyle="bold" />
-
-                <android.support.v7.widget.RecyclerView
-                    android:id="@+id/view_main"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"></android.support.v7.widget.RecyclerView>
-            </LinearLayout>
-
-        </LinearLayout>
-
-        <android.support.design.widget.NavigationView
-            android:id="@+id/navigation_view_main"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_gravity="start">
-
-            <ListView
-                android:id="@+id/list_item"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_gravity="start"
-                android:choiceMode="singleChoice"></ListView>
-        </android.support.design.widget.NavigationView>
-
-    </android.support.v4.widget.DrawerLayout>
-
-</LinearLayout>
+</android.support.v4.widget.DrawerLayout>
 

@@ -1,5 +1,6 @@
 package com.example.ominext.storedeviceonline.adapter;
 
+import android.content.ClipData;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,10 +11,10 @@ import android.widget.TextView;
 
 import com.example.ominext.storedeviceonline.R;
 import com.example.ominext.storedeviceonline.helper.ImageViewUtil;
-import com.example.ominext.storedeviceonline.model.ProductType;
-import com.squareup.picasso.Picasso;
+import com.example.ominext.storedeviceonline.data.model.ProductType;
 
 import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -51,7 +52,6 @@ public class ProductTypeAdapter extends BaseAdapter {
         ImageView imgProductType;
         TextView tvProductType;
     }
-
     // lấy ra view
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
@@ -76,6 +76,4 @@ public class ProductTypeAdapter extends BaseAdapter {
         ImageViewUtil.loadImg(context,productType.getImageProductType(),holder.imgProductType);
         return view;
     }
-
-
 }

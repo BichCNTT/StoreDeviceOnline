@@ -1,4 +1,4 @@
-package com.example.ominext.storedeviceonline.model;
+package com.example.ominext.storedeviceonline.data.model;
 
 /**
  * Created by Ominext on 8/17/2017.

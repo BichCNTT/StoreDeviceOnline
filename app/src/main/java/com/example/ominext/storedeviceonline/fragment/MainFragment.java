@@ -95,24 +95,12 @@ public class MainFragment extends Fragment {
                     for (int i = 0; i < response.length(); i++) {
                         try {
                             JSONObject jsonObject = response.getJSONObject(i);
-                            Log.e("==============>", jsonObject.toString() + "");
                             idProductType = jsonObject.getInt("IdProductType");
-                            Log.e("==============>", idProductType + "");
-
                             idProduct = jsonObject.getInt("IdProduct");
-                            Log.e("==============>", idProduct + "");
-
                             nameProduct = jsonObject.getString("nameProduct");
-                            Log.e("==============>", nameProduct + "");
-
                             priceProduct = jsonObject.getInt("priceProduct");
-                            Log.e("==============>", priceProduct + "");
                             imageProduct = jsonObject.getString("imageProduct");
-
-                            Log.e("==============>", imageProduct + "");
                             describeProduct = jsonObject.getString("describeProduct");
-                            Log.e("==============>", describeProduct + "");
-
                             listNewProduct.add(new NewProduct(idProduct, nameProduct, priceProduct, imageProduct, describeProduct, idProductType));
                             productAdapter.notifyDataSetChanged();
                         } catch (JSONException e) {
@@ -164,7 +152,6 @@ public class MainFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_main, container, false);
         unbinder = ButterKnife.bind(this, view);
-
         return view;
     }
 

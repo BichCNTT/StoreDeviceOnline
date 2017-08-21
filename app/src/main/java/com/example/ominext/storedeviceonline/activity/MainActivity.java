@@ -14,6 +14,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.FrameLayout;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -23,7 +24,10 @@ import com.android.volley.toolbox.Volley;
 import com.example.ominext.storedeviceonline.R;
 import com.example.ominext.storedeviceonline.adapter.ProductTypeAdapter;
 import com.example.ominext.storedeviceonline.data.model.ProductType;
+import com.example.ominext.storedeviceonline.fragment.ContactFragment;
+import com.example.ominext.storedeviceonline.fragment.LaptopFragment;
 import com.example.ominext.storedeviceonline.fragment.MainFragment;
+import com.example.ominext.storedeviceonline.fragment.PhoneFragment;
 import com.example.ominext.storedeviceonline.until.CheckConnection;
 import com.example.ominext.storedeviceonline.until.Server;
 
@@ -48,8 +52,9 @@ public class MainActivity extends AppCompatActivity {
     ArrayList<ProductType> listProductType;
     ProductTypeAdapter productTypeAdapter;
 
-
+    Fragment fragment = null;
     int id = 0;
+    int count = 0;
     String nameProductType = "";
     String imageProductType = "";
     @BindView(R.id.tool_bar_main)
@@ -64,15 +69,12 @@ public class MainActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         init();
         replaceFragment(0);
-
         listItem.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                drawerLayout.closeDrawer(listItem);
                 replaceFragment(i);
             }
         });
-
     }
 
     private void init() {
@@ -125,13 +127,25 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void replaceFragment(int pos) {
-        Fragment fragment = null;
         switch (pos) {
             case 0:
+//                count=0;
                 fragment = MainFragment.newInstance();
                 break;
             case 1:
-
+                count = 0;
+                fragment = PhoneFragment.newInstance();
+                break;
+            case 2:
+                count = 0;
+                fragment = LaptopFragment.newInstance();
+                break;
+            case 3:
+                count = 0;
+                fragment = ContactFragment.newInstance();
+                break;
+            case 4:
+                count = 0;
                 break;
             default:
                 break;

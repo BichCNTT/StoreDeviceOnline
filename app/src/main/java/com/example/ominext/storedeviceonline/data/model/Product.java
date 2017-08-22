@@ -7,7 +7,7 @@ package com.example.ominext.storedeviceonline.data.model;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class NewProduct {
+public class Product {
 
 
     @SerializedName("IdProduct")
@@ -23,7 +23,7 @@ public class NewProduct {
     @SerializedName("IdProductType")
     private int idProductType;
 
-    public NewProduct(int idProduct, String nameProduct, int priceProduct, String imageProduct, String describeProduct, int idProductType) {
+    public Product(int idProduct, String nameProduct, int priceProduct, String imageProduct, String describeProduct, int idProductType) {
         this.idProduct = idProduct;
         this.nameProduct = nameProduct;
         this.priceProduct = priceProduct;

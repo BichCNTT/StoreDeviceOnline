@@ -9,43 +9,47 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.ominext.storedeviceonline.R;
-import com.example.ominext.storedeviceonline.helper.ImageViewUtil;
 import com.example.ominext.storedeviceonline.data.model.Product;
+import com.example.ominext.storedeviceonline.helper.ImageViewUtil;
 import com.example.ominext.storedeviceonline.helper.PriceFormatUtil;
 
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.Unbinder;
+
 /**
- * Created by Ominext on 8/18/2017.
+ * Created by Ominext on 8/22/2017.
  */
 
-public class NewProductAdapter extends RecyclerView.Adapter<NewProductAdapter.RecyclerViewHolder> {
+public class PhoneAdapter extends RecyclerView.Adapter<PhoneAdapter.RecyclerViewHolder> {
 
+    private List<Product> productList = new ArrayList<>();
     private Context context;
     private LayoutInflater inflater;
-    private List<Product> productList = new ArrayList<>();
 
-    public NewProductAdapter(Context context, List<Product> productList) {
+    public PhoneAdapter(List<Product> productList, Context context) {
+        this.productList = productList;
         this.context = context;
         this.inflater = LayoutInflater.from(context);
-        this.productList = productList;
     }
 
     @Override
     public RecyclerViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-        View view = inflater.inflate(R.layout.row_new_product, parent, false);
+        View view = inflater.inflate(R.layout.row_phone, parent, false);
         return new RecyclerViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(RecyclerViewHolder holder, int position) {
         Product product = productList.get(position);
-        holder.tvNameNewProduct.setText(product.getNameProduct());
-        PriceFormatUtil.priceFormat(holder.tvPriceNewProduct,product.getPriceProduct());
-        ImageViewUtil.loadImg(context, product.getImageProduct(),holder.imgNewProduct);
+        ImageViewUtil.loadImg(context, product.getImageProduct(), holder.imgPhone);
+        holder.tvName.setText(product.getNameProduct());
+        PriceFormatUtil.priceFormat(holder.tvPrice, product.getPriceProduct());
+        holder.tvDescribe.setText(productList.get(position).getDescribeProduct());
     }
 
     @Override
@@ -54,14 +58,19 @@ public class NewProductAdapter extends RecyclerView.Adapter<NewProductAdapter.Re
     }
 
     public class RecyclerViewHolder extends RecyclerView.ViewHolder {
-        ImageView imgNewProduct;
-        TextView tvNameNewProduct;
-        TextView tvPriceNewProduct;
+        @BindView(R.id.img_phone)
+        ImageView imgPhone;
+        @BindView(R.id.tv_name)
+        TextView tvName;
+        @BindView(R.id.tv_price)
+        TextView tvPrice;
+        @BindView(R.id.tv_describe)
+        TextView tvDescribe;
+        Unbinder unbinder;
+
         public RecyclerViewHolder(View itemView) {
             super(itemView);
-            imgNewProduct=(ImageView)itemView.findViewById(R.id.img_new_product);
-            tvNameNewProduct=(TextView)itemView.findViewById(R.id.tv_name_new_product);
-            tvPriceNewProduct=(TextView)itemView.findViewById(R.id.tv_price_new_product);
+            unbinder = ButterKnife.bind(this, itemView);
         }
     }
 }

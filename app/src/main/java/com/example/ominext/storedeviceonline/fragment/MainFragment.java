@@ -3,10 +3,8 @@ package com.example.ominext.storedeviceonline.fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.view.GravityCompat;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,9 +21,7 @@ import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.ominext.storedeviceonline.R;
 import com.example.ominext.storedeviceonline.adapter.NewProductAdapter;
-import com.example.ominext.storedeviceonline.adapter.ProductTypeAdapter;
-import com.example.ominext.storedeviceonline.data.model.NewProduct;
-import com.example.ominext.storedeviceonline.data.model.ProductType;
+import com.example.ominext.storedeviceonline.data.model.Product;
 import com.example.ominext.storedeviceonline.helper.ImageViewUtil;
 import com.example.ominext.storedeviceonline.until.CheckConnection;
 import com.example.ominext.storedeviceonline.until.Server;
@@ -49,7 +45,7 @@ public class MainFragment extends Fragment {
     RecyclerView viewMain;
     Unbinder unbinder;
 
-    ArrayList<NewProduct> listNewProduct;
+    ArrayList<Product> listProduct;
     NewProductAdapter productAdapter;
 
     int idProduct = 0;
@@ -67,6 +63,27 @@ public class MainFragment extends Fragment {
         MainFragment fragment = new MainFragment();
         return fragment;
     }
+
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        init();
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_main, container, false);
+        unbinder = ButterKnife.bind(this, view);
+        return view;
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        unbinder.unbind();
+    }
     private void init() {
         if (CheckConnection.haveNetWorkConnection(getContext())) {
             ActionViewFlipper();
@@ -77,8 +94,8 @@ public class MainFragment extends Fragment {
 
         }
 
-        listNewProduct = new ArrayList<>();
-        productAdapter = new NewProductAdapter(getContext(), listNewProduct);
+        listProduct = new ArrayList<>();
+        productAdapter = new NewProductAdapter(getContext(), listProduct);
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getContext(), 2);
         viewMain.setLayoutManager(layoutManager);
         viewMain.setHasFixedSize(true);
@@ -86,7 +103,7 @@ public class MainFragment extends Fragment {
         productAdapter.notifyDataSetChanged();
 
     }
-        private void getNewProduct() {
+    private void getNewProduct() {
         final RequestQueue requestQueue = Volley.newRequestQueue(getContext());
         JsonArrayRequest arrayRequest = new JsonArrayRequest(Server.urlNewProduct, new Response.Listener<JSONArray>() {
             @Override
@@ -101,7 +118,7 @@ public class MainFragment extends Fragment {
                             priceProduct = jsonObject.getInt("priceProduct");
                             imageProduct = jsonObject.getString("imageProduct");
                             describeProduct = jsonObject.getString("describeProduct");
-                            listNewProduct.add(new NewProduct(idProduct, nameProduct, priceProduct, imageProduct, describeProduct, idProductType));
+                            listProduct.add(new Product(idProduct, nameProduct, priceProduct, imageProduct, describeProduct, idProductType));
                             productAdapter.notifyDataSetChanged();
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -139,25 +156,5 @@ public class MainFragment extends Fragment {
         Animation animation_slide_out = AnimationUtils.loadAnimation(getContext(), R.anim.slide_out_right);
         viewFlipper.setInAnimation(animation_slide_in);
         viewFlipper.setOutAnimation(animation_slide_out);
-    }
-
-    @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        init();
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_main, container, false);
-        unbinder = ButterKnife.bind(this, view);
-        return view;
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        unbinder.unbind();
     }
 }

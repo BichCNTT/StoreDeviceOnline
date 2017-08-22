@@ -14,13 +14,13 @@
             android:id="@+id/tool_bar_main"
             android:layout_width="match_parent"
             android:layout_height="?android:attr/actionBarSize"
-            android:background="@color/blue"
-            app:title="@string/main_site"></android.support.v7.widget.Toolbar>
+            android:background="@color/blue"></android.support.v7.widget.Toolbar>
+
         <FrameLayout
+            android:layout_margin="10dp"
             android:id="@+id/frame_layout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-        </FrameLayout>
+            android:layout_height="match_parent"></FrameLayout>
 
     </LinearLayout>
 

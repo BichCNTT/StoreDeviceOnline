@@ -1,5 +1,6 @@
 package com.example.ominext.storedeviceonline.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
@@ -25,6 +26,7 @@ import com.example.ominext.storedeviceonline.R;
 import com.example.ominext.storedeviceonline.adapter.ProductTypeAdapter;
 import com.example.ominext.storedeviceonline.data.model.ProductType;
 import com.example.ominext.storedeviceonline.fragment.ContactFragment;
+import com.example.ominext.storedeviceonline.fragment.InformationFragment;
 import com.example.ominext.storedeviceonline.fragment.LaptopFragment;
 import com.example.ominext.storedeviceonline.fragment.MainFragment;
 import com.example.ominext.storedeviceonline.fragment.PhoneFragment;
@@ -49,30 +51,41 @@ public class MainActivity extends AppCompatActivity {
     @BindView(R.id.drawer_layout)
     DrawerLayout drawerLayout;
 
-    ArrayList<ProductType> listProductType;
+    ArrayList<ProductType> listProductType = new ArrayList<>();
     ProductTypeAdapter productTypeAdapter;
 
     Fragment fragment = null;
     int id = 0;
-    int count = 0;
     String nameProductType = "";
     String imageProductType = "";
     @BindView(R.id.tool_bar_main)
     Toolbar toolBarMain;
     @BindView(R.id.frame_layout)
     FrameLayout frameLayout;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
         init();
-        replaceFragment(0);
+        if (CheckConnection.haveNetWorkConnection(getApplicationContext())) {
+            replaceFragment(0);
+            setTitle(listProductType.get(0).getNameProductType());
+        }
+        else {
+            CheckConnection.showToast(getApplicationContext(),"Haven't internet");
+        }
         listItem.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                replaceFragment(i);
+                if (CheckConnection.haveNetWorkConnection(getApplicationContext())) {
+                    replaceFragment(i);
+                    setTitle(listProductType.get(i).getNameProductType());
+                    drawerLayout.closeDrawer(GravityCompat.START);
+                }
+                else {
+                    CheckConnection.showToast(getApplicationContext(),"Haven't internet");
+                }
             }
         });
     }
@@ -86,7 +99,7 @@ public class MainActivity extends AppCompatActivity {
             Log.e("==============>", "Haven't internet");
             finish();
         }
-        listProductType = new ArrayList<>();
+
         listProductType.add(new ProductType(0, "Trang chính", "https://image.flaticon.com/icons/png/512/25/25694.png"));
         productTypeAdapter = new ProductTypeAdapter(listProductType, getApplicationContext());
         listItem.setAdapter(productTypeAdapter);
@@ -125,27 +138,23 @@ public class MainActivity extends AppCompatActivity {
         });
         requestQueue.add(arrayRequest);
     }
-
+//truyền dữ liệu giữa main activity và fragment
     public void replaceFragment(int pos) {
         switch (pos) {
             case 0:
-//                count=0;
                 fragment = MainFragment.newInstance();
                 break;
             case 1:
-                count = 0;
                 fragment = PhoneFragment.newInstance();
                 break;
             case 2:
-                count = 0;
                 fragment = LaptopFragment.newInstance();
                 break;
             case 3:
-                count = 0;
                 fragment = ContactFragment.newInstance();
                 break;
             case 4:
-                count = 0;
+                fragment= InformationFragment.newInstance();
                 break;
             default:
                 break;

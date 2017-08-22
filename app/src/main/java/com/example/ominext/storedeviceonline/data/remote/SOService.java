@@ -1,6 +1,6 @@
 package com.example.ominext.storedeviceonline.data.remote;
 
-import com.example.ominext.storedeviceonline.data.model.NewProduct;
+import com.example.ominext.storedeviceonline.data.model.Product;
 import com.example.ominext.storedeviceonline.data.model.ProductType;
 
 import java.util.List;
@@ -17,5 +17,5 @@ public interface SOService {
     @GET("/server/getProductType.php")
     Call<List<ProductType>> getProductType();
     @GET("/server/getnewproduct.php")
-    Call<List<NewProduct>> getNewProduct(@Query("tagged") String tags);
+    Call<List<Product>> getNewProduct(@Query("tagged") String tags);
 }

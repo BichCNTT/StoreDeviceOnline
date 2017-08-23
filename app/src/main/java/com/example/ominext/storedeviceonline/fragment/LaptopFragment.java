@@ -1,14 +1,17 @@
 package com.example.ominext.storedeviceonline.fragment;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -38,6 +41,7 @@ public class LaptopFragment extends Fragment {
     RecyclerView rvLaptop;
     Unbinder unbinder;
     LaptopAdapter adapter;
+    View itemView;
     List<Product> productList = new ArrayList<>();
     int idProductType = 0;
     int idProduct = 0;
@@ -63,6 +67,8 @@ public class LaptopFragment extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        LayoutInflater inflater = (LayoutInflater) view.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        itemView = inflater.inflate(R.layout.progressbar, null);
         init();
     }
 
@@ -84,6 +90,7 @@ public class LaptopFragment extends Fragment {
     private void init() {
         if (CheckConnection.haveNetWorkConnection(getContext())) {
             getLaptop();
+            loadMoreLaptop();
         } else {
             CheckConnection.showToast(getContext(), "Haven't internet");
             Log.e("==============>", "Haven't internet");
@@ -95,6 +102,36 @@ public class LaptopFragment extends Fragment {
         rvLaptop.setHasFixedSize(true);
         rvLaptop.setAdapter(adapter);
         adapter.notifyDataSetChanged();
+    }
+
+    private void loadMoreLaptop() {
+
+        rvLaptop.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            boolean loading = true;
+            int pastVisiblesItems, visibleItemCount, totalItemCount;
+
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+            }
+
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                if (dy > 0) {
+                    visibleItemCount = ((LinearLayoutManager) recyclerView.getLayoutManager()).getChildCount();
+                    totalItemCount = ((LinearLayoutManager) recyclerView.getLayoutManager()).getItemCount();
+                    pastVisiblesItems = ((LinearLayoutManager) recyclerView.getLayoutManager()).findFirstVisibleItemPosition();
+                    if (loading) {
+                        if ((visibleItemCount + pastVisiblesItems) >= totalItemCount) {
+                            loading = false;
+                            Log.e("...", "Last Item Wow!");
+                            //Do pagination.. i.e. fetch new data
+                        }
+                    }
+                }
+            }
+        });
     }
 
     //    lấy ra sản phẩm là điện thoại

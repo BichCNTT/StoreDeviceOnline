@@ -1,5 +1,6 @@
 package com.example.ominext.storedeviceonline.activity;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
@@ -62,6 +63,7 @@ public class MainActivity extends AppCompatActivity {
     Toolbar toolBarMain;
     @BindView(R.id.frame_layout)
     FrameLayout frameLayout;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -71,9 +73,8 @@ public class MainActivity extends AppCompatActivity {
         if (CheckConnection.haveNetWorkConnection(getApplicationContext())) {
             replaceFragment(0);
             setTitle(listProductType.get(0).getNameProductType());
-        }
-        else {
-            CheckConnection.showToast(getApplicationContext(),"Haven't internet");
+        } else {
+            CheckConnection.showToast(getApplicationContext(), "Haven't internet");
         }
         listItem.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -82,9 +83,8 @@ public class MainActivity extends AppCompatActivity {
                     replaceFragment(i);
                     setTitle(listProductType.get(i).getNameProductType());
                     drawerLayout.closeDrawer(GravityCompat.START);
-                }
-                else {
-                    CheckConnection.showToast(getApplicationContext(),"Haven't internet");
+                } else {
+                    CheckConnection.showToast(getApplicationContext(), "Haven't internet");
                 }
             }
         });
@@ -138,7 +138,8 @@ public class MainActivity extends AppCompatActivity {
         });
         requestQueue.add(arrayRequest);
     }
-//truyền dữ liệu giữa main activity và fragment
+
+    //truyền dữ liệu giữa main activity và fragment
     public void replaceFragment(int pos) {
         switch (pos) {
             case 0:
@@ -154,7 +155,7 @@ public class MainActivity extends AppCompatActivity {
                 fragment = ContactFragment.newInstance();
                 break;
             case 4:
-                fragment= InformationFragment.newInstance();
+                fragment = InformationFragment.newInstance();
                 break;
             default:
                 break;

@@ -64,7 +64,6 @@ public class MainFragment extends Fragment {
         return fragment;
     }
 
-
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);

@@ -12,6 +12,7 @@ import com.example.ominext.storedeviceonline.R;
 import com.example.ominext.storedeviceonline.helper.ImageViewUtil;
 import com.example.ominext.storedeviceonline.data.model.Product;
 import com.example.ominext.storedeviceonline.helper.PriceFormatUtil;
+import com.example.ominext.storedeviceonline.listener.OnItemClickListener;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -25,6 +26,7 @@ public class NewProductAdapter extends RecyclerView.Adapter<NewProductAdapter.Re
 
     private Context context;
     private LayoutInflater inflater;
+    private OnItemClickListener clickListener;
     private List<Product> productList = new ArrayList<>();
 
     public NewProductAdapter(Context context, List<Product> productList) {
@@ -44,8 +46,12 @@ public class NewProductAdapter extends RecyclerView.Adapter<NewProductAdapter.Re
     public void onBindViewHolder(RecyclerViewHolder holder, int position) {
         Product product = productList.get(position);
         holder.tvNameNewProduct.setText(product.getNameProduct());
-        PriceFormatUtil.priceFormat(holder.tvPriceNewProduct,product.getPriceProduct());
-        ImageViewUtil.loadImg(context, product.getImageProduct(),holder.imgNewProduct);
+        PriceFormatUtil.priceFormat(holder.tvPriceNewProduct, product.getPriceProduct());
+        ImageViewUtil.loadImg(context, product.getImageProduct(), holder.imgNewProduct);
+    }
+
+    public void setClickListener(OnItemClickListener itemClickListener) {
+        this.clickListener = itemClickListener;
     }
 
     @Override
@@ -53,15 +59,23 @@ public class NewProductAdapter extends RecyclerView.Adapter<NewProductAdapter.Re
         return productList.size();
     }
 
-    public class RecyclerViewHolder extends RecyclerView.ViewHolder {
+    public class RecyclerViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         ImageView imgNewProduct;
         TextView tvNameNewProduct;
         TextView tvPriceNewProduct;
+
         public RecyclerViewHolder(View itemView) {
             super(itemView);
-            imgNewProduct=(ImageView)itemView.findViewById(R.id.img_new_product);
-            tvNameNewProduct=(TextView)itemView.findViewById(R.id.tv_name_new_product);
-            tvPriceNewProduct=(TextView)itemView.findViewById(R.id.tv_price_new_product);
+            imgNewProduct = (ImageView) itemView.findViewById(R.id.img_new_product);
+            tvNameNewProduct = (TextView) itemView.findViewById(R.id.tv_name_new_product);
+            tvPriceNewProduct = (TextView) itemView.findViewById(R.id.tv_price_new_product);
+            itemView.setTag(itemView);
+            itemView.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View view) {
+            if (clickListener != null) clickListener.onItemClick(view, getAdapterPosition());
         }
     }
 }

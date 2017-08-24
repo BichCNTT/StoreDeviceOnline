@@ -3,6 +3,8 @@ package com.example.ominext.storedeviceonline.fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -18,6 +20,7 @@ import com.android.volley.toolbox.Volley;
 import com.example.ominext.storedeviceonline.R;
 import com.example.ominext.storedeviceonline.adapter.PhoneAdapter;
 import com.example.ominext.storedeviceonline.data.model.Product;
+import com.example.ominext.storedeviceonline.listener.OnItemClickListener;
 import com.example.ominext.storedeviceonline.until.CheckConnection;
 import com.example.ominext.storedeviceonline.until.Server;
 
@@ -33,7 +36,7 @@ import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
 
-public class PhoneFragment extends Fragment {
+public class PhoneFragment extends Fragment implements OnItemClickListener {
     PhoneAdapter adapter;
     List<Product> productList = new ArrayList<>();
     int idProductType = 0;
@@ -45,6 +48,7 @@ public class PhoneFragment extends Fragment {
     @BindView(R.id.rv_phone)
     RecyclerView rvPhone;
     Unbinder unbinder;
+
 
     public PhoneFragment() {
         // Required empty public constructor
@@ -88,6 +92,7 @@ public class PhoneFragment extends Fragment {
         rvPhone.setLayoutManager(layoutManager);
         rvPhone.setHasFixedSize(true);
         rvPhone.setAdapter(adapter);
+        adapter.setClickListener(this);
         adapter.notifyDataSetChanged();
     }
 
@@ -129,5 +134,22 @@ public class PhoneFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
+    }
+
+    @Override
+    public void onItemClick(View view, int position) {
+        DetailProductFragment fragment = DetailProductFragment.newInstance();
+        Bundle bundle = new Bundle();
+        Product product = productList.get(position);
+        bundle.putString("name", product.getNameProduct());
+        bundle.putInt("price", product.getPriceProduct());
+        bundle.putString("describe", product.getDescribeProduct());
+        bundle.putString("image", product.getImageProduct());
+        fragment.setArguments(bundle);
+        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.frame_layout, fragment);
+        fragmentTransaction.addToBackStack(null);
+        fragmentTransaction.commit();
     }
 }

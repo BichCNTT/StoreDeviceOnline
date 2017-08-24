@@ -4,8 +4,9 @@
     android:layout_width="match_parent"
     android:id="@+id/row_new_product"
     android:layout_margin="5dp"
+    android:layout_gravity="center"
     android:background="@drawable/border"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:orientation="vertical">
 
     <android.support.v7.widget.CardView

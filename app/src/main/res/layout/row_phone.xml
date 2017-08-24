@@ -58,6 +58,7 @@
                     android:layout_height="match_parent"
                     android:fontFamily="sans-serif"
                     android:text="Mô tả sản phẩm"
+                    android:maxLength="200"
                     android:textColor="@color/gray"
                     android:textSize="10sp"
                     android:textStyle="normal" />

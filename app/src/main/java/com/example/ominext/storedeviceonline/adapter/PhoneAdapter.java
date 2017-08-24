@@ -12,6 +12,7 @@ import com.example.ominext.storedeviceonline.R;
 import com.example.ominext.storedeviceonline.data.model.Product;
 import com.example.ominext.storedeviceonline.helper.ImageViewUtil;
 import com.example.ominext.storedeviceonline.helper.PriceFormatUtil;
+import com.example.ominext.storedeviceonline.listener.OnItemClickListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,6 +30,7 @@ public class PhoneAdapter extends RecyclerView.Adapter<PhoneAdapter.RecyclerView
     private List<Product> productList = new ArrayList<>();
     private Context context;
     private LayoutInflater inflater;
+    private OnItemClickListener clickListener;
 
     public PhoneAdapter(List<Product> productList, Context context) {
         this.productList = productList;
@@ -41,6 +43,10 @@ public class PhoneAdapter extends RecyclerView.Adapter<PhoneAdapter.RecyclerView
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         View view = inflater.inflate(R.layout.row_phone, parent, false);
         return new RecyclerViewHolder(view);
+    }
+
+    public void setClickListener(OnItemClickListener itemClickListener) {
+        this.clickListener = itemClickListener;
     }
 
     @Override
@@ -57,7 +63,7 @@ public class PhoneAdapter extends RecyclerView.Adapter<PhoneAdapter.RecyclerView
         return productList.size();
     }
 
-    public class RecyclerViewHolder extends RecyclerView.ViewHolder {
+    public class RecyclerViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         @BindView(R.id.img_phone)
         ImageView imgPhone;
         @BindView(R.id.tv_name)
@@ -71,6 +77,13 @@ public class PhoneAdapter extends RecyclerView.Adapter<PhoneAdapter.RecyclerView
         public RecyclerViewHolder(View itemView) {
             super(itemView);
             unbinder = ButterKnife.bind(this, itemView);
+            itemView.setTag(itemView);
+            itemView.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View view) {
+            if (clickListener != null) clickListener.onItemClick(view, getAdapterPosition());
         }
     }
 }

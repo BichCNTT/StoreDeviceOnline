@@ -3,6 +3,8 @@ package com.example.ominext.storedeviceonline.fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -23,6 +25,7 @@ import com.example.ominext.storedeviceonline.R;
 import com.example.ominext.storedeviceonline.adapter.NewProductAdapter;
 import com.example.ominext.storedeviceonline.data.model.Product;
 import com.example.ominext.storedeviceonline.helper.ImageViewUtil;
+import com.example.ominext.storedeviceonline.listener.OnItemClickListener;
 import com.example.ominext.storedeviceonline.until.CheckConnection;
 import com.example.ominext.storedeviceonline.until.Server;
 
@@ -37,7 +40,7 @@ import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
 //fragment chứa giao diện chính <- giao diện lúc mở máy lên
-public class MainFragment extends Fragment {
+public class MainFragment extends Fragment implements OnItemClickListener {
 
     @BindView(R.id.view_flipper)
     ViewFlipper viewFlipper;
@@ -83,6 +86,7 @@ public class MainFragment extends Fragment {
         super.onDestroyView();
         unbinder.unbind();
     }
+
     private void init() {
         if (CheckConnection.haveNetWorkConnection(getContext())) {
             ActionViewFlipper();
@@ -99,9 +103,11 @@ public class MainFragment extends Fragment {
         viewMain.setLayoutManager(layoutManager);
         viewMain.setHasFixedSize(true);
         viewMain.setAdapter(productAdapter);
+        productAdapter.setClickListener(this);
         productAdapter.notifyDataSetChanged();
 
     }
+
     private void getNewProduct() {
         final RequestQueue requestQueue = Volley.newRequestQueue(getContext());
         JsonArrayRequest arrayRequest = new JsonArrayRequest(Server.urlNewProduct, new Response.Listener<JSONArray>() {
@@ -155,5 +161,22 @@ public class MainFragment extends Fragment {
         Animation animation_slide_out = AnimationUtils.loadAnimation(getContext(), R.anim.slide_out_right);
         viewFlipper.setInAnimation(animation_slide_in);
         viewFlipper.setOutAnimation(animation_slide_out);
+    }
+
+    @Override
+    public void onItemClick(View view, int position) {
+        DetailProductFragment fragment = DetailProductFragment.newInstance();
+        Bundle bundle=new Bundle();
+        Product product=listProduct.get(position);
+        bundle.putString("name",product.getNameProduct());
+        bundle.putInt("price",product.getPriceProduct());
+        bundle.putString("describe",product.getDescribeProduct());
+        bundle.putString("image",product.getImageProduct());
+        fragment.setArguments(bundle);
+        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.frame_layout, fragment);
+        fragmentTransaction.addToBackStack(null);
+        fragmentTransaction.commit();
     }
 }

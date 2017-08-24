@@ -18,8 +18,10 @@ import android.widget.FrameLayout;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
+import com.android.volley.RetryPolicy;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
@@ -27,10 +29,12 @@ import com.example.ominext.storedeviceonline.R;
 import com.example.ominext.storedeviceonline.adapter.ProductTypeAdapter;
 import com.example.ominext.storedeviceonline.data.model.ProductType;
 import com.example.ominext.storedeviceonline.fragment.ContactFragment;
+import com.example.ominext.storedeviceonline.fragment.DetailProductFragment;
 import com.example.ominext.storedeviceonline.fragment.InformationFragment;
 import com.example.ominext.storedeviceonline.fragment.LaptopFragment;
 import com.example.ominext.storedeviceonline.fragment.MainFragment;
 import com.example.ominext.storedeviceonline.fragment.PhoneFragment;
+import com.example.ominext.storedeviceonline.listener.OnItemClickListener;
 import com.example.ominext.storedeviceonline.until.CheckConnection;
 import com.example.ominext.storedeviceonline.until.Server;
 
@@ -125,17 +129,22 @@ public class MainActivity extends AppCompatActivity {
                             e.printStackTrace();
                         }
                     }
-                    listProductType.add(new ProductType(3, "Liên hệ", "http://hddfhm.com/images/contact-clipart-18.png"));
-                    listProductType.add(new ProductType(4, "Thông tin", "https://image.freepik.com/free-icon/information-circle_318-27255.jpg"));
+                    listProductType.add(new ProductType(3, "Liên hệ", "http://www.freeiconspng.com/uploads/phone-icon-old-phone-telephone-icon-9.png"));
+                    listProductType.add(new ProductType(4, "Thông tin", "http://www.freeiconspng.com/uploads/details-info-information-more-details-icon--icon-search-engine--7.png"));
                 }
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
+                error.printStackTrace();
                 CheckConnection.showToast(getApplicationContext(), error.toString());
                 Log.e("==============>", error.toString());
             }
         });
+        int socketTimeout = 30000;//30 seconds - change to what you want
+        RetryPolicy policy = new DefaultRetryPolicy(socketTimeout, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
+        arrayRequest.setRetryPolicy(policy);
+        arrayRequest.setRetryPolicy(new DefaultRetryPolicy(DefaultRetryPolicy.DEFAULT_TIMEOUT_MS * 5, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         requestQueue.add(arrayRequest);
     }
 
@@ -181,4 +190,5 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
 }

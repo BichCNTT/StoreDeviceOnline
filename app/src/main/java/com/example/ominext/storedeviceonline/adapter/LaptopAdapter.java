@@ -5,6 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -12,6 +13,7 @@ import com.example.ominext.storedeviceonline.R;
 import com.example.ominext.storedeviceonline.data.model.Product;
 import com.example.ominext.storedeviceonline.helper.ImageViewUtil;
 import com.example.ominext.storedeviceonline.helper.PriceFormatUtil;
+import com.example.ominext.storedeviceonline.listener.OnItemClickListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,6 +28,7 @@ import butterknife.Unbinder;
 
 public class LaptopAdapter extends RecyclerView.Adapter<LaptopAdapter.RecyclerViewHolder> {
     List<Product> productList = new ArrayList<>();
+    private OnItemClickListener clickListener;
     Context context;
     LayoutInflater inflater;
 
@@ -51,12 +54,16 @@ public class LaptopAdapter extends RecyclerView.Adapter<LaptopAdapter.RecyclerVi
         holder.tvDescribe.setText(productList.get(position).getDescribeProduct());
     }
 
+    public void setClickListener(OnItemClickListener itemClickListener) {
+        this.clickListener = itemClickListener;
+    }
+
     @Override
     public int getItemCount() {
         return productList.size();
     }
 
-    public class RecyclerViewHolder extends RecyclerView.ViewHolder {
+    public class RecyclerViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         @BindView(R.id.img_laptop)
         ImageView imgLaptop;
         @BindView(R.id.tv_name)
@@ -65,11 +72,17 @@ public class LaptopAdapter extends RecyclerView.Adapter<LaptopAdapter.RecyclerVi
         TextView tvPrice;
         @BindView(R.id.tv_describe)
         TextView tvDescribe;
-        Unbinder unbinder;
 
         public RecyclerViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
+            itemView.setTag(itemView);
+            itemView.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View view) {
+            if (clickListener != null) clickListener.onItemClick(view,getAdapterPosition());
         }
     }
 }

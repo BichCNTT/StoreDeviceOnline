@@ -1,16 +1,15 @@
-package com.example.ominext.storedeviceonline.adapter;
+package com.example.ominext.storedeviceonline.ui.laptop;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.ominext.storedeviceonline.R;
-import com.example.ominext.storedeviceonline.data.model.Product;
+import com.example.ominext.storedeviceonline.model.Product;
 import com.example.ominext.storedeviceonline.helper.ImageViewUtil;
 import com.example.ominext.storedeviceonline.helper.PriceFormatUtil;
 import com.example.ominext.storedeviceonline.listener.OnItemClickListener;
@@ -20,7 +19,6 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.Unbinder;
 
 /**
  * Created by Ominext on 8/22/2017.

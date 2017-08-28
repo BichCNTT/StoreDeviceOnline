@@ -1,4 +1,4 @@
-package com.example.ominext.storedeviceonline.adapter;
+package com.example.ominext.storedeviceonline.ui.phone;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -9,7 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.ominext.storedeviceonline.R;
-import com.example.ominext.storedeviceonline.data.model.Product;
+import com.example.ominext.storedeviceonline.model.Product;
 import com.example.ominext.storedeviceonline.helper.ImageViewUtil;
 import com.example.ominext.storedeviceonline.helper.PriceFormatUtil;
 import com.example.ominext.storedeviceonline.listener.OnItemClickListener;

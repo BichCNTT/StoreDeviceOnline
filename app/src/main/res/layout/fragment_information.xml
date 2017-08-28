@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/border"
-    tools:context="com.example.ominext.storedeviceonline.fragment.InformationFragment">
+    tools:context="com.example.ominext.storedeviceonline.ui.info.InformationFragment">
 
     <LinearLayout
         android:layout_width="match_parent"

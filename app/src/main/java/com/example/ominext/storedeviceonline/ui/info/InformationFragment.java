@@ -1,4 +1,4 @@
-package com.example.ominext.storedeviceonline.fragment;
+package com.example.ominext.storedeviceonline.ui.info;
 
 import android.Manifest;
 import android.content.pm.PackageManager;

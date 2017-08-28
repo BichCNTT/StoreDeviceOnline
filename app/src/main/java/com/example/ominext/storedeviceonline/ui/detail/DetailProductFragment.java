@@ -1,4 +1,4 @@
-package com.example.ominext.storedeviceonline.fragment;
+package com.example.ominext.storedeviceonline.ui.detail;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;

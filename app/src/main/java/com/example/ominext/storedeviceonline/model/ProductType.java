@@ -1,7 +1,7 @@
-package com.example.ominext.storedeviceonline.data.model;
+package com.example.ominext.storedeviceonline.model;
 
 /**
- * Created by Ominext on 8/17/2017.
+ * Created by Ominext on 8/28/2017.
  */
 
 public class ProductType {

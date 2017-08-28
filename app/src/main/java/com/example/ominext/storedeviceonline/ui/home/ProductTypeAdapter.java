@@ -1,6 +1,5 @@
-package com.example.ominext.storedeviceonline.adapter;
+package com.example.ominext.storedeviceonline.ui.home;
 
-import android.content.ClipData;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,7 +10,7 @@ import android.widget.TextView;
 
 import com.example.ominext.storedeviceonline.R;
 import com.example.ominext.storedeviceonline.helper.ImageViewUtil;
-import com.example.ominext.storedeviceonline.data.model.ProductType;
+import com.example.ominext.storedeviceonline.model.ProductType;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,10 +21,10 @@ import java.util.List;
  */
 
 public class ProductTypeAdapter extends BaseAdapter {
-    ArrayList<ProductType> productTypeArrayList;
+    List<ProductType> productTypeArrayList;
     Context context;
 
-    public ProductTypeAdapter(ArrayList<ProductType> productTypeArrayList, Context context) {
+    public ProductTypeAdapter(List<ProductType> productTypeArrayList, Context context) {
         this.productTypeArrayList = productTypeArrayList;
         this.context = context;
     }
@@ -52,25 +51,25 @@ public class ProductTypeAdapter extends BaseAdapter {
         ImageView imgProductType;
         TextView tvProductType;
     }
-    // lấy ra view
+    // lấy ra HomeView
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
         ViewHolder holder;
-//        nếu ko giữ view thì ktạo 1 đtượng kiểu view holder, set view bằng 1 dòng của listview loại sp. giữ gtrị của tv và img của list view hiện tại
+//        nếu ko giữ HomeView thì ktạo 1 đtượng kiểu HomeView holder, set HomeView bằng 1 dòng của listview loại sp. giữ gtrị của tv và img của list HomeView hiện tại
         if (view == null) {
             holder = new ViewHolder();
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             view = inflater.inflate(R.layout.row_listview_producttype, null);
             holder.tvProductType = (TextView) view.findViewById(R.id.tv_product_type);
             holder.imgProductType = (ImageView) view.findViewById(R.id.img_product_type);
-//            set tag để xoay màn hình k bị mất view
+//            set tag để xoay màn hình k bị mất HomeView
             view.setTag(holder);
         } else {
-//            ngược lại nếu giữ view thì lấy ra
+//            ngược lại nếu giữ HomeView thì lấy ra
             holder = (ViewHolder) view.getTag();
 
         }
-//        lấy ra loại sản phẩm thứ i set giá trị cho chúng, dùng picasso để chuyển từ link ảnh sang ảnh, rồi trả kq về view (dòng)
+//        lấy ra loại sản phẩm thứ i set giá trị cho chúng, dùng picasso để chuyển từ link ảnh sang ảnh, rồi trả kq về HomeView (dòng)
         ProductType productType = (ProductType) getItem(i);
         holder.tvProductType.setText(productType.getNameProductType());
         ImageViewUtil.loadImg(context,productType.getImageProductType(),holder.imgProductType);

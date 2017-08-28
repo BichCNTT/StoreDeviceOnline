@@ -1,4 +1,4 @@
-package com.example.ominext.storedeviceonline.fragment;
+package com.example.ominext.storedeviceonline.ui.phone;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -18,11 +18,11 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.ominext.storedeviceonline.R;
-import com.example.ominext.storedeviceonline.adapter.PhoneAdapter;
-import com.example.ominext.storedeviceonline.data.model.Product;
+import com.example.ominext.storedeviceonline.model.Product;
 import com.example.ominext.storedeviceonline.listener.OnItemClickListener;
 import com.example.ominext.storedeviceonline.until.CheckConnection;
 import com.example.ominext.storedeviceonline.until.Server;
+import com.example.ominext.storedeviceonline.ui.detail.DetailProductFragment;
 
 import org.json.JSONArray;
 import org.json.JSONException;

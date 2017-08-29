@@ -17,7 +17,7 @@
             android:fontFamily="monospace"
             android:gravity="center"
             android:text="Contact with us"
-            android:textColor="@color/green"
+            android:textColor="@color/white"
             android:textSize="25dp"
             android:textStyle="bold" />
 
@@ -38,7 +38,7 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="casual"
                 android:text="Họ và tên: Trương Thị Ngọc Bích"
-                android:textColor="@color/magenta"
+                android:textColor="@color/white"
                 android:textSize="16dp" />
         </LinearLayout>
 
@@ -59,7 +59,7 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="casual"
                 android:text="Email: bichttn@ominext.com"
-                android:textColor="@color/magenta"
+                android:textColor="@color/white"
                 android:textSize="16dp" />
         </LinearLayout>
 
@@ -80,7 +80,7 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="casual"
                 android:text="Điện thoại: 01652093006"
-                android:textColor="@color/magenta"
+                android:textColor="@color/white"
                 android:textSize="16dp" />
         </LinearLayout>
     </LinearLayout>

@@ -47,15 +47,7 @@ public class LaptopFragment extends Fragment implements OnItemClickListener, Lap
     LaptopAdapter adapter;
     View itemView;
     List<Product> productList = new ArrayList<>();
-    //    int idProductType = 0;
-//    int idProduct = 0;
-//    String nameProduct = "";
-//    int priceProduct = 0;
-//    String imageProduct = "";
-//    String describeProduct = "";
     boolean loading = false;
-    //    boolean limitData = false;
-//    HandlerLaptop handlerLaptop;
     LaptopPresenter mPresenter;
 
     public LaptopFragment() {
@@ -97,88 +89,15 @@ public class LaptopFragment extends Fragment implements OnItemClickListener, Lap
 
     private void init() {
         mPresenter = new LaptopPresenter(LaptopFragment.this.getContext(), this);
-        if (CheckConnection.haveNetWorkConnection(getContext())) {
-            mPresenter.getListLaptop();
-//            getLaptop();
-//            loadMoreLaptop();
-        } else {
-            CheckConnection.showToast(getContext(), "Haven't internet");
-            Log.e("==============>", "Haven't internet");
-
-        }
+        mPresenter.getListLaptop();
         adapter = new LaptopAdapter(productList, getContext());
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getContext(), 1);
         rvLaptop.setLayoutManager(layoutManager);
         rvLaptop.setHasFixedSize(true);
         rvLaptop.setAdapter(adapter);
         adapter.notifyDataSetChanged();
+        adapter.setClickListener(this);
     }
-
-//    private void loadMoreLaptop() {
-//        loading = true;
-//        rvLaptop.addOnScrollListener(new RecyclerView.OnScrollListener() {
-//            int pastVisibleItem, visibleItemCount, totalItemCount;
-//
-//            @Override
-//            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-//                super.onScrollStateChanged(recyclerView, newState);
-//            }
-//
-//            @Override
-//            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-//                super.onScrolled(recyclerView, dx, dy);
-//                if (dy > 0) {
-//                    visibleItemCount = ((LinearLayoutManager) recyclerView.getLayoutManager()).getChildCount();
-//                    totalItemCount = ((LinearLayoutManager) recyclerView.getLayoutManager()).getItemCount();
-//                    pastVisibleItem = ((LinearLayoutManager) recyclerView.getLayoutManager()).findFirstVisibleItemPosition();
-//                    if (loading) {
-//                        if (((visibleItemCount + pastVisibleItem) >= totalItemCount) && (totalItemCount != 0)) {
-//                            loading = false;
-////                            ThreadLaptop threadLaptop = new ThreadLaptop();
-////                            threadLaptop.start();
-//                            Log.e("...", "Last Item Wow!");
-//                            //Do pagination.. i.e. fetch new data
-//                        }
-//                    }
-//                }
-//            }
-//        });
-//    }
-
-    //    lấy ra sản phẩm là điện thoại
-//    private void getLaptop() {
-//        final RequestQueue requestQueue = Volley.newRequestQueue(getContext());
-//        JsonArrayRequest arrayRequest = new JsonArrayRequest(Server.urlLaptop, new Response.Listener<JSONArray>() {
-//            @Override
-//            public void onResponse(JSONArray response) {
-//                if ((response != null) && (response.length() > 0)) {
-//                    for (int i = 0; i < response.length(); i++) {
-//                        rvLaptop.removeView(itemView);
-//                        try {
-//                            JSONObject jsonObject = response.getJSONObject(i);
-//                            idProductType = jsonObject.getInt("IdProductType");
-//                            idProduct = jsonObject.getInt("IdProduct");
-//                            nameProduct = jsonObject.getString("nameProduct");
-//                            priceProduct = jsonObject.getInt("priceProduct");
-//                            imageProduct = jsonObject.getString("imageProduct");
-//                            describeProduct = jsonObject.getString("describeProduct");
-//                            productList.add(new Product(idProduct, nameProduct, priceProduct, imageProduct, describeProduct, idProductType));
-//                            adapter.notifyDataSetChanged();
-//                        } catch (JSONException e) {
-//                            e.printStackTrace();
-//                        }
-//                    }
-//                }
-//            }
-//        }, new Response.ErrorListener() {
-//            @Override
-//            public void onErrorResponse(VolleyError error) {
-//                CheckConnection.showToast(getContext(), error.toString());
-//                Log.e("==============>", error.toString());
-//            }
-//        });
-//        requestQueue.add(arrayRequest);
-//    }
 
     @Override
     public void onItemClick(View view, int position) {
@@ -201,8 +120,8 @@ public class LaptopFragment extends Fragment implements OnItemClickListener, Lap
     public void getListLaptopSuccess(List<Product> products) {
         productList = products;
         adapter = new LaptopAdapter(productList, getContext());
-        rvLaptop.setAdapter(adapter);
         adapter.notifyDataSetChanged();
+        rvLaptop.setAdapter(adapter);
         adapter.setClickListener(this);
     }
 

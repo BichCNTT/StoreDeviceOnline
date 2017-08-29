@@ -10,6 +10,8 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.FrameLayout;
@@ -18,6 +20,7 @@ import android.widget.Toast;
 
 import com.example.ominext.storedeviceonline.R;
 import com.example.ominext.storedeviceonline.model.ProductType;
+import com.example.ominext.storedeviceonline.ui.cart.CartFragment;
 import com.example.ominext.storedeviceonline.until.CheckConnection;
 import com.example.ominext.storedeviceonline.ui.contact.ContactFragment;
 import com.example.ominext.storedeviceonline.ui.info.InformationFragment;
@@ -41,20 +44,20 @@ public class HomeActivity extends AppCompatActivity implements HomeView {
     @BindView(R.id.drawer_layout)
     DrawerLayout drawerLayout;
 
-    List<ProductType> listProductType=new ArrayList<>();
+    List<ProductType> listProductType = new ArrayList<>();
     ProductTypeAdapter productTypeAdapter;
 
     Fragment fragment = null;
-//    int id = 0;
-//    String nameProductType = "";
-//    String imageProductType = "";
     @BindView(R.id.tool_bar_main)
     Toolbar toolBarMain;
     @BindView(R.id.frame_layout)
     FrameLayout frameLayout;
 
     HomePresenter mPresenter;
-
+    String name = "";
+    int price = 0;
+    String image = "";
+    int number = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,82 +67,18 @@ public class HomeActivity extends AppCompatActivity implements HomeView {
         listItem.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                    replaceFragment(i);
-                    setTitle(listProductType.get(i).getNameProductType());
-                    drawerLayout.closeDrawer(GravityCompat.START);
+                replaceFragment(i);
+                setTitle(listProductType.get(i).getNameProductType());
+                drawerLayout.closeDrawer(GravityCompat.START);
             }
         });
     }
 
     private void init() {
         mPresenter = new HomePresenter(HomeActivity.this, this);
-        if (CheckConnection.haveNetWorkConnection(getApplicationContext())) {
-            ActionBar();
-            mPresenter.getListProductType();
-//            getProductType();
-        } else {
-            CheckConnection.showToast(getApplicationContext(), "Haven't internet");
-            Log.e("==============>", "Haven't internet");
-            finish();
-        }
-//        listProductType.add(new ProductType(0, "Trang chính", "https://image.flaticon.com/icons/png/512/25/25694.png"));
-//        productTypeAdapter = new ProductTypeAdapter(listProductType, getApplicationContext());
-//        listItem.setAdapter(productTypeAdapter);
-//        productTypeAdapter.notifyDataSetChanged();
+        ActionBar();
+        mPresenter.getListProductType();
     }
-//    private void getProductType(){
-//        SOService soService= RetrofitClient.getClient().create(SOService.class);
-//        Call<ProductType> call=soService.getProductType();
-//        call.enqueue(new Callback<ProductType>() {
-//            @Override
-//            public void onResponse(Call<ProductType> call, retrofit2.Response<ProductType> response) {
-//
-//            }
-//
-//            @Override
-//            public void onFailure(Call<ProductType> call, Throwable t) {
-//
-//            }
-//        });
-//    }
-    //    lấy dữ liệu từ server
-//    private void getProductType() {
-//        final RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
-//        JsonArrayRequest arrayRequest = new JsonArrayRequest(Server.urlProductType, new Response.Listener<JSONArray>() {
-//            @Override
-//            public void onResponse(JSONArray response) {
-//                if (response != null) {
-//                    for (int i = 0; i < response.length(); i++) {
-//                        try {
-////                            Post[] beanPostList = new Gson().fromJson(response, Post[].class);
-//                            JSONObject jsonObject = response.getJSONObject(i);
-//                            id = jsonObject.getInt("IdProductType");
-//                            nameProductType = jsonObject.getString("NameProductType");
-//                            imageProductType = jsonObject.getString("ImageProductType");
-//                            listProductType.add(new ProductType(id, nameProductType, imageProductType));
-//                            productTypeAdapter.notifyDataSetChanged();
-//                        } catch (JSONException e) {
-//                            e.printStackTrace();
-//                        }
-//                    }
-//                    listProductType.add(new ProductType(3, "Liên hệ", "http://www.freeiconspng.com/uploads/phone-icon-old-phone-telephone-icon-9.png"));
-//                    listProductType.add(new ProductType(4, "Thông tin", "http://www.freeiconspng.com/uploads/details-info-information-more-details-icon--icon-search-engine--7.png"));
-//                }
-//            }
-//        }, new Response.ErrorListener() {
-//            @Override
-//            public void onErrorResponse(VolleyError error) {
-//                error.printStackTrace();
-//                CheckConnection.showToast(getApplicationContext(), error.toString());
-//                Log.e("==============>", error.toString());
-//            }
-//        });
-//        int socketTimeout = 30000;//30 seconds - change to what you want
-//        RetryPolicy policy = new DefaultRetryPolicy(socketTimeout, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
-//        arrayRequest.setRetryPolicy(policy);
-//        arrayRequest.setRetryPolicy(new DefaultRetryPolicy(DefaultRetryPolicy.DEFAULT_TIMEOUT_MS * 5, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-//        requestQueue.add(arrayRequest);
-//    }
 
     //truyền dữ liệu giữa main activity và fragment
     public void replaceFragment(int pos) {
@@ -185,6 +124,32 @@ public class HomeActivity extends AppCompatActivity implements HomeView {
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main_menu, menu);
+        return true;
+}
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.menu_cart:
+                Bundle bundle = new Bundle();
+                bundle.putString("name",name);
+                bundle.putInt("price",price);
+                bundle.putString("image",image);
+                bundle.putInt("number",number);
+                fragment= CartFragment.newInstance();
+                fragment.setArguments(bundle);
+                FragmentManager fragmentManager = getSupportFragmentManager();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.replace(R.id.frame_layout, fragment);
+                fragmentTransaction.addToBackStack(null);
+                fragmentTransaction.commit();
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
     public void getListProductTypeSuccess(List<ProductType> productTypes) {
         listProductType = productTypes;
         productTypeAdapter = new ProductTypeAdapter(listProductType, getApplicationContext());
@@ -196,6 +161,6 @@ public class HomeActivity extends AppCompatActivity implements HomeView {
 
     @Override
     public void getListProductTypeFailed(String s) {
-        Toast.makeText(getApplicationContext(),"Lỗi tải trang",Toast.LENGTH_SHORT).show();
+        Toast.makeText(getApplicationContext(), "Lỗi tải trang", Toast.LENGTH_SHORT).show();
     }
 }

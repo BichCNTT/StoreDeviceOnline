@@ -4,9 +4,9 @@
     <solid android:color="@color/white" />
     <gradient
         android:angle="0"
-        android:centerColor="@color/yellow"
-        android:endColor="@color/pig"
-        android:startColor="@color/blue" />
+        android:centerColor="@color/orange"
+        android:endColor="@color/orange"
+        android:startColor="@color/orange" />
     <corners android:radius="10dp" />
     <stroke
         android:width="5dp"

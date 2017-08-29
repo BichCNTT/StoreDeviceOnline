@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -20,6 +21,9 @@ import com.android.volley.toolbox.Volley;
 import com.example.ominext.storedeviceonline.R;
 import com.example.ominext.storedeviceonline.model.Product;
 import com.example.ominext.storedeviceonline.listener.OnItemClickListener;
+import com.example.ominext.storedeviceonline.ui.laptop.LaptopAdapter;
+import com.example.ominext.storedeviceonline.ui.laptop.LaptopFragment;
+import com.example.ominext.storedeviceonline.ui.laptop.LaptopPresenter;
 import com.example.ominext.storedeviceonline.until.CheckConnection;
 import com.example.ominext.storedeviceonline.until.Server;
 import com.example.ominext.storedeviceonline.ui.detail.DetailProductFragment;
@@ -36,7 +40,7 @@ import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
 
-public class PhoneFragment extends Fragment implements OnItemClickListener {
+public class PhoneFragment extends Fragment implements OnItemClickListener, PhoneView {
     PhoneAdapter adapter;
     List<Product> productList = new ArrayList<>();
     int idProductType = 0;
@@ -49,6 +53,7 @@ public class PhoneFragment extends Fragment implements OnItemClickListener {
     RecyclerView rvPhone;
     Unbinder unbinder;
 
+    private PhonePresenter mPresenter;
 
     public PhoneFragment() {
         // Required empty public constructor
@@ -80,54 +85,15 @@ public class PhoneFragment extends Fragment implements OnItemClickListener {
     }
 
     private void init() {
-        if (CheckConnection.haveNetWorkConnection(getContext())) {
-            getLaptop();
-        } else {
-            CheckConnection.showToast(getContext(), "Haven't internet");
-            Log.e("==============>", "Haven't internet");
-
-        }
+        mPresenter = new PhonePresenter(PhoneFragment.this.getContext(), this);
+        mPresenter.getListPhone();
         adapter = new PhoneAdapter(productList, getContext());
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getContext(), 1);
         rvPhone.setLayoutManager(layoutManager);
         rvPhone.setHasFixedSize(true);
         rvPhone.setAdapter(adapter);
-        adapter.setClickListener(this);
         adapter.notifyDataSetChanged();
-    }
-
-    //    lấy ra sản phẩm là điện thoại
-    private void getLaptop() {
-        final RequestQueue requestQueue = Volley.newRequestQueue(getContext());
-        JsonArrayRequest arrayRequest = new JsonArrayRequest(Server.urlPhone, new Response.Listener<JSONArray>() {
-            @Override
-            public void onResponse(JSONArray response) {
-                if (response != null) {
-                    for (int i = 0; i < response.length(); i++) {
-                        try {
-                            JSONObject jsonObject = response.getJSONObject(i);
-                            idProductType = jsonObject.getInt("IdProductType");
-                            idProduct = jsonObject.getInt("IdProduct");
-                            nameProduct = jsonObject.getString("nameProduct");
-                            priceProduct = jsonObject.getInt("priceProduct");
-                            imageProduct = jsonObject.getString("imageProduct");
-                            describeProduct = jsonObject.getString("describeProduct");
-                            productList.add(new Product(idProduct, nameProduct, priceProduct, imageProduct, describeProduct, idProductType));
-                            adapter.notifyDataSetChanged();
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                CheckConnection.showToast(getContext(), error.toString());
-                Log.e("==============>", error.toString());
-            }
-        });
-        requestQueue.add(arrayRequest);
+        adapter.setClickListener(this);
     }
 
     @Override
@@ -151,5 +117,19 @@ public class PhoneFragment extends Fragment implements OnItemClickListener {
         fragmentTransaction.replace(R.id.frame_layout, fragment);
         fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
+    }
+
+    @Override
+    public void getListPhoneSuccess(List<Product> products) {
+        productList = products;
+        adapter = new PhoneAdapter(productList, getContext());
+        adapter.notifyDataSetChanged();
+        rvPhone.setAdapter(adapter);
+        adapter.setClickListener(this);
+    }
+
+    @Override
+    public void getListPhoneFailed(String s) {
+        Toast.makeText(getContext(), "Lỗi tải trang", Toast.LENGTH_SHORT).show();
     }
 }

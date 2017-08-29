@@ -18,7 +18,7 @@
             android:fontFamily="monospace"
             android:gravity="center"
             android:text="Information"
-            android:textColor="@color/green"
+            android:textColor="@color/white"
             android:textSize="25dp"
             android:textStyle="bold" />
 
@@ -39,7 +39,7 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="casual"
                 android:text="Địa chỉ: Ngõ 177 - Phúc Diễn - Từ Liêm - Hà Nội"
-                android:textColor="@color/magenta"
+                android:textColor="@color/white"
                 android:textSize="20dp" />
         </LinearLayout>
 

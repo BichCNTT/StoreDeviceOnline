@@ -37,17 +37,10 @@ public class MainFragment extends Fragment implements MainFragmentView, OnItemCl
     RecyclerView viewMain;
     Unbinder unbinder;
 
-    ArrayList<Product> listProduct;
+    ArrayList<Product> listProduct=new ArrayList<>();
     NewProductAdapter productAdapter;
 
     MainFragmentPresenter mPresenter;
-
-//    int idProduct = 0;
-//    String nameProduct = "";
-//    int priceProduct = 0;
-//    String imageProduct = "";
-//    String describeProduct = "";
-//    int idProductType = 0;
 
     public MainFragment() {
 
@@ -80,45 +73,16 @@ public class MainFragment extends Fragment implements MainFragmentView, OnItemCl
 
     private void init() {
         mPresenter = new MainFragmentPresenter(MainFragment.this.getContext(), this);
+        mPresenter.getListProduct();
+        productAdapter = new NewProductAdapter(getContext(), listProduct);
         ActionViewFlipper();
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(MainFragment.this.getContext(), 2);
-        viewMain.setHasFixedSize(true);
         viewMain.setLayoutManager(layoutManager);
-        mPresenter.getListProduct();
+        viewMain.setHasFixedSize(true);
+        viewMain.setAdapter(productAdapter);
+        productAdapter.setClickListener(this);
+        productAdapter.notifyDataSetChanged();
     }
-
-//    private void getNewProduct() {
-//        final RequestQueue requestQueue = Volley.newRequestQueue(getContext());
-//        JsonArrayRequest arrayRequest = new JsonArrayRequest(Server.urlNewProduct, new Response.Listener<JSONArray>() {
-//            @Override
-//            public void onResponse(JSONArray response) {
-//                if (response != null) {
-//                    for (int i = 0; i < response.length(); i++) {
-//                        try {
-//                            JSONObject jsonObject = response.getJSONObject(i);
-//                            idProductType = jsonObject.getInt("IdProductType");
-//                            idProduct = jsonObject.getInt("IdProduct");
-//                            nameProduct = jsonObject.getString("nameProduct");
-//                            priceProduct = jsonObject.getInt("priceProduct");
-//                            imageProduct = jsonObject.getString("imageProduct");
-//                            describeProduct = jsonObject.getString("describeProduct");
-//                            listProduct.add(new Product(idProduct, nameProduct, priceProduct, imageProduct, describeProduct, idProductType));
-//                            productAdapter.notifyDataSetChanged();
-//                        } catch (JSONException e) {
-//                            e.printStackTrace();
-//                        }
-//                    }
-//                }
-//            }
-//        }, new Response.ErrorListener() {
-//            @Override
-//            public void onErrorResponse(VolleyError error) {
-//                CheckConnection.showToast(getContext(), error.toString());
-//                Log.e("==============>", error.toString());
-//            }
-//        });
-//        requestQueue.add(arrayRequest);
-//    }
 
     //tao hinh anh di chuyen (chay quang cao) va lam mo 1 danh sach anh cho truoc
     public void ActionViewFlipper() {
@@ -163,8 +127,8 @@ public class MainFragment extends Fragment implements MainFragmentView, OnItemCl
     public void getListProductSuccess(ArrayList<Product> products) {
         listProduct = products;
         productAdapter = new NewProductAdapter(getContext(), listProduct);
-        viewMain.setAdapter(productAdapter);
         productAdapter.notifyDataSetChanged();
+        viewMain.setAdapter(productAdapter);
         productAdapter.setClickListener(this);
     }
 

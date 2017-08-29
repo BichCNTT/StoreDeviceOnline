@@ -11,6 +11,6 @@ import java.text.DecimalFormat;
 public class PriceFormatUtil {
     public static void priceFormat(TextView textView, int price){
         DecimalFormat format=new DecimalFormat("###,###,###");
-        textView.setText("Giá: "+format.format(price)+" Đ");
+        textView.setText(format.format(price)+" VND");
     }
 }

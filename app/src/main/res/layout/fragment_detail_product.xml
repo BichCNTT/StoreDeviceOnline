@@ -72,7 +72,7 @@
                     android:layout_height="wrap_content"
                     android:background="@drawable/border"
                     android:text="Thêm vào giỏ hàng"
-                    android:textColor="@color/red"
+                    android:textColor="@color/white"
                     android:textStyle="bold" />
 
             </LinearLayout>

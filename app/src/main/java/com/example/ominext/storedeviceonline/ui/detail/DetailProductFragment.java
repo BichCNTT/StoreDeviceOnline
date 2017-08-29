@@ -3,6 +3,8 @@ package com.example.ominext.storedeviceonline.ui.detail;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +16,7 @@ import android.widget.TextView;
 import com.example.ominext.storedeviceonline.R;
 import com.example.ominext.storedeviceonline.helper.ImageViewUtil;
 import com.example.ominext.storedeviceonline.helper.PriceFormatUtil;
+import com.example.ominext.storedeviceonline.ui.cart.CartFragment;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -67,11 +70,7 @@ public class DetailProductFragment extends Fragment {
         tvName.setText(name);
         PriceFormatUtil.priceFormat(tvPrice, price);
         tvProductDetail.setText(describe);
-        if (image.isEmpty()) {
-            imgProduct.setImageResource(R.drawable.ic_cancel);
-        } else{
-            ImageViewUtil.loadImg(getContext(), image, imgProduct);
-        }
+        ImageViewUtil.loadImg(getContext(), image, imgProduct);
     }
 
     @Override
@@ -91,5 +90,18 @@ public class DetailProductFragment extends Fragment {
 
     @OnClick(R.id.btn_order)
     public void onViewClicked() {
+//        kích vào đặt hàng thì truyền list và số lượng sp sang -> dùng bundle
+        Bundle bundle = new Bundle();
+        bundle.putInt("number", Integer.parseInt(edtQuantity.getText().toString()));
+        bundle.putString("name", name);
+        bundle.putString("image", image);
+        bundle.putInt("price", price);
+        Fragment fragment = CartFragment.newInstance();
+        fragment.setArguments(bundle);
+        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.frame_layout, fragment);
+        fragmentTransaction.addToBackStack(null);
+        fragmentTransaction.commit();
     }
 }

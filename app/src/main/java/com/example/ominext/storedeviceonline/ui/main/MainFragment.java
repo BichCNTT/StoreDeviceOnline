@@ -37,7 +37,7 @@ public class MainFragment extends Fragment implements MainFragmentView, OnItemCl
     RecyclerView viewMain;
     Unbinder unbinder;
 
-    ArrayList<Product> listProduct=new ArrayList<>();
+    ArrayList<Product> listProduct = new ArrayList<>();
     NewProductAdapter productAdapter;
 
     MainFragmentPresenter mPresenter;
@@ -127,9 +127,9 @@ public class MainFragment extends Fragment implements MainFragmentView, OnItemCl
     public void getListProductSuccess(ArrayList<Product> products) {
         listProduct = products;
         productAdapter = new NewProductAdapter(getContext(), listProduct);
-        productAdapter.notifyDataSetChanged();
         viewMain.setAdapter(productAdapter);
         productAdapter.setClickListener(this);
+        productAdapter.notifyDataSetChanged();
     }
 
     @Override

@@ -8,9 +8,10 @@ import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.example.ominext.storedeviceonline.R;
@@ -32,8 +33,6 @@ public class DetailProductFragment extends Fragment {
     TextView tvName;
     @BindView(R.id.tv_price)
     TextView tvPrice;
-    @BindView(R.id.edt_quantity)
-    EditText edtQuantity;
     @BindView(R.id.btn_order)
     Button btnOrder;
     @BindView(R.id.tv_product_detail)
@@ -45,6 +44,8 @@ public class DetailProductFragment extends Fragment {
     String image = "";
     @BindView(R.id.img_product)
     ImageView imgProduct;
+    @BindView(R.id.spinner_quantity)
+    Spinner spinnerQuantity;
 
     public DetailProductFragment() {
     }
@@ -71,12 +72,15 @@ public class DetailProductFragment extends Fragment {
         PriceFormatUtil.priceFormat(tvPrice, price);
         tvProductDetail.setText(describe);
         ImageViewUtil.loadImg(getContext(), image, imgProduct);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(),
+                R.array.quantity_array, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerQuantity.setAdapter(adapter);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_detail_product, container, false);
         unbinder = ButterKnife.bind(this, view);
         return view;
@@ -92,10 +96,11 @@ public class DetailProductFragment extends Fragment {
     public void onViewClicked() {
 //        kích vào đặt hàng thì truyền list và số lượng sp sang -> dùng bundle
         Bundle bundle = new Bundle();
-        bundle.putInt("number", Integer.parseInt(edtQuantity.getText().toString()));
+        bundle.putInt("number", Integer.parseInt(spinnerQuantity.getSelectedItem().toString()));
         bundle.putString("name", name);
         bundle.putString("image", image);
         bundle.putInt("price", price);
+        bundle.putInt("key", 1);
         Fragment fragment = CartFragment.newInstance();
         fragment.setArguments(bundle);
         FragmentManager fragmentManager = getActivity().getSupportFragmentManager();

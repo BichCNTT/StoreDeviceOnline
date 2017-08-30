@@ -1,6 +1,7 @@
 package com.example.ominext.storedeviceonline.ui.cart;
 
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
@@ -13,9 +14,12 @@ import android.widget.TextView;
 
 import com.example.ominext.storedeviceonline.R;
 import com.example.ominext.storedeviceonline.helper.PriceFormatUtil;
+import com.example.ominext.storedeviceonline.model.Cache;
 import com.example.ominext.storedeviceonline.model.Cart;
 import com.example.ominext.storedeviceonline.model.Product;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -42,10 +46,15 @@ public class CartFragment extends Fragment implements CartView {
     String image = "";
     int number = 0;
     int money = 0;
+    int key;
     @BindView(R.id.tv_no_data)
     TextView tvNoData;
     @BindView(R.id.tv_total)
     TextView tvTotal;
+
+    String path = null;
+    String fileName = "cart.txt";
+    File file = null;
 
     //hiển thị các row dữ liệu, lấy số lượng hàng đã đặt set trong text của row
     public CartFragment() {
@@ -63,19 +72,50 @@ public class CartFragment extends Fragment implements CartView {
 
     }
 
+    public void initFile() {
+        File file1 = new File(Environment.getExternalStorageDirectory(), getContext().getPackageName());
+        if (!file1.exists())
+            file1.mkdir();
+        path = file1.getAbsolutePath() + "/";
+
+        File file2 = new File(path);
+        if (!file2.exists()) {
+            file2.mkdirs();
+        }
+        file = new File(path + fileName);
+        if (!file.exists()) {
+            try {
+                file.createNewFile();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        initFile();
         tvNoData.setVisibility(View.GONE);
         Bundle bundle = getArguments();
-        name = bundle.getString("name");
-        price = bundle.getInt("price");
-        image = bundle.getString("image");
-        number = bundle.getInt("number");
+        key = bundle.getInt("key");
+        if (key == 1) {
+            name = bundle.getString("name");
+            price = bundle.getInt("price");
+            image = bundle.getString("image");
+            number = bundle.getInt("number");
+            Cart cart = new Cart(name, image, number, price);
+            cartList.add(cart);
+            try {
+                String jsonText = Cache.writeJsonStream(cart);
 
-        cartList.add(new Cart(name, image, number, price));
-        if (name.isEmpty()) {
-            cartList.remove(0);
+                Cache.saveToFile(path, fileName, jsonText);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        cartList = Cache.readFile(path + fileName);
+        if (cartList.isEmpty()) {
             tvNoData.setVisibility(View.VISIBLE);
             tvMoney.setVisibility(View.GONE);
             tvTotal.setVisibility(View.GONE);
@@ -88,8 +128,16 @@ public class CartFragment extends Fragment implements CartView {
         rvCart.setHasFixedSize(true);
         rvCart.setAdapter(adapter);
         adapter.notifyDataSetChanged();
-        money = price * number;
+        money = getTotalMoney();
         PriceFormatUtil.priceFormat(tvMoney, money);
+    }
+
+    private int getTotalMoney() {
+        int money = 0;
+        for (int i = 0; i < cartList.size(); i++) {
+            money = money + cartList.get(i).getPrice() * cartList.get(i).getNumber();
+        }
+        return money;
     }
 
     @Override

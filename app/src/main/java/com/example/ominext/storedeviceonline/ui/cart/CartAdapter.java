@@ -14,25 +14,23 @@ import com.example.ominext.storedeviceonline.helper.ImageViewUtil;
 import com.example.ominext.storedeviceonline.helper.PriceFormatUtil;
 import com.example.ominext.storedeviceonline.listener.OnItemClickListener;
 import com.example.ominext.storedeviceonline.model.Cart;
-import com.example.ominext.storedeviceonline.model.Product;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 
 /**
  * Created by Ominext on 8/29/2017.
  */
-
+// tính tổng tiền của các mặt hàng đã thêm vào giỏ hàng
 public class CartAdapter extends RecyclerView.Adapter<CartAdapter.RecyclerViewHolder> {
     List<Cart> cartList = new ArrayList<>();
-    private OnItemClickListener clickListener;
     Context context;
     LayoutInflater inflater;
-    int number;
+    int value;
+    int possition;
 
     public CartAdapter(List<Cart> cartList, Context context) {
         this.cartList = cartList;
@@ -40,6 +38,9 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.RecyclerViewHo
         this.inflater = LayoutInflater.from(context);
     }
 
+    //tăng số lượng sản phẩm lên. vd sản phẩm 1 từ 1->2
+    // thì kích vào sản phẩm bất kì khác nó k reset lại giá trị bằng giá trị của dòng dữ liệu đang tác đông
+// mà nó tính luôn bằng giá trị 2 tức là giá trị của dòng dl trước đó đã tác động??
     @Override
     public RecyclerViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
@@ -48,18 +49,14 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.RecyclerViewHo
     }
 
     @Override
-    public void onBindViewHolder(RecyclerViewHolder holder, int position) {
+    public void onBindViewHolder(final RecyclerViewHolder holder, int position) {
         Cart cart = cartList.get(position);
-        number=cart.getNumber();
-//        tên, giá, ảnh, chưa có số lượng sản phẩm
+        value = cart.getNumber();
         holder.tvName.setText(cart.getName());
         PriceFormatUtil.priceFormat(holder.tvPrice, cart.getPrice());
         ImageViewUtil.loadImg(context, cart.getImage(), holder.imgProduct);
-        holder.number.setText(number+"");
-    }
-
-    public void setClickListener(OnItemClickListener itemClickListener) {
-        this.clickListener = itemClickListener;
+        holder.tvNumber.setText(value + "");
+        this.possition = position;
     }
 
     @Override
@@ -67,19 +64,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.RecyclerViewHo
         return cartList.size();
     }
 
-    @OnClick({R.id.btn_addition, R.id.btn_subtraction})
-    public void onViewClicked(View view) {
-        switch (view.getId()) {
-            case R.id.btn_addition:
-                number--;
-                break;
-            case R.id.btn_subtraction:
-                number++;
-                break;
-        }
-    }
-
-    public class RecyclerViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public class RecyclerViewHolder extends RecyclerView.ViewHolder {
 
         @BindView(R.id.img_product)
         ImageView imgProduct;
@@ -89,8 +74,8 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.RecyclerViewHo
         TextView tvPrice;
         @BindView(R.id.btn_addition)
         Button btnAddition;
-        @BindView(R.id.number)
-        TextView number;
+        @BindView(R.id.tv_number)
+        TextView tvNumber;
         @BindView(R.id.btn_subtraction)
         Button btnSubtraction;
 
@@ -98,12 +83,26 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.RecyclerViewHo
             super(itemView);
             ButterKnife.bind(this, itemView);
             itemView.setTag(itemView);
-            itemView.setOnClickListener(this);
-        }
+            value = cartList.get(possition).getNumber();
+            btnSubtraction.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (value > 1) {
+                        value--;
+                        tvNumber.setText(value + "");
+                    }
+                }
+            });
+            btnAddition.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (value < 10) {
+                        value++;
+                        tvNumber.setText(value + "");
+                    }
+                }
+            });
 
-        @Override
-        public void onClick(View view) {
-            if (clickListener != null) clickListener.onItemClick(view, getAdapterPosition());
         }
     }
 }

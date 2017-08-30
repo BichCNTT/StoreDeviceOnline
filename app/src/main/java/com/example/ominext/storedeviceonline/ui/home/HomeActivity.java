@@ -54,10 +54,9 @@ public class HomeActivity extends AppCompatActivity implements HomeView {
     FrameLayout frameLayout;
 
     HomePresenter mPresenter;
-    String name = "";
-    int price = 0;
-    String image = "";
-    int number = 0;
+//    int price;
+//    String image;
+//    int number;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -134,10 +133,7 @@ public class HomeActivity extends AppCompatActivity implements HomeView {
         switch (item.getItemId()) {
             case R.id.menu_cart:
                 Bundle bundle = new Bundle();
-                bundle.putString("name",name);
-                bundle.putInt("price",price);
-                bundle.putString("image",image);
-                bundle.putInt("number",number);
+                bundle.putInt("key",0);
                 fragment= CartFragment.newInstance();
                 fragment.setArguments(bundle);
                 FragmentManager fragmentManager = getSupportFragmentManager();

@@ -1,9 +1,14 @@
 package com.example.ominext.storedeviceonline.ui.cart;
 
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -14,9 +19,13 @@ import android.widget.TextView;
 
 import com.example.ominext.storedeviceonline.R;
 import com.example.ominext.storedeviceonline.helper.PriceFormatUtil;
+import com.example.ominext.storedeviceonline.listener.OnItemClickListener;
 import com.example.ominext.storedeviceonline.model.Cache;
 import com.example.ominext.storedeviceonline.model.Cart;
 import com.example.ominext.storedeviceonline.model.Product;
+import com.example.ominext.storedeviceonline.ui.home.HomeActivity;
+import com.example.ominext.storedeviceonline.ui.info.InformationFragment;
+import com.example.ominext.storedeviceonline.ui.userinfo.UserInfoFragment;
 
 import java.io.File;
 import java.io.IOException;
@@ -108,7 +117,6 @@ public class CartFragment extends Fragment implements CartView {
             cartList.add(cart);
             try {
                 String jsonText = Cache.writeJsonStream(cart);
-
                 Cache.saveToFile(path, fileName, jsonText);
             } catch (Exception e) {
                 e.printStackTrace();
@@ -128,16 +136,26 @@ public class CartFragment extends Fragment implements CartView {
         rvCart.setHasFixedSize(true);
         rvCart.setAdapter(adapter);
         adapter.notifyDataSetChanged();
+        setMoney();
         money = getTotalMoney();
         PriceFormatUtil.priceFormat(tvMoney, money);
+
+    }
+
+    private void setMoney() {
+        int money = 0;
+        for (int i = 0; i < cartList.size(); i++) {
+            money = cartList.get(i).getPrice() * cartList.get(i).getNumber();
+            cartList.get(i).setMoney(money);
+        }
     }
 
     private int getTotalMoney() {
-        int money = 0;
+        int totalMoney = 0;
         for (int i = 0; i < cartList.size(); i++) {
-            money = money + cartList.get(i).getPrice() * cartList.get(i).getNumber();
+            totalMoney += cartList.get(i).getMoney();
         }
-        return money;
+        return totalMoney;
     }
 
     @Override
@@ -159,8 +177,16 @@ public class CartFragment extends Fragment implements CartView {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.btn_pay:
+                Fragment fragment = UserInfoFragment.newInstance();
+                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.replace(R.id.frame_layout, fragment);
+                fragmentTransaction.addToBackStack(null);
+                fragmentTransaction.commit();
                 break;
             case R.id.btn_continue:
+                Intent intent = new Intent(getContext(), HomeActivity.class);
+                startActivity(intent);
                 break;
         }
     }

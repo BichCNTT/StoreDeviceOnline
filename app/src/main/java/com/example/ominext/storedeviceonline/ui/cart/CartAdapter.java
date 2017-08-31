@@ -1,7 +1,11 @@
 package com.example.ominext.storedeviceonline.ui.cart;
 
 import android.content.Context;
+import android.content.DialogInterface;
+import android.preference.DialogPreference;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,8 +33,8 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.RecyclerViewHo
     List<Cart> cartList = new ArrayList<>();
     Context context;
     LayoutInflater inflater;
-    int value;
-    int possition;
+    int position;
+    private OnItemClickListener clickListener;
 
     public CartAdapter(List<Cart> cartList, Context context) {
         this.cartList = cartList;
@@ -49,19 +53,23 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.RecyclerViewHo
     }
 
     @Override
-    public void onBindViewHolder(final RecyclerViewHolder holder, int position) {
+    public void onBindViewHolder(RecyclerViewHolder holder, int position) {
         Cart cart = cartList.get(position);
-        value = cart.getNumber();
+        int number = cart.getNumber();
+        this.position = position;
         holder.tvName.setText(cart.getName());
         PriceFormatUtil.priceFormat(holder.tvPrice, cart.getPrice());
         ImageViewUtil.loadImg(context, cart.getImage(), holder.imgProduct);
-        holder.tvNumber.setText(value + "");
-        this.possition = position;
+        holder.tvNumber.setText(cart.getNumber() + "");
     }
 
     @Override
     public int getItemCount() {
         return cartList.size();
+    }
+
+    public void setClickListener(OnItemClickListener itemClickListener) {
+        this.clickListener = itemClickListener;
     }
 
     public class RecyclerViewHolder extends RecyclerView.ViewHolder {
@@ -79,30 +87,40 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.RecyclerViewHo
         @BindView(R.id.btn_subtraction)
         Button btnSubtraction;
 
-        public RecyclerViewHolder(View itemView) {
+        public RecyclerViewHolder(final View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
             itemView.setTag(itemView);
-            value = cartList.get(possition).getNumber();
             btnSubtraction.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    if (value > 1) {
-                        value--;
-                        tvNumber.setText(value + "");
+                    Cart cart = cartList.get(getAdapterPosition());
+                    int number = cart.getNumber();
+                    int price = cart.getPrice();
+                    if (number > 1) {
+                        number--;
+                        tvNumber.setText(number + "");
+                        cart.setNumber(number);
+                        int money = price * number;
+                        cart.setMoney(money);
                     }
                 }
             });
             btnAddition.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    if (value < 10) {
-                        value++;
-                        tvNumber.setText(value + "");
+                    Cart cart = cartList.get(getAdapterPosition());
+                    int number = cart.getNumber();
+                    int price = cart.getPrice();
+                    if (number < 10) {
+                        number++;
+                        tvNumber.setText(number + "");
+                        cart.setNumber(number);
+                        int money = price * number;
+                        cart.setMoney(money);
                     }
                 }
             });
-
         }
     }
 }

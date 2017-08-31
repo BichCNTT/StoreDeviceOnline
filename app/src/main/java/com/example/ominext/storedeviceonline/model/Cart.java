@@ -9,6 +9,7 @@ public class Cart {
     private String mImage;
     private int mNumber;
     private int mPrice;
+    private int mMoney;
 
     public Cart() {
     }
@@ -18,6 +19,14 @@ public class Cart {
         this.mImage = image;
         this.mNumber = number;
         this.mPrice = price;
+    }
+
+    public int getMoney() {
+        return mMoney;
+    }
+
+    public void setMoney(int money) {
+        this.mMoney = money;
     }
 
     public String getName() {

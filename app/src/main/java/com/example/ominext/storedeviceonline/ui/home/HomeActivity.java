@@ -28,6 +28,7 @@ import com.example.ominext.storedeviceonline.ui.laptop.LaptopFragment;
 import com.example.ominext.storedeviceonline.ui.main.MainFragment;
 import com.example.ominext.storedeviceonline.ui.phone.PhoneFragment;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -54,7 +55,8 @@ public class HomeActivity extends AppCompatActivity implements HomeView {
     FrameLayout frameLayout;
 
     HomePresenter mPresenter;
-//    int price;
+
+    //    int price;
 //    String image;
 //    int number;
     @Override
@@ -126,15 +128,15 @@ public class HomeActivity extends AppCompatActivity implements HomeView {
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main_menu, menu);
         return true;
-}
+    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menu_cart:
                 Bundle bundle = new Bundle();
-                bundle.putInt("key",0);
-                fragment= CartFragment.newInstance();
+                bundle.putInt("key", 0);
+                fragment = CartFragment.newInstance();
                 fragment.setArguments(bundle);
                 FragmentManager fragmentManager = getSupportFragmentManager();
                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
@@ -158,5 +160,10 @@ public class HomeActivity extends AppCompatActivity implements HomeView {
     @Override
     public void getListProductTypeFailed(String s) {
         Toast.makeText(getApplicationContext(), "Lỗi tải trang", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public File getNoBackupFilesDir() {
+        return super.getNoBackupFilesDir();
     }
 }

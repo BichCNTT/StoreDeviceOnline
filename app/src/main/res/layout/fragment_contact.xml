@@ -2,13 +2,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/border"
     tools:context="com.example.ominext.storedeviceonline.ui.contact.ContactFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/border"
         android:orientation="vertical">
 
         <TextView
@@ -17,7 +15,7 @@
             android:fontFamily="monospace"
             android:gravity="center"
             android:text="Contact with us"
-            android:textColor="@color/white"
+            android:textColor="@color/green"
             android:textSize="25dp"
             android:textStyle="bold" />
 
@@ -37,8 +35,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="casual"
-                android:text="Họ và tên: Trương Thị Ngọc Bích"
-                android:textColor="@color/white"
+                android:text="Name: Truong Thi Ngoc Bich"
+                android:textColor="@color/magenta"
                 android:textSize="16dp" />
         </LinearLayout>
 
@@ -59,7 +57,7 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="casual"
                 android:text="Email: bichttn@ominext.com"
-                android:textColor="@color/white"
+                android:textColor="@color/magenta"
                 android:textSize="16dp" />
         </LinearLayout>
 
@@ -79,8 +77,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="casual"
-                android:text="Điện thoại: 01652093006"
-                android:textColor="@color/white"
+                android:text="Phone: 01652093006"
+                android:textColor="@color/magenta"
                 android:textSize="16dp" />
         </LinearLayout>
     </LinearLayout>

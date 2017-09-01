@@ -9,12 +9,14 @@ import android.widget.Toast;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.util.ArrayList;
@@ -74,7 +76,36 @@ public class Cache {
         }
         return false;
     }
-
+    public static boolean delete(String path, String fileNameInPut, String fileNameOutPut, String lineToRemove) {
+        //đọc file ra 1 chuỗi json rồi xóa
+        File input = new File(path + fileNameInPut);
+        File output = new File(path + fileNameOutPut);
+        FileInputStream inputStream;
+        FileOutputStream outputStream;
+        String currentLine;
+        boolean successful = false;
+        try {
+            //file Input, tên file truyền vào phải là nv1.txt
+            inputStream = new FileInputStream(input);
+            InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
+            BufferedReader reader = new BufferedReader(inputStreamReader);
+            //file Output
+            outputStream = new FileOutputStream(output);
+            OutputStreamWriter outputStreamWriter = new OutputStreamWriter(outputStream);
+            BufferedWriter writer = new BufferedWriter(outputStreamWriter);
+            while ((currentLine = reader.readLine()) != null) {
+                String trimmedLine = currentLine.trim();
+                if (trimmedLine.equals(lineToRemove)) continue;
+                writer.write(currentLine + System.getProperty("line.separator"));
+            }
+            writer.close();
+            reader.close();
+            successful = output.renameTo(input);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return successful;
+    }
     public static List<Cart> readFile(String path) {
         List<Cart> cartList = new ArrayList<>();
         try {

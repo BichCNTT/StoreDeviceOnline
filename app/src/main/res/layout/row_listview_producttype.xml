@@ -10,9 +10,9 @@
         android:layout_height="match_parent">
 
         <LinearLayout
-            android:background="@color/white"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@color/white"
             android:gravity="center"
             android:orientation="horizontal"
             android:weightSum="10">
@@ -20,29 +20,30 @@
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="3"
+                android:layout_weight="2"
                 android:gravity="center">
 
                 <ImageView
                     android:id="@+id/img_product_type"
-                    android:layout_width="70dp"
-                    android:layout_height="84dp"
-                    android:layout_margin="10dp"
+                    android:layout_width="50dp"
+                    android:layout_height="40dp"
+                    android:layout_margin="5dp"
                     android:src="@mipmap/ic_launcher" />
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="7">
+                android:layout_weight="8">
 
                 <TextView
                     android:id="@+id/tv_product_type"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Tên loại sản phẩm"
+                    android:fontFamily="cursive"
                     android:textColor="@color/magenta"
-                    android:textSize="15sp"
+                    android:textSize="12sp"
                     android:textStyle="bold" />
             </LinearLayout>
         </LinearLayout>

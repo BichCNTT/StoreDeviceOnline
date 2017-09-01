@@ -10,13 +10,15 @@
         android:layout_margin="10dp"
         android:background="@color/white"
         android:orientation="vertical">
+
         <ImageView
 
-            android:layout_marginBottom="10dp"
-            android:layout_gravity="center"
             android:layout_width="150dp"
-            android:src="@drawable/ic_avartar"
-            android:layout_height="150dp" />
+            android:layout_height="150dp"
+            android:layout_gravity="center"
+            android:layout_marginBottom="10dp"
+            android:src="@drawable/ic_avartar" />
+
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -40,6 +42,7 @@
             android:textSize="20dp" />
 
         <TextView
+            android:id="@+id/textView3"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Số điện thoại" />
@@ -53,13 +56,19 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Địa chỉ" />
+            android:text="Địa chỉ giao hàng" />
 
         <EditText
             android:id="@+id/edt_address"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="20dp" />
+
+        <Button
+            android:id="@+id/btn_accept"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Xác nhận" />
 
     </LinearLayout>
 

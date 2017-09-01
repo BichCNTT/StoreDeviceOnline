@@ -42,7 +42,7 @@ public class HomePresenter {
 
     public void getListProductType() {
         final List<ProductType> listProductType = new ArrayList<>();
-        listProductType.add(new ProductType(0, "Trang chính", "https://image.flaticon.com/icons/png/512/25/25694.png"));
+        listProductType.add(new ProductType(0, "Trang chủ", "https://image.flaticon.com/icons/png/512/25/25694.png"));
         final RequestQueue requestQueue = Volley.newRequestQueue(mContext);
         JsonArrayRequest arrayRequest = new JsonArrayRequest(Server.urlProductType, new Response.Listener<JSONArray>() {
             @Override

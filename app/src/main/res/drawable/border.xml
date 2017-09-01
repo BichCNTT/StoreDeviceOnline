@@ -9,7 +9,7 @@
         android:startColor="@color/orange" />
     <corners android:radius="10dp" />
     <stroke
-        android:width="5dp"
+        android:width="2dp"
         android:color="@color/white" />
     <padding
         android:bottom="10dp"

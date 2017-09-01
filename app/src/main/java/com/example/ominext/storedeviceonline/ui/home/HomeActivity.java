@@ -1,5 +1,6 @@
 package com.example.ominext.storedeviceonline.ui.home;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
@@ -9,7 +10,6 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -21,12 +21,12 @@ import android.widget.Toast;
 import com.example.ominext.storedeviceonline.R;
 import com.example.ominext.storedeviceonline.model.ProductType;
 import com.example.ominext.storedeviceonline.ui.cart.CartFragment;
-import com.example.ominext.storedeviceonline.until.CheckConnection;
 import com.example.ominext.storedeviceonline.ui.contact.ContactFragment;
 import com.example.ominext.storedeviceonline.ui.info.InformationFragment;
 import com.example.ominext.storedeviceonline.ui.laptop.LaptopFragment;
 import com.example.ominext.storedeviceonline.ui.main.MainFragment;
 import com.example.ominext.storedeviceonline.ui.phone.PhoneFragment;
+import com.miguelcatalan.materialsearchview.MaterialSearchView;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -55,10 +55,9 @@ public class HomeActivity extends AppCompatActivity implements HomeView {
     FrameLayout frameLayout;
 
     HomePresenter mPresenter;
+    @BindView(R.id.search_view)
+    MaterialSearchView searchView;
 
-    //    int price;
-//    String image;
-//    int number;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -73,6 +72,9 @@ public class HomeActivity extends AppCompatActivity implements HomeView {
                 drawerLayout.closeDrawer(GravityCompat.START);
             }
         });
+//        setSupportActionBar(toolBarMain);
+//        getSupportActionBar().setTitle("Tìm kiếm...");
+//        toolBarMain.setTitleTextColor(Color.parseColor("#FFFFFF"));
     }
 
     private void init() {
@@ -127,6 +129,8 @@ public class HomeActivity extends AppCompatActivity implements HomeView {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main_menu, menu);
+        MenuItem item = menu.findItem(R.id.action_search);
+        searchView.setMenuItem(item);
         return true;
     }
 

@@ -36,9 +36,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
-
-//khoong lay duoc gia tri
-public class CartFragment extends Fragment implements CartView {
+//xóa trong file text
+public class CartFragment extends Fragment implements CartView,OnItemClickListener {
     @BindView(R.id.rv_cart)
     RecyclerView rvCart;
     @BindView(R.id.tv_money)
@@ -57,7 +56,7 @@ public class CartFragment extends Fragment implements CartView {
     int money = 0;
     int key;
     @BindView(R.id.tv_no_data)
-    TextView tvNoData;
+    public TextView tvNoData;
     @BindView(R.id.tv_total)
     TextView tvTotal;
 
@@ -139,7 +138,7 @@ public class CartFragment extends Fragment implements CartView {
         setMoney();
         money = getTotalMoney();
         PriceFormatUtil.priceFormat(tvMoney, money);
-
+        adapter.setClickListener(this);
     }
 
     private void setMoney() {
@@ -199,5 +198,15 @@ public class CartFragment extends Fragment implements CartView {
     @Override
     public void getListCartFailed(String s) {
 
+    }
+
+    @Override
+    public void onItemClick(View view, int position) {
+        if(cartList.isEmpty()){
+            tvNoData.setVisibility(View.VISIBLE);
+        }
+        setMoney();
+        money = getTotalMoney();
+        PriceFormatUtil.priceFormat(tvMoney, money);
     }
 }

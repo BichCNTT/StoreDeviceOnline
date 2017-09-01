@@ -1,11 +1,8 @@
 package com.example.ominext.storedeviceonline.ui.cart;
 
 import android.content.Context;
-import android.content.DialogInterface;
-import android.preference.DialogPreference;
-import android.support.v7.app.AlertDialog;
+import android.os.Environment;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,8 +14,11 @@ import com.example.ominext.storedeviceonline.R;
 import com.example.ominext.storedeviceonline.helper.ImageViewUtil;
 import com.example.ominext.storedeviceonline.helper.PriceFormatUtil;
 import com.example.ominext.storedeviceonline.listener.OnItemClickListener;
+import com.example.ominext.storedeviceonline.model.Cache;
 import com.example.ominext.storedeviceonline.model.Cart;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,11 +35,16 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.RecyclerViewHo
     LayoutInflater inflater;
     int position;
     private OnItemClickListener clickListener;
+    private static CartAdapter adapter;
+    String path = null;
+    String fileNameInPut = "cart.txt";
+    String fileNameOutPut = "cart1.txt";
 
     public CartAdapter(List<Cart> cartList, Context context) {
         this.cartList = cartList;
         this.context = context;
         this.inflater = LayoutInflater.from(context);
+        adapter = this;
     }
 
     //tăng số lượng sản phẩm lên. vd sản phẩm 1 từ 1->2
@@ -55,7 +60,6 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.RecyclerViewHo
     @Override
     public void onBindViewHolder(RecyclerViewHolder holder, int position) {
         Cart cart = cartList.get(position);
-        int number = cart.getNumber();
         this.position = position;
         holder.tvName.setText(cart.getName());
         PriceFormatUtil.priceFormat(holder.tvPrice, cart.getPrice());
@@ -72,8 +76,14 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.RecyclerViewHo
         this.clickListener = itemClickListener;
     }
 
-    public class RecyclerViewHolder extends RecyclerView.ViewHolder {
+    public void initFile() {
+        File file1 = new File(Environment.getExternalStorageDirectory(), context.getPackageName());
+        if (!file1.exists())
+            file1.mkdir();
+        path = file1.getAbsolutePath() + "/";
+    }
 
+    public class RecyclerViewHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.img_product)
         ImageView imgProduct;
         @BindView(R.id.tv_name)
@@ -86,6 +96,8 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.RecyclerViewHo
         TextView tvNumber;
         @BindView(R.id.btn_subtraction)
         Button btnSubtraction;
+        @BindView(R.id.img_delete)
+        ImageView imgDelete;
 
         public RecyclerViewHolder(final View itemView) {
             super(itemView);
@@ -103,6 +115,8 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.RecyclerViewHo
                         cart.setNumber(number);
                         int money = price * number;
                         cart.setMoney(money);
+                        if (clickListener != null)
+                            clickListener.onItemClick(view, getAdapterPosition());
                     }
                 }
             });
@@ -118,9 +132,30 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.RecyclerViewHo
                         cart.setNumber(number);
                         int money = price * number;
                         cart.setMoney(money);
+                        if (clickListener != null)
+                            clickListener.onItemClick(view, getAdapterPosition());
                     }
                 }
             });
+            imgDelete.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    try {
+                        initFile();
+                        String productDelete = Cache.writeJsonStream(cartList.get(getAdapterPosition()));
+                        Cache.delete(path, fileNameInPut, fileNameOutPut, productDelete);
+                        cartList.remove(getAdapterPosition());
+                        adapter.notifyDataSetChanged();
+                        if (clickListener != null)
+                            clickListener.onItemClick(view, getAdapterPosition());
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
+                }
+            });
+
         }
+
     }
 }

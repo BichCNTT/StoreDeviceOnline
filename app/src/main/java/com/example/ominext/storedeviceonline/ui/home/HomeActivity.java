@@ -1,6 +1,5 @@
 package com.example.ominext.storedeviceonline.ui.home;
 
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
@@ -10,10 +9,12 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.FrameLayout;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -22,13 +23,15 @@ import com.example.ominext.storedeviceonline.R;
 import com.example.ominext.storedeviceonline.model.ProductType;
 import com.example.ominext.storedeviceonline.ui.cart.CartFragment;
 import com.example.ominext.storedeviceonline.ui.contact.ContactFragment;
+import com.example.ominext.storedeviceonline.ui.fashion.FashionFragment;
+import com.example.ominext.storedeviceonline.ui.furniture.FurnitureFragment;
 import com.example.ominext.storedeviceonline.ui.info.InformationFragment;
 import com.example.ominext.storedeviceonline.ui.laptop.LaptopFragment;
 import com.example.ominext.storedeviceonline.ui.main.MainFragment;
 import com.example.ominext.storedeviceonline.ui.phone.PhoneFragment;
+import com.example.ominext.storedeviceonline.ui.sport.SportFragment;
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -47,22 +50,25 @@ public class HomeActivity extends AppCompatActivity implements HomeView {
 
     List<ProductType> listProductType = new ArrayList<>();
     ProductTypeAdapter productTypeAdapter;
-
     Fragment fragment = null;
     @BindView(R.id.tool_bar_main)
     Toolbar toolBarMain;
     @BindView(R.id.frame_layout)
     FrameLayout frameLayout;
-
     HomePresenter mPresenter;
     @BindView(R.id.search_view)
     MaterialSearchView searchView;
+    @BindView(R.id.list_view_find)
+    ListView listViewFind;
+    private ArrayList<String> listFind=new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
         ButterKnife.bind(this);
+        listViewFind.setVisibility(View.GONE);
+        frameLayout.setVisibility(View.VISIBLE);
         init();
         listItem.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -72,15 +78,15 @@ public class HomeActivity extends AppCompatActivity implements HomeView {
                 drawerLayout.closeDrawer(GravityCompat.START);
             }
         });
-//        setSupportActionBar(toolBarMain);
-//        getSupportActionBar().setTitle("Tìm kiếm...");
-//        toolBarMain.setTitleTextColor(Color.parseColor("#FFFFFF"));
     }
 
     private void init() {
         mPresenter = new HomePresenter(HomeActivity.this, this);
         ActionBar();
         mPresenter.getListProductType();
+        mPresenter.getListFind();
+//        setSearchView();
+
     }
 
     //truyền dữ liệu giữa main activity và fragment
@@ -96,9 +102,18 @@ public class HomeActivity extends AppCompatActivity implements HomeView {
                 fragment = LaptopFragment.newInstance();
                 break;
             case 3:
-                fragment = ContactFragment.newInstance();
+                fragment = FashionFragment.newInstance();
                 break;
             case 4:
+                fragment = FurnitureFragment.newInstance();
+                break;
+            case 5:
+                fragment = SportFragment.newInstance();
+                break;
+            case 13:
+                fragment = ContactFragment.newInstance();
+                break;
+            case 14:
                 fragment = InformationFragment.newInstance();
                 break;
             default:
@@ -126,6 +141,11 @@ public class HomeActivity extends AppCompatActivity implements HomeView {
         });
     }
 
+//    private void setSearchView() {
+//        ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, list);
+//        searchView.setAdapter(adapter);
+//    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main_menu, menu);
@@ -147,6 +167,13 @@ public class HomeActivity extends AppCompatActivity implements HomeView {
                 fragmentTransaction.replace(R.id.frame_layout, fragment);
                 fragmentTransaction.addToBackStack(null);
                 fragmentTransaction.commit();
+                break;
+            case R.id.action_search:
+                listViewFind.setVisibility(View.VISIBLE);
+                frameLayout.setVisibility(View.GONE);
+                break;
+            default:
+                break;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -167,7 +194,13 @@ public class HomeActivity extends AppCompatActivity implements HomeView {
     }
 
     @Override
-    public File getNoBackupFilesDir() {
-        return super.getNoBackupFilesDir();
+    public void getListFindFailed(String s) {
+        Toast.makeText(getApplicationContext(), "Lỗi tải dữ liệu tìm kiếm", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void getListFindSuccess(ArrayList<String> listFind) {
+        ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, listFind);
+        searchView.setAdapter(adapter);
     }
 }

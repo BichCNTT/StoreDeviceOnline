@@ -31,10 +31,23 @@
                 android:layout_height="wrap_content"></com.miguelcatalan.materialsearchview.MaterialSearchView>
         </RelativeLayout>
 
-        <FrameLayout
-            android:id="@+id/frame_layout"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"></FrameLayout>
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <FrameLayout
+                android:id="@+id/frame_layout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"></FrameLayout>
+
+            <ListView
+                android:id="@+id/list_view_find"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"></ListView>
+
+        </LinearLayout>
+
 
     </LinearLayout>
 
@@ -45,15 +58,15 @@
         android:layout_gravity="start">
 
         <LinearLayout
-            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
             <ImageView
-                android:backgroundTintMode="multiply"
-                android:background="@color/white"
                 android:layout_width="match_parent"
                 android:layout_height="100dp"
+                android:background="@color/white"
+                android:backgroundTintMode="multiply"
                 android:src="@drawable/ic_logo" />
 
             <ListView

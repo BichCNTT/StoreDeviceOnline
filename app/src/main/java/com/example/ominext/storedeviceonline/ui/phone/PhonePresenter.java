@@ -74,5 +74,4 @@ public class PhonePresenter {
         });
         requestQueue.add(arrayRequest);
     }
-
 }

@@ -13,7 +13,6 @@ import com.android.volley.toolbox.Volley;
 import com.example.ominext.storedeviceonline.model.ProductType;
 import com.example.ominext.storedeviceonline.until.CheckConnection;
 import com.example.ominext.storedeviceonline.until.Server;
-import com.example.ominext.storedeviceonline.ui.home.HomeView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -31,7 +30,7 @@ public class HomePresenter {
     int id = 0;
     String nameProductType = "";
     String imageProductType = "";
-
+    String nameProduct = "";
     private Context mContext;
     private HomeView mHomeView;
 
@@ -59,8 +58,8 @@ public class HomePresenter {
                             e.printStackTrace();
                         }
                     }
-                    listProductType.add(new ProductType(3, "Liên hệ", "http://www.freeiconspng.com/uploads/phone-icon-old-phone-telephone-icon-9.png"));
-                    listProductType.add(new ProductType(4, "Thông tin", "http://www.freeiconspng.com/uploads/details-info-information-more-details-icon--icon-search-engine--7.png"));
+                    listProductType.add(new ProductType(13, "Liên hệ", "http://www.freeiconspng.com/uploads/phone-icon-old-phone-telephone-icon-9.png"));
+                    listProductType.add(new ProductType(14, "Thông tin", "http://www.freeiconspng.com/uploads/details-info-information-more-details-icon--icon-search-engine--7.png"));
                     mHomeView.getListProductTypeSuccess(listProductType);
                 }
             }
@@ -77,6 +76,36 @@ public class HomePresenter {
         RetryPolicy policy = new DefaultRetryPolicy(socketTimeout, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
         arrayRequest.setRetryPolicy(policy);
         arrayRequest.setRetryPolicy(new DefaultRetryPolicy(DefaultRetryPolicy.DEFAULT_TIMEOUT_MS * 5, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
+        requestQueue.add(arrayRequest);
+    }
+
+    public void getListFind() {
+        final ArrayList<String> listFind = new ArrayList<>();
+        final RequestQueue requestQueue = Volley.newRequestQueue(mContext);
+        JsonArrayRequest arrayRequest = new JsonArrayRequest(Server.urlProduct, new Response.Listener<JSONArray>() {
+            @Override
+            public void onResponse(JSONArray response) {
+                if (response != null) {
+                    for (int i = 0; i < response.length(); i++) {
+                        try {
+                            JSONObject jsonObject = response.getJSONObject(i);
+                            nameProduct = jsonObject.getString("nameProduct");
+                            listFind.add(nameProduct);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+                mHomeView.getListFindSuccess(listFind);
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                CheckConnection.showToast(mContext, error.toString());
+                Log.e("==============>", error.toString());
+                mHomeView.getListFindFailed(error.toString());
+            }
+        });
         requestQueue.add(arrayRequest);
     }
 }

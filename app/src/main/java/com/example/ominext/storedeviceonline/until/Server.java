@@ -10,4 +10,5 @@ public class Server {
     public static String urlNewProduct = "http://" + localhost + "/server/getnewproduct.php";
     public static String urlPhone = "http://" + localhost + "/server/getphoneproduct.php";
     public static String urlLaptop = "http://" + localhost + "/server/getlaptopproduct.php";
+    public static String urlProduct="http://"+localhost+"/server/getproduct.php";
 }

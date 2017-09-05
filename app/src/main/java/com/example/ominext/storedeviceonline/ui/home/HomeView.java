@@ -2,6 +2,7 @@ package com.example.ominext.storedeviceonline.ui.home;
 
 import com.example.ominext.storedeviceonline.model.ProductType;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -12,4 +13,8 @@ public interface HomeView {
     void getListProductTypeSuccess(List<ProductType> productTypes);
 
     void getListProductTypeFailed(String s);
+
+    void getListFindFailed(String s);
+
+    void getListFindSuccess(ArrayList<String> listFind);
 }

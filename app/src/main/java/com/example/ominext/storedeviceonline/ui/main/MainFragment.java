@@ -83,7 +83,6 @@ public class MainFragment extends Fragment implements MainFragmentView, OnItemCl
         productAdapter.setClickListener(this);
         productAdapter.notifyDataSetChanged();
     }
-
     //tao hinh anh di chuyen (chay quang cao) va lam mo 1 danh sach anh cho truoc
     public void ActionViewFlipper() {
         ArrayList<String> urlImageList = new ArrayList<>();
@@ -98,10 +97,10 @@ public class MainFragment extends Fragment implements MainFragmentView, OnItemCl
             imageView.setScaleType(ImageView.ScaleType.FIT_CENTER);
             viewFlipper.addView(imageView);
         }
-        viewFlipper.setFlipInterval(5000);
+        viewFlipper.setFlipInterval(500);
         viewFlipper.setAutoStart(true);
-        Animation animation_slide_in = AnimationUtils.loadAnimation(getContext(), R.anim.slide_in_right);
-        Animation animation_slide_out = AnimationUtils.loadAnimation(getContext(), R.anim.slide_out_right);
+        Animation animation_slide_in = AnimationUtils.loadAnimation(getContext(), R.anim.slide_out_right);
+        Animation animation_slide_out = AnimationUtils.loadAnimation(getContext(), R.anim.slide_in_right);
         viewFlipper.setInAnimation(animation_slide_in);
         viewFlipper.setOutAnimation(animation_slide_out);
     }
@@ -122,7 +121,6 @@ public class MainFragment extends Fragment implements MainFragmentView, OnItemCl
         fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
     }
-
     @Override
     public void getListProductSuccess(ArrayList<Product> products) {
         listProduct = products;

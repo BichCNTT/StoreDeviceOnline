@@ -43,12 +43,12 @@ import butterknife.Unbinder;
 public class PhoneFragment extends Fragment implements OnItemClickListener, PhoneView {
     PhoneAdapter adapter;
     List<Product> productList = new ArrayList<>();
-    int idProductType = 0;
-    int idProduct = 0;
-    String nameProduct = "";
-    int priceProduct = 0;
-    String imageProduct = "";
-    String describeProduct = "";
+//    int idProductType = 0;
+//    int idProduct = 0;
+//    String nameProduct = "";
+//    int priceProduct = 0;
+//    String imageProduct = "";
+//    String describeProduct = "";
     @BindView(R.id.rv_phone)
     RecyclerView rvPhone;
     Unbinder unbinder;

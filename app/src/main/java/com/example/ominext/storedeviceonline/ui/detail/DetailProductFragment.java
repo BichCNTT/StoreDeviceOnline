@@ -23,7 +23,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
-
 //nhận dữ liệu từ listview sản phẩm mới nhất:
 //tên sản phẩm, giá, chi tiết sản phẩm, hình ảnh
 //nhận dữ liệu từ FragmentLaptop, FragmentPhone

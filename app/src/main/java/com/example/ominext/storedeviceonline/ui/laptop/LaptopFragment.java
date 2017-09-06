@@ -47,7 +47,6 @@ public class LaptopFragment extends Fragment implements OnItemClickListener, Lap
     LaptopAdapter adapter;
     View itemView;
     List<Product> productList = new ArrayList<>();
-    boolean loading = false;
     LaptopPresenter mPresenter;
 
     public LaptopFragment() {
@@ -88,15 +87,14 @@ public class LaptopFragment extends Fragment implements OnItemClickListener, Lap
     }
 
     private void init() {
-        mPresenter = new LaptopPresenter(LaptopFragment.this.getContext(), this);
-        mPresenter.getListLaptop();
         adapter = new LaptopAdapter(productList, getContext());
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getContext(), 1);
         rvLaptop.setLayoutManager(layoutManager);
         rvLaptop.setHasFixedSize(true);
         rvLaptop.setAdapter(adapter);
-        adapter.notifyDataSetChanged();
         adapter.setClickListener(this);
+        mPresenter = new LaptopPresenter(LaptopFragment.this.getContext(), this);
+        mPresenter.getListLaptop();
     }
 
     @Override
@@ -118,11 +116,9 @@ public class LaptopFragment extends Fragment implements OnItemClickListener, Lap
 
     @Override
     public void getListLaptopSuccess(List<Product> products) {
-        productList = products;
-        adapter = new LaptopAdapter(productList, getContext());
+        productList.clear();
+        productList.addAll(products);
         adapter.notifyDataSetChanged();
-        rvLaptop.setAdapter(adapter);
-        adapter.setClickListener(this);
     }
 
     @Override

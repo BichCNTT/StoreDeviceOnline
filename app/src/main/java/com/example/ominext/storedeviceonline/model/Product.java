@@ -22,7 +22,6 @@ public class Product {
     private String describeProduct;
     @SerializedName("IdProductType")
     private int idProductType;
-
     public Product(int idProduct, String nameProduct, int priceProduct, String imageProduct, String describeProduct, int idProductType) {
         this.idProduct = idProduct;
         this.nameProduct = nameProduct;

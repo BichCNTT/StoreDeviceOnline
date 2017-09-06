@@ -1,5 +1,6 @@
 package com.example.ominext.storedeviceonline.ui.home;
 
+import com.example.ominext.storedeviceonline.model.Product;
 import com.example.ominext.storedeviceonline.model.ProductType;
 
 import java.util.ArrayList;
@@ -16,5 +17,5 @@ public interface HomeView {
 
     void getListFindFailed(String s);
 
-    void getListFindSuccess(ArrayList<String> listFind);
+    void getListFindSuccess(List<Product> listFind);
 }

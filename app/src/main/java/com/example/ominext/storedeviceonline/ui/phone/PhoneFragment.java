@@ -43,7 +43,7 @@ import butterknife.Unbinder;
 public class PhoneFragment extends Fragment implements OnItemClickListener, PhoneView {
     PhoneAdapter adapter;
     List<Product> productList = new ArrayList<>();
-//    int idProductType = 0;
+    //    int idProductType = 0;
 //    int idProduct = 0;
 //    String nameProduct = "";
 //    int priceProduct = 0;
@@ -85,15 +85,14 @@ public class PhoneFragment extends Fragment implements OnItemClickListener, Phon
     }
 
     private void init() {
-        mPresenter = new PhonePresenter(PhoneFragment.this.getContext(), this);
-        mPresenter.getListPhone();
         adapter = new PhoneAdapter(productList, getContext());
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getContext(), 1);
         rvPhone.setLayoutManager(layoutManager);
         rvPhone.setHasFixedSize(true);
         rvPhone.setAdapter(adapter);
-        adapter.notifyDataSetChanged();
         adapter.setClickListener(this);
+        mPresenter = new PhonePresenter(PhoneFragment.this.getContext(), this);
+        mPresenter.getListPhone();
     }
 
     @Override
@@ -121,11 +120,9 @@ public class PhoneFragment extends Fragment implements OnItemClickListener, Phon
 
     @Override
     public void getListPhoneSuccess(List<Product> products) {
-        productList = products;
-        adapter = new PhoneAdapter(productList, getContext());
+        productList.clear();
+        productList.addAll(products);
         adapter.notifyDataSetChanged();
-        rvPhone.setAdapter(adapter);
-        adapter.setClickListener(this);
     }
 
     @Override

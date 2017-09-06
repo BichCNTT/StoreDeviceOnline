@@ -10,6 +10,7 @@ import com.android.volley.RetryPolicy;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.ominext.storedeviceonline.model.Product;
 import com.example.ominext.storedeviceonline.model.ProductType;
 import com.example.ominext.storedeviceonline.until.CheckConnection;
 import com.example.ominext.storedeviceonline.until.Server;
@@ -30,7 +31,12 @@ public class HomePresenter {
     int id = 0;
     String nameProductType = "";
     String imageProductType = "";
+    int idProduct = 0;
     String nameProduct = "";
+    String imgProduct = "";
+    int idProductType = 0;
+    int priceProduct = 0;
+    String describeProduct = "";
     private Context mContext;
     private HomeView mHomeView;
 
@@ -80,7 +86,7 @@ public class HomePresenter {
     }
 
     public void getListFind() {
-        final ArrayList<String> listFind = new ArrayList<>();
+        final List<Product> listFind = new ArrayList<>();
         final RequestQueue requestQueue = Volley.newRequestQueue(mContext);
         JsonArrayRequest arrayRequest = new JsonArrayRequest(Server.urlProduct, new Response.Listener<JSONArray>() {
             @Override
@@ -89,8 +95,13 @@ public class HomePresenter {
                     for (int i = 0; i < response.length(); i++) {
                         try {
                             JSONObject jsonObject = response.getJSONObject(i);
+                            idProduct = jsonObject.getInt("IdProduct");
+                            idProductType = jsonObject.getInt("IdProductType");
+                            describeProduct = jsonObject.getString("describeProduct");
+                            imgProduct = jsonObject.getString("imageProduct");
+                            priceProduct = jsonObject.getInt("priceProduct");
                             nameProduct = jsonObject.getString("nameProduct");
-                            listFind.add(nameProduct);
+                            listFind.add(new Product(idProduct, nameProduct, priceProduct, imgProduct, describeProduct, idProductType));
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }

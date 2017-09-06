@@ -7,6 +7,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -72,8 +73,6 @@ public class MainFragment extends Fragment implements MainFragmentView, OnItemCl
     }
 
     private void init() {
-        mPresenter = new MainFragmentPresenter(MainFragment.this.getContext(), this);
-        mPresenter.getListProduct();
         productAdapter = new NewProductAdapter(getContext(), listProduct);
         ActionViewFlipper();
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(MainFragment.this.getContext(), 2);
@@ -81,7 +80,8 @@ public class MainFragment extends Fragment implements MainFragmentView, OnItemCl
         viewMain.setHasFixedSize(true);
         viewMain.setAdapter(productAdapter);
         productAdapter.setClickListener(this);
-        productAdapter.notifyDataSetChanged();
+        mPresenter = new MainFragmentPresenter(MainFragment.this.getContext(), this);
+        mPresenter.getListProduct();
     }
     //tao hinh anh di chuyen (chay quang cao) va lam mo 1 danh sach anh cho truoc
     public void ActionViewFlipper() {
@@ -123,13 +123,10 @@ public class MainFragment extends Fragment implements MainFragmentView, OnItemCl
     }
     @Override
     public void getListProductSuccess(ArrayList<Product> products) {
-        listProduct = products;
-        productAdapter = new NewProductAdapter(getContext(), listProduct);
-        viewMain.setAdapter(productAdapter);
-        productAdapter.setClickListener(this);
+        listProduct.clear();
+        listProduct.addAll(products);
         productAdapter.notifyDataSetChanged();
     }
-
     @Override
     public void getListProductFailed(String s) {
         Toast.makeText(getContext(), "Lỗi tải trang", Toast.LENGTH_SHORT).show();

@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -35,11 +34,14 @@ import com.example.ominext.storedeviceonline.ui.kitchen.KitchenFragment;
 import com.example.ominext.storedeviceonline.ui.laptop.LaptopFragment;
 import com.example.ominext.storedeviceonline.ui.main.MainFragment;
 import com.example.ominext.storedeviceonline.ui.motherkid.MotherKidFragment;
+import com.example.ominext.storedeviceonline.ui.notifi.NotificationFragment;
+import com.example.ominext.storedeviceonline.ui.order.OrderFragment;
 import com.example.ominext.storedeviceonline.ui.pet.PetFragment;
 import com.example.ominext.storedeviceonline.ui.phone.PhoneFragment;
 import com.example.ominext.storedeviceonline.ui.sport.SportFragment;
 import com.example.ominext.storedeviceonline.ui.stationery.StationeryFragment;
 import com.example.ominext.storedeviceonline.ui.technologyequipment.TechnologyEquipmentFragment;
+import com.example.ominext.storedeviceonline.ui.userinfo.UserInfoFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -66,7 +68,7 @@ public class HomeActivity extends AppCompatActivity implements HomeView, OnItemC
 
     List<ProductType> listProductType = new ArrayList<>();
     ProductTypeAdapter productTypeAdapter;
-    Fragment fragmengCurrent = null;
+    Fragment fragmentCurrent = null;
     @BindView(R.id.tool_bar_main)
     Toolbar toolBarMain;
     @BindView(R.id.frame_layout)
@@ -89,6 +91,7 @@ public class HomeActivity extends AppCompatActivity implements HomeView, OnItemC
                 drawerLayout.closeDrawer(GravityCompat.START);
             }
         });
+//        cái đã thêm
         getSupportFragmentManager().addOnBackStackChangedListener(this);
     }
 
@@ -98,76 +101,76 @@ public class HomeActivity extends AppCompatActivity implements HomeView, OnItemC
         mPresenter.getListProductType();
     }
 
-    //truyền dữ liệu giữa main activity và fragmengCurrent
+    //truyền dữ liệu giữa main activity và fragmentCurrent
     public void changeHome(int pos) {
         setTitle(listProductType.get(pos).getNameProductType());
         tabCurrent = pos;
         switch (pos) {
             case 0:
-                fragmengCurrent = MainFragment.newInstance();
+                fragmentCurrent = MainFragment.newInstance();
                 break;
             case 1:
-                fragmengCurrent = PhoneFragment.newInstance();
+                fragmentCurrent = PhoneFragment.newInstance();
                 break;
             case 2:
-                fragmengCurrent = LaptopFragment.newInstance();
+                fragmentCurrent = LaptopFragment.newInstance();
                 break;
             case 3:
-                fragmengCurrent = FashionFragment.newInstance();
+                fragmentCurrent = FashionFragment.newInstance();
                 break;
             case 4:
-                fragmengCurrent = FurnitureFragment.newInstance();
+                fragmentCurrent = FurnitureFragment.newInstance();
                 break;
             case 5:
-                fragmengCurrent = SportFragment.newInstance();
+                fragmentCurrent = SportFragment.newInstance();
                 break;
             case 6:
-                fragmengCurrent = MotherKidFragment.newInstance();
+                fragmentCurrent = MotherKidFragment.newInstance();
                 break;
             case 7:
-                fragmengCurrent = CleanningStuffFragment.newInstance();
+                fragmentCurrent = CleanningStuffFragment.newInstance();
                 break;
             case 8:
-                fragmengCurrent = KitchenFragment.newInstance();
+                fragmentCurrent = KitchenFragment.newInstance();
                 break;
             case 9:
-                fragmengCurrent = TechnologyEquipmentFragment.newInstance();
+                fragmentCurrent = TechnologyEquipmentFragment.newInstance();
                 break;
             case 10:
-                fragmengCurrent = StationeryFragment.newInstance();
+                fragmentCurrent = StationeryFragment.newInstance();
                 break;
             case 11:
-                fragmengCurrent = JewelryFragment.newInstance();
+                fragmentCurrent = JewelryFragment.newInstance();
                 break;
             case 12:
-                fragmengCurrent = PetFragment.newInstance();
+                fragmentCurrent = PetFragment.newInstance();
                 break;
             case 13:
-                fragmengCurrent = ContactFragment.newInstance();
+                fragmentCurrent = ContactFragment.newInstance();
                 break;
             case 14:
-                fragmengCurrent = InformationFragment.newInstance();
+                fragmentCurrent = InformationFragment.newInstance();
                 break;
             default:
                 break;
         }
-        if (fragmengCurrent != null) {
-            replaceFragment(fragmengCurrent);
+        if (fragmentCurrent != null) {
+            replaceFragment(fragmentCurrent);
         }
     }
 
-    private void replaceFragment(Fragment fragment){
+    private void replaceFragment(Fragment fragment) {
         getSupportFragmentManager()
                 .beginTransaction()
-                .replace(R.id.frame_layout,fragment)
+                .replace(R.id.frame_layout, fragment)
                 .commit();
     }
 
-    public void addFragment(Fragment fragment){
-        fragmengCurrent = fragment;
+    public void addFragment(Fragment fragment) {
+        fragmentCurrent = fragment;
         getSupportFragmentManager()
                 .beginTransaction()
-                .add(R.id.frame_layout,fragment)
+                .add(R.id.frame_layout, fragment)
                 .addToBackStack(fragment.getClass().getSimpleName())
                 .commit();
     }
@@ -192,8 +195,6 @@ public class HomeActivity extends AppCompatActivity implements HomeView, OnItemC
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        FragmentManager fragmentManager;
-        FragmentTransaction fragmentTransaction;
         switch (item.getItemId()) {
             case R.id.menu_cart:
                 Bundle bundle = new Bundle();
@@ -239,44 +240,72 @@ public class HomeActivity extends AppCompatActivity implements HomeView, OnItemC
         addFragment(fragment);
     }
 
+    //xử lý cùng cấp (khi replace) -> màn menu
     @Override
     public void onBackPressed() {
-        if(fragmengCurrent instanceof MainFragment){
-          finish();
-        }else{
-            if(getSupportFragmentManager().getBackStackEntryCount()>0)
-            super.onBackPressed();
-            else if(tabCurrent != 0){
+//        khi ấn nút back nếu fragment hiện tại là main fragment thì out ra
+        if (fragmentCurrent instanceof MainFragment) {
+            finish();
+        } else {
+//          ngược lại nếu trong ngăn xếp vẫn còn thì quay lại fragment trước đó
+            if (getSupportFragmentManager().getBackStackEntryCount() > 0)
+                super.onBackPressed();
+//            ngược lại nếu tab hiện tại khác 0 thì quay về màn home để set lại title cho nó và thay nó về màn home
+            else if (tabCurrent != 0) {
                 changeHome(0);
             }
         }
     }
 
+    //xử lý không cùng cấp (khi add) -> màn find, search, từ chi tiết sản phẩm -> giỏ hàng -> đặt hàng -> ...
     @Override
     public void onBackStackChanged() {
-        Log.i("HomeActivity","onBackStackChanged: "+getSupportFragmentManager().getBackStackEntryCount());
+        Log.i("HomeActivity", "onBackStackChanged: " + getSupportFragmentManager().getBackStackEntryCount());
         FragmentManager frm = getSupportFragmentManager();
-        if(frm.getBackStackEntryCount()==0){
+//        nếu trong ngăn xếp k còn gì để lấy ra thì set lại title cho nó bằng cái title của cái fragment htại
+        if (frm.getBackStackEntryCount() == 0) {
             setTitle(listProductType.get(tabCurrent).getNameProductType());
-           if(tabCurrent ==0){
-               fragmengCurrent = MainFragment.newInstance();
-           }
+//            nếu fragment hiện tại là trang chủ thì set nó về trang chủ
+            if (tabCurrent == 0) {
+                fragmentCurrent = MainFragment.newInstance();
+            }
         }
-       Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.frame_layout);
-        if(fragment instanceof FindFragment){
+        Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.frame_layout);
+//
+        if (fragment instanceof FindFragment) {
             setTitle("Tìm kiếm");
             return;
         }
-        if(fragment instanceof DetailProductFragment){
+        if (fragment instanceof DetailProductFragment) {
             setTitle("Chi tiết sản phẩm");
             return;
         }
-        if(fragment instanceof CartFragment){
+        if (fragment instanceof CartFragment) {
             setTitle("Giỏ hàng");
             return;
         }
-        if(fragment instanceof PhoneFragment){
-           setTitle("Điện thoại & máy tính bảng");
+        if (fragment instanceof PhoneFragment) {
+            setTitle("Điện thoại & máy tính bảng");
+            return;
+        }
+        if (fragment instanceof LaptopFragment) {
+            setTitle("Máy tính");
+            return;
+        }
+        if (fragment instanceof NotificationFragment) {
+            setTitle("");
+            return;
+        }
+        if (fragment instanceof OrderFragment) {
+            setTitle("Đơn hàng của tôi");
+            return;
+        }
+        if (fragment instanceof UserInfoFragment) {
+            setTitle("Thông tin khách hàng");
+            return;
         }
     }
 }
+//sư khác biệt giữa replace và add
+//add thì thêm addToBackStack
+//replace thì k thêm addToBackStack

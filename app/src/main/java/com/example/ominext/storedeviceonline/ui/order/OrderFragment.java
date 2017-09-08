@@ -18,6 +18,7 @@ import com.example.ominext.storedeviceonline.R;
 import com.example.ominext.storedeviceonline.helper.PriceFormatUtil;
 import com.example.ominext.storedeviceonline.model.Cache;
 import com.example.ominext.storedeviceonline.model.Cart;
+import com.example.ominext.storedeviceonline.ui.home.HomeActivity;
 import com.example.ominext.storedeviceonline.ui.infopro.InformationFragment;
 import com.example.ominext.storedeviceonline.ui.notifi.NotificationFragment;
 import com.example.ominext.storedeviceonline.ui.userinfo.UserInfoFragment;
@@ -101,11 +102,7 @@ public class OrderFragment extends Fragment {
         bundle.putString("name", name);
         Fragment fragment = NotificationFragment.newInstance();
         fragment.setArguments(bundle);
-        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.frame_layout, fragment);
-        fragmentTransaction.addToBackStack(null);
-        fragmentTransaction.commit();
+        ((HomeActivity) getActivity()).addFragment(fragment);
     }
 
     public void init() {
@@ -130,11 +127,7 @@ public class OrderFragment extends Fragment {
                 bundle.putString("phoneUser", phone);
                 Fragment fragment = UserInfoFragment.newInstance();
                 fragment.setArguments(bundle);
-                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.add(R.id.frame_layout, fragment);
-                fragmentTransaction.addToBackStack(null);
-                fragmentTransaction.commit();
+                ((HomeActivity) getActivity()).addFragment(fragment);
             }
         });
     }

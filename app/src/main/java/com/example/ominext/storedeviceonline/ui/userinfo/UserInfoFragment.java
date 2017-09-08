@@ -15,6 +15,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.ominext.storedeviceonline.R;
+import com.example.ominext.storedeviceonline.ui.home.HomeActivity;
 import com.example.ominext.storedeviceonline.ui.order.OrderFragment;
 
 import butterknife.BindView;
@@ -86,11 +87,7 @@ public class UserInfoFragment extends Fragment {
             bundle.putString("phoneUser", edtPhone.getText().toString());
             bundle.putString("addressUser", edtAddress.getText().toString());
             fragment.setArguments(bundle);
-            FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-            FragmentTransaction transaction = fragmentManager.beginTransaction();
-            transaction.add(R.id.frame_layout, fragment);
-            transaction.addToBackStack(null);
-            transaction.commit();
+            ((HomeActivity) getActivity()).addFragment(fragment);
         } else {
             Toast.makeText(getContext(), "Bạn cần điền đầy đủ thông tin", Toast.LENGTH_SHORT).show();
         }

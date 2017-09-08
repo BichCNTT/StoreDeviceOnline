@@ -22,6 +22,7 @@ import com.example.ominext.storedeviceonline.model.Product;
 import com.example.ominext.storedeviceonline.helper.ImageViewUtil;
 import com.example.ominext.storedeviceonline.listener.OnItemClickListener;
 import com.example.ominext.storedeviceonline.ui.detail.DetailProductFragment;
+import com.example.ominext.storedeviceonline.ui.home.HomeActivity;
 
 import java.util.ArrayList;
 
@@ -115,11 +116,7 @@ public class MainFragment extends Fragment implements MainFragmentView, OnItemCl
         bundle.putString("describe", product.getDescribeProduct());
         bundle.putString("image", product.getImageProduct());
         fragment.setArguments(bundle);
-        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.add(R.id.frame_layout, fragment);
-        fragmentTransaction.addToBackStack(null);
-        fragmentTransaction.commit();
+        ((HomeActivity) getActivity()).addFragment(fragment);
     }
     @Override
     public void getListProductSuccess(ArrayList<Product> products) {

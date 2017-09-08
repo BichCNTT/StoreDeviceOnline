@@ -106,11 +106,7 @@ public class LaptopFragment extends Fragment implements OnItemClickListener, Lap
         bundle.putString("describe", product.getDescribeProduct());
         bundle.putString("image", product.getImageProduct());
         fragment.setArguments(bundle);
-        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.add(R.id.frame_layout, fragment);
-        fragmentTransaction.addToBackStack(null);
-        fragmentTransaction.commit();
+        ((HomeActivity) getActivity()).addFragment(fragment);
     }
 
     @Override

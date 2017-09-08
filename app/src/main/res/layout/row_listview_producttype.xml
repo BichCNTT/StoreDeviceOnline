@@ -41,7 +41,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Tên loại sản phẩm"
-                    android:fontFamily="cursive"
+                    android:fontFamily="sans-serif"
                     android:textColor="@color/magenta"
                     android:textSize="12sp"
                     android:textStyle="bold" />

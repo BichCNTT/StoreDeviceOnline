@@ -4,7 +4,7 @@
     android:gravity="center"
     android:layout_margin="5dp"
     android:orientation="horizontal" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content">
     <ImageView
         android:id="@+id/img_find"
         android:src="@drawable/ic_suggestion"

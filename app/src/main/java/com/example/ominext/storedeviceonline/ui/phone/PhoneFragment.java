@@ -21,6 +21,7 @@ import com.android.volley.toolbox.Volley;
 import com.example.ominext.storedeviceonline.R;
 import com.example.ominext.storedeviceonline.model.Product;
 import com.example.ominext.storedeviceonline.listener.OnItemClickListener;
+import com.example.ominext.storedeviceonline.ui.home.HomeActivity;
 import com.example.ominext.storedeviceonline.ui.laptop.LaptopAdapter;
 import com.example.ominext.storedeviceonline.ui.laptop.LaptopFragment;
 import com.example.ominext.storedeviceonline.ui.laptop.LaptopPresenter;
@@ -111,11 +112,7 @@ public class PhoneFragment extends Fragment implements OnItemClickListener, Phon
         bundle.putString("describe", product.getDescribeProduct());
         bundle.putString("image", product.getImageProduct());
         fragment.setArguments(bundle);
-        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.frame_layout, fragment);
-        fragmentTransaction.addToBackStack(null);
-        fragmentTransaction.commit();
+        ((HomeActivity) getActivity()).addFragment(fragment);
     }
 
     @Override

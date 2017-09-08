@@ -2,12 +2,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
     tools:context="com.example.ominext.storedeviceonline.ui.userinfo.UserInfoFragment">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_margin="10dp"
+        android:layout_margin="7dp"
         android:background="@color/white"
         android:orientation="vertical">
 
@@ -18,6 +19,14 @@
             android:layout_gravity="center"
             android:layout_marginBottom="10dp"
             android:src="@drawable/ic_avartar" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Bạn cần điền đầy đủ thông tin dưới đây trước khi tiến hành thanh toán cho sản phẩm."
+            android:textColor="@color/red"
+            android:textSize="10sp"
+            android:textStyle="italic" />
 
         <TextView
             android:layout_width="match_parent"
@@ -33,42 +42,50 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Họ tên" />
+            android:text="Họ tên khách hàng"
+            android:textSize="11sp" />
 
         <EditText
             android:id="@+id/edt_name_user"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:singleLine="true"
             android:textSize="20dp" />
 
         <TextView
-            android:id="@+id/textView3"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Số điện thoại" />
+            android:text="Số điện thoại"
+            android:textSize="11sp" />
 
         <EditText
             android:id="@+id/edt_phone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:inputType="phone"
+            android:singleLine="true"
             android:textSize="20dp" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Địa chỉ giao hàng" />
+            android:text="Địa chỉ giao hàng"
+            android:textSize="11sp" />
 
         <EditText
             android:id="@+id/edt_address"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:singleLine="true"
             android:textSize="20dp" />
 
         <Button
             android:id="@+id/btn_accept"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Xác nhận" />
+            android:background="@drawable/border"
+            android:text="Tiến hành thanh toán"
+            android:textColor="@color/white" />
 
     </LinearLayout>
 

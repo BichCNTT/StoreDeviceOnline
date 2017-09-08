@@ -24,31 +24,12 @@
                 android:background="@color/blue"
                 android:titleTextColor="@color/white"
                 app:titleTextColor="@color/white"></android.support.v7.widget.Toolbar>
-
-            <com.miguelcatalan.materialsearchview.MaterialSearchView
-                android:id="@+id/search_view"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"></com.miguelcatalan.materialsearchview.MaterialSearchView>
         </RelativeLayout>
 
-        <LinearLayout
+        <FrameLayout
+            android:id="@+id/frame_layout"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
-
-            <FrameLayout
-                android:id="@+id/frame_layout"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"></FrameLayout>
-
-            <!--<ListView-->
-                <!--android:id="@+id/list_view_find"-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="match_parent"></ListView>-->
-
-        </LinearLayout>
-
-
+            android:layout_height="match_parent"></FrameLayout>
     </LinearLayout>
 
     <android.support.design.widget.NavigationView

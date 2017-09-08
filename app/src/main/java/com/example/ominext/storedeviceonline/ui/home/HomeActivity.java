@@ -14,7 +14,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.FrameLayout;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -24,30 +23,40 @@ import com.example.ominext.storedeviceonline.listener.OnItemClickListener;
 import com.example.ominext.storedeviceonline.model.Product;
 import com.example.ominext.storedeviceonline.model.ProductType;
 import com.example.ominext.storedeviceonline.ui.cart.CartFragment;
+import com.example.ominext.storedeviceonline.ui.cleanningstuff.CleanningStuffFragment;
 import com.example.ominext.storedeviceonline.ui.contact.ContactFragment;
 import com.example.ominext.storedeviceonline.ui.detail.DetailProductFragment;
 import com.example.ominext.storedeviceonline.ui.fashion.FashionFragment;
+import com.example.ominext.storedeviceonline.ui.find.FindFragment;
 import com.example.ominext.storedeviceonline.ui.furniture.FurnitureFragment;
-import com.example.ominext.storedeviceonline.ui.info.InformationFragment;
+import com.example.ominext.storedeviceonline.ui.infopro.InformationFragment;
+import com.example.ominext.storedeviceonline.ui.jewelry.JewelryFragment;
+import com.example.ominext.storedeviceonline.ui.kitchen.KitchenFragment;
 import com.example.ominext.storedeviceonline.ui.laptop.LaptopFragment;
 import com.example.ominext.storedeviceonline.ui.main.MainFragment;
+import com.example.ominext.storedeviceonline.ui.motherkid.MotherKidFragment;
+import com.example.ominext.storedeviceonline.ui.pet.PetFragment;
 import com.example.ominext.storedeviceonline.ui.phone.PhoneFragment;
 import com.example.ominext.storedeviceonline.ui.sport.SportFragment;
-import com.miguelcatalan.materialsearchview.MaterialSearchView;
-import com.miguelcatalan.materialsearchview.SearchAdapter;
+import com.example.ominext.storedeviceonline.ui.stationery.StationeryFragment;
+import com.example.ominext.storedeviceonline.ui.technologyequipment.TechnologyEquipmentFragment;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-//hoàn thiện chức năng tìm kiếm
-//trong mục tìm kiếm phải hiển thị lên được tên sản phẩm và hình ảnh cho sản phẩm đó
-//làm 1 cái adapter cho mục tìm kiếm
-//row tìm kiếm
-//truyền list vào lấy dữ liệu từ trên localhost
 
-public class HomeActivity extends AppCompatActivity implements HomeView, OnItemClickListener {
+//TASK 0: hoàn thành hết tất cả các nhóm sản phẩm
+//
+//TASK 1: Hoàn thành nốt các view
+//sau khi đặt hàng xong, xóa dữ liệu của giỏ hàng trong máy, đẩy dl lên server
+//DƠNE TASK 2
+//TASK 3: Lọc sản phẩm theo giá từ thấp đến cao và từ cao đến thấp ở mỗi màn
+//GET dữ liệu trên server về->cho hiển thị lại trên màn ds
+//TASK 4: Hiển thị được địa chỉ người bán
+//thông tin khách hàng về giỏ hàng
+public class HomeActivity extends AppCompatActivity implements HomeView, OnItemClickListener, FragmentManager.OnBackStackChangedListener {
     @BindView(R.id.list_item)
     ListView listItem;
     @BindView(R.id.navigation_view_main)
@@ -57,16 +66,14 @@ public class HomeActivity extends AppCompatActivity implements HomeView, OnItemC
 
     List<ProductType> listProductType = new ArrayList<>();
     ProductTypeAdapter productTypeAdapter;
-    Fragment fragment = null;
+    Fragment fragmengCurrent = null;
     @BindView(R.id.tool_bar_main)
     Toolbar toolBarMain;
     @BindView(R.id.frame_layout)
     FrameLayout frameLayout;
     HomePresenter mPresenter;
-    @BindView(R.id.search_view)
-    MaterialSearchView searchView;
     List<Product> listFind = new ArrayList<>();
-    FindAdapter adapter;
+    private int tabCurrent = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,63 +81,95 @@ public class HomeActivity extends AppCompatActivity implements HomeView, OnItemC
         setContentView(R.layout.activity_home);
         ButterKnife.bind(this);
         init();
-        Log.e("===============>", String.valueOf(listFind.size()));
         listItem.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                replaceFragment(i);
+                changeHome(i);
                 setTitle(listProductType.get(i).getNameProductType());
                 drawerLayout.closeDrawer(GravityCompat.START);
             }
         });
+        getSupportFragmentManager().addOnBackStackChangedListener(this);
     }
 
     private void init() {
         mPresenter = new HomePresenter(HomeActivity.this, this);
         ActionBar();
         mPresenter.getListProductType();
-        mPresenter.getListFind();
-        Log.e("===============>", String.valueOf(listFind.size()));
     }
 
-    //truyền dữ liệu giữa main activity và fragment
-    public void replaceFragment(int pos) {
+    //truyền dữ liệu giữa main activity và fragmengCurrent
+    public void changeHome(int pos) {
+        setTitle(listProductType.get(pos).getNameProductType());
+        tabCurrent = pos;
         switch (pos) {
             case 0:
-                fragment = MainFragment.newInstance();
+                fragmengCurrent = MainFragment.newInstance();
                 break;
             case 1:
-                fragment = PhoneFragment.newInstance();
+                fragmengCurrent = PhoneFragment.newInstance();
                 break;
             case 2:
-                fragment = LaptopFragment.newInstance();
+                fragmengCurrent = LaptopFragment.newInstance();
                 break;
             case 3:
-                fragment = FashionFragment.newInstance();
+                fragmengCurrent = FashionFragment.newInstance();
                 break;
             case 4:
-                fragment = FurnitureFragment.newInstance();
+                fragmengCurrent = FurnitureFragment.newInstance();
                 break;
             case 5:
-                fragment = SportFragment.newInstance();
+                fragmengCurrent = SportFragment.newInstance();
+                break;
+            case 6:
+                fragmengCurrent = MotherKidFragment.newInstance();
+                break;
+            case 7:
+                fragmengCurrent = CleanningStuffFragment.newInstance();
+                break;
+            case 8:
+                fragmengCurrent = KitchenFragment.newInstance();
+                break;
+            case 9:
+                fragmengCurrent = TechnologyEquipmentFragment.newInstance();
+                break;
+            case 10:
+                fragmengCurrent = StationeryFragment.newInstance();
+                break;
+            case 11:
+                fragmengCurrent = JewelryFragment.newInstance();
+                break;
+            case 12:
+                fragmengCurrent = PetFragment.newInstance();
                 break;
             case 13:
-                fragment = ContactFragment.newInstance();
+                fragmengCurrent = ContactFragment.newInstance();
                 break;
             case 14:
-                fragment = InformationFragment.newInstance();
+                fragmengCurrent = InformationFragment.newInstance();
                 break;
             default:
                 break;
         }
-        if (fragment != null) {
-            //v4 getSupport, thường: getFragment
-            FragmentManager fragmentManager = getSupportFragmentManager();
-            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-            fragmentTransaction.replace(R.id.frame_layout, fragment);
-            fragmentTransaction.addToBackStack(null);
-            fragmentTransaction.commit();
+        if (fragmengCurrent != null) {
+            replaceFragment(fragmengCurrent);
         }
+    }
+
+    private void replaceFragment(Fragment fragment){
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.frame_layout,fragment)
+                .commit();
+    }
+
+    public void addFragment(Fragment fragment){
+        fragmengCurrent = fragment;
+        getSupportFragmentManager()
+                .beginTransaction()
+                .add(R.id.frame_layout,fragment)
+                .addToBackStack(fragment.getClass().getSimpleName())
+                .commit();
     }
 
     private void ActionBar() {
@@ -148,27 +187,23 @@ public class HomeActivity extends AppCompatActivity implements HomeView, OnItemC
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main_menu, menu);
-        MenuItem item = menu.findItem(R.id.action_search);
-        searchView.setMenuItem(item);
-
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        FragmentManager fragmentManager;
+        FragmentTransaction fragmentTransaction;
         switch (item.getItemId()) {
             case R.id.menu_cart:
                 Bundle bundle = new Bundle();
                 bundle.putInt("key", 0);
-                fragment = CartFragment.newInstance();
+                Fragment fragment = CartFragment.newInstance();
                 fragment.setArguments(bundle);
-                FragmentManager fragmentManager = getSupportFragmentManager();
-                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.replace(R.id.frame_layout, fragment);
-                fragmentTransaction.addToBackStack(null);
-                fragmentTransaction.commit();
+                addFragment(fragment);
                 break;
             case R.id.action_search:
+                addFragment(FindFragment.newInstance());
                 break;
             default:
                 break;
@@ -181,7 +216,7 @@ public class HomeActivity extends AppCompatActivity implements HomeView, OnItemC
         listProductType = productTypes;
         productTypeAdapter = new ProductTypeAdapter(listProductType, this);
         listItem.setAdapter(productTypeAdapter);
-        replaceFragment(0);
+        changeHome(0);
         setTitle(listProductType.get(0).getNameProductType());
         productTypeAdapter.notifyDataSetChanged();
     }
@@ -189,40 +224,6 @@ public class HomeActivity extends AppCompatActivity implements HomeView, OnItemC
     @Override
     public void getListProductTypeFailed(String s) {
         Toast.makeText(getApplicationContext(), "Lỗi tải trang", Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
-    public void getListFindFailed(String s) {
-        Toast.makeText(getApplicationContext(), "Lỗi tải dữ liệu tìm kiếm", Toast.LENGTH_SHORT).show();
-    }
-
-    //không tìm theo tên được
-    @Override
-    public void getListFindSuccess(final List<Product> listFind) {
-        this.listFind = listFind;
-        adapter = new FindAdapter(this.listFind, this);
-        searchView.setAdapter(adapter);
-        searchView.dismissSuggestions();
-        final List<Product> products = new ArrayList<>();
-        searchView.setOnQueryTextListener(new MaterialSearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                return false;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                for (Product product : listFind) {
-                    if (newText.equals(product.getNameProduct())) {
-                        products.add(product);
-                    }
-                }
-                searchView.showSuggestions();
-//                adapter = new FindAdapter(products, HomeActivity.this);
-//                searchView.setAdapter(adapter);
-                return true;
-            }
-        });
     }
 
     @Override
@@ -235,28 +236,47 @@ public class HomeActivity extends AppCompatActivity implements HomeView, OnItemC
         bundle.putString("describe", product.getDescribeProduct());
         bundle.putString("image", product.getImageProduct());
         fragment.setArguments(bundle);
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.frame_layout, fragment);
-        fragmentTransaction.addToBackStack(null);
-        fragmentTransaction.commit();
+        addFragment(fragment);
+    }
+
+    @Override
+    public void onBackPressed() {
+        if(fragmengCurrent instanceof MainFragment){
+          finish();
+        }else{
+            if(getSupportFragmentManager().getBackStackEntryCount()>0)
+            super.onBackPressed();
+            else if(tabCurrent != 0){
+                changeHome(0);
+            }
+        }
+    }
+
+    @Override
+    public void onBackStackChanged() {
+        Log.i("HomeActivity","onBackStackChanged: "+getSupportFragmentManager().getBackStackEntryCount());
+        FragmentManager frm = getSupportFragmentManager();
+        if(frm.getBackStackEntryCount()==0){
+            setTitle(listProductType.get(tabCurrent).getNameProductType());
+           if(tabCurrent ==0){
+               fragmengCurrent = MainFragment.newInstance();
+           }
+        }
+       Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.frame_layout);
+        if(fragment instanceof FindFragment){
+            setTitle("Tìm kiếm");
+            return;
+        }
+        if(fragment instanceof DetailProductFragment){
+            setTitle("Chi tiết sản phẩm");
+            return;
+        }
+        if(fragment instanceof CartFragment){
+            setTitle("Giỏ hàng");
+            return;
+        }
+        if(fragment instanceof PhoneFragment){
+           setTitle("Điện thoại & máy tính bảng");
+        }
     }
 }
-//        view.setOnClickListener(new View.OnClickListener() {
-//@Override
-//public void onClick(View view) {
-//        DetailProductFragment fragment = DetailProductFragment.newInstance();
-//        Bundle bundle = new Bundle();
-//        Product product = productArrayList.get(i);
-//        bundle.putString("name", product.getNameProduct());
-//        bundle.putInt("price", product.getPriceProduct());
-//        bundle.putString("describe", product.getDescribeProduct());
-//        bundle.putString("image", product.getImageProduct());
-//        fragment.setArguments(bundle);
-//        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-//        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-//        fragmentTransaction.replace(R.id.frame_layout, fragment);
-//        fragmentTransaction.addToBackStack(null);
-//        fragmentTransaction.commit();
-//        }
-//        });

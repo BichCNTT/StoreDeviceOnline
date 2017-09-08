@@ -45,7 +45,7 @@ public class LaptopFragment extends Fragment implements OnItemClickListener, Lap
     RecyclerView rvLaptop;
     Unbinder unbinder;
     LaptopAdapter adapter;
-    View itemView;
+//    View itemView;
     List<Product> productList = new ArrayList<>();
     LaptopPresenter mPresenter;
 
@@ -60,14 +60,13 @@ public class LaptopFragment extends Fragment implements OnItemClickListener, Lap
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
     }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         LayoutInflater inflater = (LayoutInflater) view.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        itemView = inflater.inflate(R.layout.progressbar, null);
+//        itemView = inflater.inflate(R.layout.progressbar, null);
         init();
     }
 
@@ -109,7 +108,7 @@ public class LaptopFragment extends Fragment implements OnItemClickListener, Lap
         fragment.setArguments(bundle);
         FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.frame_layout, fragment);
+        fragmentTransaction.add(R.id.frame_layout, fragment);
         fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
     }

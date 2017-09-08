@@ -31,12 +31,6 @@ public class HomePresenter {
     int id = 0;
     String nameProductType = "";
     String imageProductType = "";
-    int idProduct = 0;
-    String nameProduct = "";
-    String imgProduct = "";
-    int idProductType = 0;
-    int priceProduct = 0;
-    String describeProduct = "";
     private Context mContext;
     private HomeView mHomeView;
 
@@ -82,41 +76,6 @@ public class HomePresenter {
         RetryPolicy policy = new DefaultRetryPolicy(socketTimeout, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
         arrayRequest.setRetryPolicy(policy);
         arrayRequest.setRetryPolicy(new DefaultRetryPolicy(DefaultRetryPolicy.DEFAULT_TIMEOUT_MS * 5, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
-        requestQueue.add(arrayRequest);
-    }
-
-    public void getListFind() {
-        final List<Product> listFind = new ArrayList<>();
-        final RequestQueue requestQueue = Volley.newRequestQueue(mContext);
-        JsonArrayRequest arrayRequest = new JsonArrayRequest(Server.urlProduct, new Response.Listener<JSONArray>() {
-            @Override
-            public void onResponse(JSONArray response) {
-                if (response != null) {
-                    for (int i = 0; i < response.length(); i++) {
-                        try {
-                            JSONObject jsonObject = response.getJSONObject(i);
-                            idProduct = jsonObject.getInt("IdProduct");
-                            idProductType = jsonObject.getInt("IdProductType");
-                            describeProduct = jsonObject.getString("describeProduct");
-                            imgProduct = jsonObject.getString("imageProduct");
-                            priceProduct = jsonObject.getInt("priceProduct");
-                            nameProduct = jsonObject.getString("nameProduct");
-                            listFind.add(new Product(idProduct, nameProduct, priceProduct, imgProduct, describeProduct, idProductType));
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }
-                mHomeView.getListFindSuccess(listFind);
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                CheckConnection.showToast(mContext, error.toString());
-                Log.e("==============>", error.toString());
-                mHomeView.getListFindFailed(error.toString());
-            }
-        });
         requestQueue.add(arrayRequest);
     }
 }

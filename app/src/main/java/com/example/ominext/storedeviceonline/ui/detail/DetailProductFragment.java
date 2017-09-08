@@ -5,6 +5,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,6 +24,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
+
 //nhận dữ liệu từ listview sản phẩm mới nhất:
 //tên sản phẩm, giá, chi tiết sản phẩm, hình ảnh
 //nhận dữ liệu từ FragmentLaptop, FragmentPhone
@@ -62,6 +64,7 @@ public class DetailProductFragment extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        getActivity().setTitle("Chi tiết sản phẩm");
         Bundle bundle = this.getArguments();
         name = bundle.getString("name");
         price = bundle.getInt("price");
@@ -104,7 +107,7 @@ public class DetailProductFragment extends Fragment {
         fragment.setArguments(bundle);
         FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.frame_layout, fragment);
+        fragmentTransaction.add(R.id.frame_layout, fragment);
         fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
     }

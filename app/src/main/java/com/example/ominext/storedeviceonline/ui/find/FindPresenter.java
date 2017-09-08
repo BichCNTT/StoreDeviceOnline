@@ -8,7 +8,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
-import com.example.ominext.storedeviceonline.ui.home.HomeView;
+import com.example.ominext.storedeviceonline.model.Product;
 import com.example.ominext.storedeviceonline.until.CheckConnection;
 import com.example.ominext.storedeviceonline.until.Server;
 
@@ -17,24 +17,29 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Ominext on 9/5/2017.
  */
 //khi kích vào nút search. Cửa sổ search hiện lên
 public class FindPresenter {
-    String nameProduct = "";
+    String mNameProduct = "";
+    int mIdProduct = 0;
+    int mTdProductType = 0;
+    String mDescribeProduct = "";
+    String mImgProduct = "";
+    int mPriceProduct = 0;
     private Context mContext;
+    private FindView mFindView;
 
     public FindPresenter(Context mContext, FindView mFindView) {
         this.mContext = mContext;
         this.mFindView = mFindView;
     }
 
-    private FindView mFindView;
-
     public void getListFind() {
-        final ArrayList<String> listFind = new ArrayList<>();
+        final List<Product> listFind = new ArrayList<>();
         final RequestQueue requestQueue = Volley.newRequestQueue(mContext);
         JsonArrayRequest arrayRequest = new JsonArrayRequest(Server.urlProduct, new Response.Listener<JSONArray>() {
             @Override
@@ -43,8 +48,13 @@ public class FindPresenter {
                     for (int i = 0; i < response.length(); i++) {
                         try {
                             JSONObject jsonObject = response.getJSONObject(i);
-                            nameProduct = jsonObject.getString("nameProduct");
-                            listFind.add(nameProduct);
+                            mIdProduct = jsonObject.getInt("IdProduct");
+                            mTdProductType = jsonObject.getInt("IdProductType");
+                            mDescribeProduct = jsonObject.getString("describeProduct");
+                            mImgProduct = jsonObject.getString("imageProduct");
+                            mPriceProduct = jsonObject.getInt("priceProduct");
+                            mNameProduct = jsonObject.getString("nameProduct");
+                            listFind.add(new Product(mIdProduct, mNameProduct, mPriceProduct, mImgProduct, mDescribeProduct, mTdProductType));
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }

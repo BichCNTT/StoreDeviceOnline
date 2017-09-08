@@ -2,6 +2,7 @@ package com.example.ominext.storedeviceonline.ui.cart;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.annotation.Nullable;
@@ -9,6 +10,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -24,7 +26,6 @@ import com.example.ominext.storedeviceonline.model.Cache;
 import com.example.ominext.storedeviceonline.model.Cart;
 import com.example.ominext.storedeviceonline.model.Product;
 import com.example.ominext.storedeviceonline.ui.home.HomeActivity;
-import com.example.ominext.storedeviceonline.ui.info.InformationFragment;
 import com.example.ominext.storedeviceonline.ui.userinfo.UserInfoFragment;
 
 import java.io.File;
@@ -36,8 +37,9 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
+
 //xóa trong file text
-public class CartFragment extends Fragment implements CartView,OnItemClickListener {
+public class CartFragment extends Fragment implements CartView, OnItemClickListener {
     @BindView(R.id.rv_cart)
     RecyclerView rvCart;
     @BindView(R.id.tv_money)
@@ -47,7 +49,7 @@ public class CartFragment extends Fragment implements CartView,OnItemClickListen
     @BindView(R.id.btn_continue)
     Button btnContinue;
     Unbinder unbinder;
-    CartAdapter adapter;
+    CartAdapter adapter=new CartAdapter();
     List<Cart> cartList = new ArrayList<>();
     String name = "";
     int price = 0;
@@ -64,7 +66,6 @@ public class CartFragment extends Fragment implements CartView,OnItemClickListen
     String fileName = "cart.txt";
     File file = null;
 
-    //hiển thị các row dữ liệu, lấy số lượng hàng đã đặt set trong text của row
     public CartFragment() {
         // Required empty public constructor
     }
@@ -77,7 +78,6 @@ public class CartFragment extends Fragment implements CartView,OnItemClickListen
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
     }
 
     public void initFile() {
@@ -103,6 +103,7 @@ public class CartFragment extends Fragment implements CartView,OnItemClickListen
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+//        getActivity().setTitle("Giỏ hàng");
         initFile();
         tvNoData.setVisibility(View.GONE);
         Bundle bundle = getArguments();
@@ -160,7 +161,6 @@ public class CartFragment extends Fragment implements CartView,OnItemClickListen
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_cart, container, false);
         unbinder = ButterKnife.bind(this, view);
         return view;
@@ -176,12 +176,42 @@ public class CartFragment extends Fragment implements CartView,OnItemClickListen
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.btn_pay:
-                Fragment fragment = UserInfoFragment.newInstance();
-                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.replace(R.id.frame_layout, fragment);
-                fragmentTransaction.addToBackStack(null);
-                fragmentTransaction.commit();
+                if (cartList.isEmpty()) {
+                    AlertDialog.Builder builder;
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                        builder = new AlertDialog.Builder(getContext(), android.R.style.Theme_Material_Dialog_Alert);
+                    } else {
+                        builder = new AlertDialog.Builder(getContext());
+                    }
+                    builder.setTitle("")
+                            .setMessage("Bạn cần thêm hàng vào giỏ để tiến hành đặt hàng")
+                            .setPositiveButton("Mua tiếp", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    Intent intent = new Intent(getContext(), HomeActivity.class);
+                                    startActivity(intent);
+                                }
+                            })
+                            .setNegativeButton("Thoát", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+
+                                }
+                            })
+                            .setIcon(android.R.drawable.ic_dialog_alert)
+                            .show();
+                } else {
+                    Bundle bundle = new Bundle();
+                    bundle.putInt("key", 1);
+                    bundle.putInt("totalMoney", getTotalMoney());
+                    Fragment fragment = UserInfoFragment.newInstance();
+                    fragment.setArguments(bundle);
+                    FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                    FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                    fragmentTransaction.add(R.id.frame_layout, fragment);
+                    fragmentTransaction.addToBackStack(null);
+                    fragmentTransaction.commit();
+                }
                 break;
             case R.id.btn_continue:
                 Intent intent = new Intent(getContext(), HomeActivity.class);
@@ -202,7 +232,7 @@ public class CartFragment extends Fragment implements CartView,OnItemClickListen
 
     @Override
     public void onItemClick(View view, int position) {
-        if(cartList.isEmpty()){
+        if (cartList.isEmpty()) {
             tvNoData.setVisibility(View.VISIBLE);
         }
         setMoney();

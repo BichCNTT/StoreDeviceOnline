@@ -1,7 +1,11 @@
 package com.example.ominext.storedeviceonline.ui.cart;
 
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.os.Build;
 import android.os.Environment;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,6 +20,7 @@ import com.example.ominext.storedeviceonline.helper.PriceFormatUtil;
 import com.example.ominext.storedeviceonline.listener.OnItemClickListener;
 import com.example.ominext.storedeviceonline.model.Cache;
 import com.example.ominext.storedeviceonline.model.Cart;
+import com.example.ominext.storedeviceonline.ui.home.HomeActivity;
 
 import java.io.File;
 import java.io.IOException;
@@ -40,6 +45,9 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.RecyclerViewHo
     String fileNameInPut = "cart.txt";
     String fileNameOutPut = "cart1.txt";
 
+    public CartAdapter() {
+    }
+
     public CartAdapter(List<Cart> cartList, Context context) {
         this.cartList = cartList;
         this.context = context;
@@ -47,9 +55,6 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.RecyclerViewHo
         adapter = this;
     }
 
-    //tăng số lượng sản phẩm lên. vd sản phẩm 1 từ 1->2
-    // thì kích vào sản phẩm bất kì khác nó k reset lại giá trị bằng giá trị của dòng dữ liệu đang tác đông
-// mà nó tính luôn bằng giá trị 2 tức là giá trị của dòng dl trước đó đã tác động??
     @Override
     public RecyclerViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
@@ -139,23 +144,41 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.RecyclerViewHo
             });
             imgDelete.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onClick(View view) {
-                    try {
-                        initFile();
-                        String productDelete = Cache.writeJsonStream(cartList.get(getAdapterPosition()));
-                        Cache.delete(path, fileNameInPut, fileNameOutPut, productDelete);
-                        cartList.remove(getAdapterPosition());
-                        adapter.notifyDataSetChanged();
-                        if (clickListener != null)
-                            clickListener.onItemClick(view, getAdapterPosition());
-                    } catch (Exception e) {
-                        e.printStackTrace();
+                public void onClick(final View view) {
+                    AlertDialog.Builder builder;
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                        builder = new AlertDialog.Builder(context, android.R.style.Theme_Material_Dialog_Alert);
+                    } else {
+                        builder = new AlertDialog.Builder(context);
                     }
+                    builder.setTitle("Cảnh báo")
+                            .setMessage("Bạn có chắc chắn muốn xóa đơn hàng này")
+                            .setPositiveButton("Có", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    try {
+                                        initFile();
+                                        String productDelete = Cache.writeJsonStream(cartList.get(getAdapterPosition()));
+                                        Cache.delete(path, fileNameInPut, fileNameOutPut, productDelete);
+                                        cartList.remove(getAdapterPosition());
+                                        adapter.notifyDataSetChanged();
+                                        if (clickListener != null)
+                                            clickListener.onItemClick(view, getAdapterPosition());
+                                    } catch (Exception e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                            })
+                            .setNegativeButton("Không", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
 
+                                }
+                            })
+                            .setIcon(android.R.drawable.ic_dialog_alert)
+                            .show();
                 }
             });
-
         }
-
     }
 }

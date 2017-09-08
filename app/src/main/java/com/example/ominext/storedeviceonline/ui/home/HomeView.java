@@ -14,8 +14,4 @@ public interface HomeView {
     void getListProductTypeSuccess(List<ProductType> productTypes);
 
     void getListProductTypeFailed(String s);
-
-    void getListFindFailed(String s);
-
-    void getListFindSuccess(List<Product> listFind);
 }

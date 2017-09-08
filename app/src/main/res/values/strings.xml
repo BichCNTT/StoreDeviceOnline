@@ -6,19 +6,13 @@
     <string name="title_activity_information">Map</string>
     <string name="product_detail">Mô tả chi tiết sản phẩm</string>
     <string name="cart">Giỏ hàng</string>
+    <string name="thank1">Cảm ơn quý khách đã mua hàng tại An Nguyên.
+    An Nguyên sẽ thực hiện cuộc gọi xác nhận đơn hàng trong 2 ngày tới.
+        Thời gian giao hàng là từ 3-5 ngày sau khi chúng tôi xác thực xong đơn hàng của quý khách.</string>
+    <string name="thank2">Trong khoảng thời gian chờ xử lý và giao hàng xin quý khách kiểm tra tin nhắn và cuộc gọi thoại thường xuyên để không bỏ lỡ bất kì tin nhắn hoặc cuộc gọi nào từ chúng tôi.</string>
+    <string name="thank3">Lưu ý rằng: Đơn hàng của quý khách có thể sẽ được giao nhiều lần nếu có sản phẩm được bán bởi các đơn vị Thương nhân khác nhau.
+    Kính chúc quý khách có trải nghiệm mua sắm trực tuyến tuyệt vời nhất tại An Nguyên!</string>
     <string-array name="quantity_array">
-        <item>1</item>
-        <item>2</item>
-        <item>3</item>
-        <item>4</item>
-        <item>5</item>
-        <item>6</item>
-        <item>7</item>
-        <item>8</item>
-        <item>9</item>
-        <item>10</item>
-    </string-array>
-    <string-array name="find_result_array">
         <item>1</item>
         <item>2</item>
         <item>3</item>

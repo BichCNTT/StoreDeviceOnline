@@ -9,8 +9,6 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.ominext.storedeviceonline.model.Product;
-import com.example.ominext.storedeviceonline.ui.main.MainFragmentView;
-import com.example.ominext.storedeviceonline.until.CheckConnection;
 import com.example.ominext.storedeviceonline.until.Server;
 
 import org.json.JSONArray;
@@ -48,7 +46,6 @@ public class LaptopPresenter {
             public void onResponse(JSONArray response) {
                 if ((response != null) && (response.length() > 0)) {
                     for (int i = 0; i < response.length(); i++) {
-//                    rvLaptop.removeView(itemView);
                         try {
                             JSONObject jsonObject = response.getJSONObject(i);
                             idProductType = jsonObject.getInt("IdProductType");
@@ -58,7 +55,6 @@ public class LaptopPresenter {
                             imageProduct = jsonObject.getString("imageProduct");
                             describeProduct = jsonObject.getString("describeProduct");
                             productList.add(new Product(idProduct, nameProduct, priceProduct, imageProduct, describeProduct, idProductType));
-//                            adapter.notifyDataSetChanged();
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -69,7 +65,6 @@ public class LaptopPresenter {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                CheckConnection.showToast(mContext, error.toString());
                 Log.e("==============>", error.toString());
                 mLaptopView.getListLaptopFailed(error.toString());
             }

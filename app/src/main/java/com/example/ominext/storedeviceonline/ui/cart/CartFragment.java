@@ -143,7 +143,7 @@ public class CartFragment extends Fragment implements CartView, OnItemClickListe
     }
 
     private void setMoney() {
-        int money = 0;
+        int money;
         for (int i = 0; i < cartList.size(); i++) {
             money = cartList.get(i).getPrice() * cartList.get(i).getNumber();
             cartList.get(i).setMoney(money);
@@ -183,7 +183,7 @@ public class CartFragment extends Fragment implements CartView, OnItemClickListe
                     } else {
                         builder = new AlertDialog.Builder(getContext());
                     }
-                    builder.setTitle("")
+                    builder.setTitle("Thông báo")
                             .setMessage("Bạn cần thêm hàng vào giỏ để tiến hành đặt hàng")
                             .setPositiveButton("Mua tiếp", new DialogInterface.OnClickListener() {
                                 @Override

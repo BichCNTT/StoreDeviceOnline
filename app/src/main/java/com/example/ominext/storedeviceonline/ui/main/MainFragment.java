@@ -3,11 +3,8 @@ package com.example.ominext.storedeviceonline.ui.main;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,7 +38,6 @@ public class MainFragment extends Fragment implements MainFragmentView, OnItemCl
 
     ArrayList<Product> listProduct = new ArrayList<>();
     NewProductAdapter productAdapter;
-
     MainFragmentPresenter mPresenter;
 
     public MainFragment() {
@@ -75,7 +71,6 @@ public class MainFragment extends Fragment implements MainFragmentView, OnItemCl
 
     private void init() {
         productAdapter = new NewProductAdapter(getContext(), listProduct);
-        ActionViewFlipper();
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(MainFragment.this.getContext(), 2);
         viewMain.setLayoutManager(layoutManager);
         viewMain.setHasFixedSize(true);
@@ -83,6 +78,7 @@ public class MainFragment extends Fragment implements MainFragmentView, OnItemCl
         productAdapter.setClickListener(this);
         mPresenter = new MainFragmentPresenter(MainFragment.this.getContext(), this);
         mPresenter.getListProduct();
+        ActionViewFlipper();
     }
     //tao hinh anh di chuyen (chay quang cao) va lam mo 1 danh sach anh cho truoc
     public void ActionViewFlipper() {
@@ -98,10 +94,11 @@ public class MainFragment extends Fragment implements MainFragmentView, OnItemCl
             imageView.setScaleType(ImageView.ScaleType.FIT_CENTER);
             viewFlipper.addView(imageView);
         }
-        viewFlipper.setFlipInterval(5000);
         viewFlipper.setAutoStart(true);
-        Animation animation_slide_in = AnimationUtils.loadAnimation(getContext(), R.anim.slide_out_right);
-        Animation animation_slide_out = AnimationUtils.loadAnimation(getContext(), R.anim.slide_in_right);
+        viewFlipper.setFlipInterval(5000);
+        viewFlipper.startFlipping();
+        Animation animation_slide_in = AnimationUtils.loadAnimation(getContext(), R.anim.slide_in_left);
+        Animation animation_slide_out = AnimationUtils.loadAnimation(getContext(), R.anim.slide_out_right);
         viewFlipper.setInAnimation(animation_slide_in);
         viewFlipper.setOutAnimation(animation_slide_out);
     }

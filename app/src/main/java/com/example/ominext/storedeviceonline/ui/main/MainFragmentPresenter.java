@@ -2,6 +2,7 @@ package com.example.ominext.storedeviceonline.ui.main;
 
 import android.content.Context;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -9,9 +10,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.ominext.storedeviceonline.model.Product;
-import com.example.ominext.storedeviceonline.until.CheckConnection;
 import com.example.ominext.storedeviceonline.until.Server;
-import com.example.ominext.storedeviceonline.ui.main.MainFragmentView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -66,7 +65,6 @@ public class MainFragmentPresenter {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                CheckConnection.showToast(mContext, error.toString());
                 Log.e("==============>", error.toString());
                 mMainFragmentView.getListProductFailed(error.toString());
             }

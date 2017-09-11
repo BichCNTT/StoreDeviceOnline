@@ -3,20 +3,17 @@ package com.example.ominext.storedeviceonline.ui.userinfo;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.ominext.storedeviceonline.R;
 import com.example.ominext.storedeviceonline.ui.home.HomeActivity;
 import com.example.ominext.storedeviceonline.ui.order.OrderFragment;
+import com.example.ominext.storedeviceonline.until.CheckConnectionInternet;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -61,7 +58,6 @@ public class UserInfoFragment extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        getActivity().setTitle("Thông tin khách hàng");
         Bundle bundle = getArguments();
         totalMoney = bundle.getInt("totalMoney");
         if (bundle.getInt("key") == 0) {
@@ -77,17 +73,22 @@ public class UserInfoFragment extends Fragment {
         unbinder.unbind();
     }
 
+    //nếu lấy dữ liệu từ lần click xác nhận thông tin thì khi click sửa thông tin sẽ phải s
     @OnClick(R.id.btn_accept)
     public void onViewClicked() {
         if ((!edtNameUser.getText().toString().isEmpty()) && (!edtAddress.getText().toString().isEmpty()) && (!edtPhone.getText().toString().isEmpty())) {
-            OrderFragment fragment = OrderFragment.newInstance();
-            Bundle bundle = new Bundle();
-            bundle.putInt("totalMoney", totalMoney);
-            bundle.putString("nameUser", edtNameUser.getText().toString());
-            bundle.putString("phoneUser", edtPhone.getText().toString());
-            bundle.putString("addressUser", edtAddress.getText().toString());
-            fragment.setArguments(bundle);
-            ((HomeActivity) getActivity()).addFragment(fragment);
+            if (CheckConnectionInternet.haveNetWorkConnection(getContext())) {
+                OrderFragment fragment = OrderFragment.newInstance();
+                Bundle bundle = new Bundle();
+                bundle.putInt("totalMoney", totalMoney);
+                bundle.putString("nameUser", edtNameUser.getText().toString());
+                bundle.putString("phoneUser", edtPhone.getText().toString());
+                bundle.putString("addressUser", edtAddress.getText().toString());
+                fragment.setArguments(bundle);
+                ((HomeActivity) getActivity()).addFragment(fragment);
+            } else {
+                Toast.makeText(getContext(), "Bạn chưa đăng kí thông tin thành công. Kiểm tra lại kết nối", Toast.LENGTH_LONG).show();
+            }
         } else {
             Toast.makeText(getContext(), "Bạn cần điền đầy đủ thông tin", Toast.LENGTH_SHORT).show();
         }

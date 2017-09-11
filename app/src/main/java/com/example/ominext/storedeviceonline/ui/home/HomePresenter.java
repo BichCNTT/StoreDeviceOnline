@@ -10,9 +10,7 @@ import com.android.volley.RetryPolicy;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
-import com.example.ominext.storedeviceonline.model.Product;
 import com.example.ominext.storedeviceonline.model.ProductType;
-import com.example.ominext.storedeviceonline.until.CheckConnection;
 import com.example.ominext.storedeviceonline.until.Server;
 
 import org.json.JSONArray;
@@ -67,8 +65,8 @@ public class HomePresenter {
             @Override
             public void onErrorResponse(VolleyError error) {
                 error.printStackTrace();
-                CheckConnection.showToast(mContext, error.toString());
                 Log.e("==============>", error.toString());
+
                 mHomeView.getListProductTypeFailed(error.toString());
             }
         });

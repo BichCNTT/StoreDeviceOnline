@@ -9,7 +9,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.ominext.storedeviceonline.model.Product;
-import com.example.ominext.storedeviceonline.until.CheckConnection;
+import com.example.ominext.storedeviceonline.until.CheckConnectionInternet;
 import com.example.ominext.storedeviceonline.until.Server;
 
 import org.json.JSONArray;
@@ -65,7 +65,6 @@ public class FindPresenter {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                CheckConnection.showToast(mContext, error.toString());
                 Log.e("==============>", error.toString());
                 mFindView.getListFindFailed(error.toString());
             }

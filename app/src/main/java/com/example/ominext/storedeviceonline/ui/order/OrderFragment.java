@@ -4,29 +4,39 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.example.ominext.storedeviceonline.R;
 import com.example.ominext.storedeviceonline.helper.PriceFormatUtil;
 import com.example.ominext.storedeviceonline.model.Cache;
 import com.example.ominext.storedeviceonline.model.Cart;
 import com.example.ominext.storedeviceonline.ui.home.HomeActivity;
-import com.example.ominext.storedeviceonline.ui.infopro.InformationFragment;
 import com.example.ominext.storedeviceonline.ui.notifi.NotificationFragment;
 import com.example.ominext.storedeviceonline.ui.userinfo.UserInfoFragment;
+import com.example.ominext.storedeviceonline.until.CheckConnectionInternet;
+import com.example.ominext.storedeviceonline.until.Server;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -98,15 +108,44 @@ public class OrderFragment extends Fragment {
 
     @OnClick(R.id.btn_order_product)
     public void onViewClicked() {
-        Bundle bundle = new Bundle();
-        bundle.putString("name", name);
-        Fragment fragment = NotificationFragment.newInstance();
-        fragment.setArguments(bundle);
-        ((HomeActivity) getActivity()).addFragment(fragment);
+        if (CheckConnectionInternet.haveNetWorkConnection(getContext())) {
+            RequestQueue requestQueue = Volley.newRequestQueue(getContext());
+            StringRequest stringRequest = new StringRequest(Request.Method.POST, Server.urlPostClientInfo, new Response.Listener<String>() {
+                @Override
+                public void onResponse(String response) {
+                    Log.e("========>", response);
+                    Bundle bundle = new Bundle();
+                    bundle.putString("name", name);
+                    Fragment fragment = NotificationFragment.newInstance();
+                    fragment.setArguments(bundle);
+                    ((HomeActivity) getActivity()).addFragment(fragment);
+//                    sau khi đặt hàng xong xóa giỏ hàng khỏi bộ nhớ đệm
+                    File f = new File(path + fileName);
+                    f.delete();
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    Log.e("=========>error", error.toString());
+                    Toast.makeText(getContext(), "Đơn hàng chưa được đặt. Không thể kết nối được với máy chủ", Toast.LENGTH_SHORT).show();
+                }
+            }) {
+                @Override
+                protected Map<String, String> getParams() throws AuthFailureError {
+                    Map<String, String> map = new HashMap<String, String>();
+                    map.put("name", name);
+                    map.put("phone", phone);
+                    map.put("address", address);
+                    return map;
+                }
+            };
+            requestQueue.add(stringRequest);
+        } else {
+            Toast.makeText(getContext(), "Đơn hàng chưa được đặt. Kiểm tra lại kết nối", Toast.LENGTH_LONG).show();
+        }
     }
 
     public void init() {
-        getActivity().setTitle("Đơn hàng của tôi");
         Bundle bundle = getArguments();
         totalMoney = bundle.getInt("totalMoney");
         name = bundle.getString("nameUser");

@@ -3,35 +3,18 @@ package com.example.ominext.storedeviceonline.ui.phone;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonArrayRequest;
-import com.android.volley.toolbox.Volley;
 import com.example.ominext.storedeviceonline.R;
 import com.example.ominext.storedeviceonline.model.Product;
 import com.example.ominext.storedeviceonline.listener.OnItemClickListener;
 import com.example.ominext.storedeviceonline.ui.home.HomeActivity;
-import com.example.ominext.storedeviceonline.ui.laptop.LaptopAdapter;
-import com.example.ominext.storedeviceonline.ui.laptop.LaptopFragment;
-import com.example.ominext.storedeviceonline.ui.laptop.LaptopPresenter;
-import com.example.ominext.storedeviceonline.until.CheckConnection;
-import com.example.ominext.storedeviceonline.until.Server;
 import com.example.ominext.storedeviceonline.ui.detail.DetailProductFragment;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;

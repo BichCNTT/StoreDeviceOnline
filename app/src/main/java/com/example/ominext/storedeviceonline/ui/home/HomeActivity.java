@@ -50,14 +50,13 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 //TASK 0: hoàn thành hết tất cả các nhóm sản phẩm
-//
 //TASK 1: Hoàn thành nốt các view
 //sau khi đặt hàng xong, xóa dữ liệu của giỏ hàng trong máy, đẩy dl lên server
 //DƠNE TASK 2
 //TASK 3: Lọc sản phẩm theo giá từ thấp đến cao và từ cao đến thấp ở mỗi màn
 //GET dữ liệu trên server về->cho hiển thị lại trên màn ds
 //TASK 4: Hiển thị được địa chỉ người bán
-//thông tin khách hàng về giỏ hàng
+//11/9/2017: Đọc hiểu cơ chế back stack
 public class HomeActivity extends AppCompatActivity implements HomeView, OnItemClickListener, FragmentManager.OnBackStackChangedListener {
     @BindView(R.id.list_item)
     ListView listItem;
@@ -91,7 +90,7 @@ public class HomeActivity extends AppCompatActivity implements HomeView, OnItemC
                 drawerLayout.closeDrawer(GravityCompat.START);
             }
         });
-//        cái đã thêm
+//      cái đã thêm
         getSupportFragmentManager().addOnBackStackChangedListener(this);
     }
 
@@ -164,6 +163,7 @@ public class HomeActivity extends AppCompatActivity implements HomeView, OnItemC
                 .beginTransaction()
                 .replace(R.id.frame_layout, fragment)
                 .commit();
+        Log.e("----->", "thay thế 1 fragment");
     }
 
     public void addFragment(Fragment fragment) {
@@ -173,6 +173,7 @@ public class HomeActivity extends AppCompatActivity implements HomeView, OnItemC
                 .add(R.id.frame_layout, fragment)
                 .addToBackStack(fragment.getClass().getSimpleName())
                 .commit();
+        Log.e("----->", "thêm mới 1 fragment");
     }
 
     private void ActionBar() {
@@ -246,10 +247,13 @@ public class HomeActivity extends AppCompatActivity implements HomeView, OnItemC
 //        khi ấn nút back nếu fragment hiện tại là main fragment thì out ra
         if (fragmentCurrent instanceof MainFragment) {
             finish();
+            Log.e("------>", "thoát");
         } else {
 //          ngược lại nếu trong ngăn xếp vẫn còn thì quay lại fragment trước đó
-            if (getSupportFragmentManager().getBackStackEntryCount() > 0)
+            if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
                 super.onBackPressed();
+                Log.e("------>", "quay lại");
+            }
 //            ngược lại nếu tab hiện tại khác 0 thì quay về màn home để set lại title cho nó và thay nó về màn home
             else if (tabCurrent != 0) {
                 changeHome(0);
@@ -257,21 +261,21 @@ public class HomeActivity extends AppCompatActivity implements HomeView, OnItemC
         }
     }
 
-    //xử lý không cùng cấp (khi add) -> màn find, search, từ chi tiết sản phẩm -> giỏ hàng -> đặt hàng -> ...
+    //khi backStack thay đổi->khi add 1 fragment vào
     @Override
     public void onBackStackChanged() {
-        Log.i("HomeActivity", "onBackStackChanged: " + getSupportFragmentManager().getBackStackEntryCount());
         FragmentManager frm = getSupportFragmentManager();
-//        nếu trong ngăn xếp k còn gì để lấy ra thì set lại title cho nó bằng cái title của cái fragment htại
+//        Log.e("-------->", frm.getBackStackEntryCount() + "");
+//        nếu trong ngăn xếp số các fragment được add vào =0 -> không còn thì set tiêu đề bằng tiêu đề hiện tại
         if (frm.getBackStackEntryCount() == 0) {
             setTitle(listProductType.get(tabCurrent).getNameProductType());
-//            nếu fragment hiện tại là trang chủ thì set nó về trang chủ
+//            nếu tab hiện tại bằng 0 thì setFragmentCurrent= MainFragment
             if (tabCurrent == 0) {
                 fragmentCurrent = MainFragment.newInstance();
             }
         }
+
         Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.frame_layout);
-//
         if (fragment instanceof FindFragment) {
             setTitle("Tìm kiếm");
             return;
@@ -290,6 +294,7 @@ public class HomeActivity extends AppCompatActivity implements HomeView, OnItemC
         }
         if (fragment instanceof LaptopFragment) {
             setTitle("Máy tính");
+            Log.e("----->fragmentCurrent ", ": " + getTitle());
             return;
         }
         if (fragment instanceof NotificationFragment) {
@@ -307,5 +312,9 @@ public class HomeActivity extends AppCompatActivity implements HomeView, OnItemC
     }
 }
 //sư khác biệt giữa replace và add
+//replace là thay thế hoàn toàn: khi chạy nó sẽ vào hàm onCreateView -> OnResume
+//add: là thêm mới, các fragment vẫn đang chạy song song khi thêm add to backstack thì nó cũng sẽ không phải gọi lại các hàm trong vòng đời để dừng hđộng của fragment hiện tại lại
+//khi ấn onbackpress thì ko phải dectach lần lượt từng fragment mà theo cơ chế xen kẽ
+//replace: là remove hoàn toàn sau đó khi ta add to backstack thì nó sẽ ktạo lại toàn bộ tức là chạy lại các hàm như oncreateView->...->onResume
 //add thì thêm addToBackStack
 //replace thì k thêm addToBackStack

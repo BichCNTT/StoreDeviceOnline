@@ -33,7 +33,11 @@ import com.example.ominext.storedeviceonline.until.Server;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -42,6 +46,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
+import retrofit2.http.POST;
 
 public class OrderFragment extends Fragment {
 
@@ -110,7 +115,7 @@ public class OrderFragment extends Fragment {
     public void onViewClicked() {
         if (CheckConnectionInternet.haveNetWorkConnection(getContext())) {
             RequestQueue requestQueue = Volley.newRequestQueue(getContext());
-            StringRequest stringRequest = new StringRequest(Request.Method.POST, Server.urlPostClientInfo, new Response.Listener<String>() {
+            StringRequest clientInfoStringRequest = new StringRequest(Request.Method.POST, Server.urlPostClientInfo, new Response.Listener<String>() {
                 @Override
                 public void onResponse(String response) {
                     Log.e("========>", response);
@@ -139,7 +144,52 @@ public class OrderFragment extends Fragment {
                     return map;
                 }
             };
-            requestQueue.add(stringRequest);
+            requestQueue.add(clientInfoStringRequest);
+//            requestQueue.add(clientInfoStringRequest);
+////            ---------------------------------------------------------------------------------------------------------------------------------------------------------------
+//            StringRequest orderProductStringRequest = new StringRequest(Request.Method.POST, Server.urlPostOrderProduct, new Response.Listener<String>() {
+//                @Override
+//                public void onResponse(String response) {
+//                    Log.e("========>", response);
+//                }
+//            }, new Response.ErrorListener() {
+//                @Override
+//                public void onErrorResponse(VolleyError error) {
+//                    Log.e("=========>error", error.toString());
+//                    Toast.makeText(getContext(), "Đơn hàng chưa được đặt. Không thể kết nối được với máy chủ", Toast.LENGTH_SHORT).show();
+//                }
+//            }) {
+//                @Override
+//                protected Map<String, String> getParams() throws AuthFailureError {
+//                    HashMap<String, String> hashMap = new HashMap<>();
+//                    DateFormat df = new SimpleDateFormat("dd/MM/yyyy, HH:mm");
+//                    String date = df.format(Calendar.getInstance().getTime());
+//                    hashMap.put("orderDate", date);
+//                    return hashMap;
+//                }
+//            };
+//            requestQueue.add(orderProductStringRequest);
+//            //            ---------------------------------------------------------------------------------------------------------------------------------------------------------------
+//            StringRequest detailOrderStringRequest = new StringRequest(Request.Method.POST, Server.urlPostDetailOrder, new Response.Listener<String>() {
+//                @Override
+//                public void onResponse(String response) {
+//                    Log.e("========>", response);
+//                }
+//            }, new Response.ErrorListener() {
+//                @Override
+//                public void onErrorResponse(VolleyError error) {
+//                    Log.e("=========>error", error.toString());
+//                    Toast.makeText(getContext(), "Đơn hàng chưa được đặt. Không thể kết nối được với máy chủ", Toast.LENGTH_SHORT).show();
+//                }
+//            }) {
+//                @Override
+//                protected Map<String, String> getParams() throws AuthFailureError {
+//                    HashMap<String, String> hashMap = new HashMap<>();
+//                    hashMap.put("numberProduct", "");
+//                    return hashMap;
+//                }
+//            };
+//            requestQueue.add(detailOrderStringRequest);
         } else {
             Toast.makeText(getContext(), "Đơn hàng chưa được đặt. Kiểm tra lại kết nối", Toast.LENGTH_LONG).show();
         }

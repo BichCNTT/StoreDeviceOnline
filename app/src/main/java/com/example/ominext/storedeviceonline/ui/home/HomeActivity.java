@@ -49,13 +49,16 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-//TASK 0: hoàn thành hết tất cả các nhóm sản phẩm
-//TASK 1: Hoàn thành nốt các view
-//sau khi đặt hàng xong, xóa dữ liệu của giỏ hàng trong máy, đẩy dl lên server
-//DƠNE TASK 2
+//TASK 0: Hoàn thành hết tất cả các nhóm sản phẩm
+//TASK 1: Sửa lại keyboard cho scoll lại vs màn hình đăng kí. Set con  trỏ chuột vào vị trí ô tìm kiếm khi nhập màn tìm kiếm
+//TASK2 2: Khi sửa số lượng ở màn giỏ hàng dliệu phải được sửa và lưu lại vào file text. Đọc chuỗi json ra đối tượng,
+//kiểm tra thuộc tính của đối tượng đó (tt số lượng sp) sau đó lại lưu vào text.
+//viết hàm ra bên ngoài và gọi lại ở nút tăng và giảm
 //TASK 3: Lọc sản phẩm theo giá từ thấp đến cao và từ cao đến thấp ở mỗi màn
 //GET dữ liệu trên server về->cho hiển thị lại trên màn ds
 //TASK 4: Hiển thị được địa chỉ người bán
+//TASk 5: Đẩy dliệu hóa đơn lên server
+//TASK 6: Làm thêm load more và refresh ứng dụng
 //11/9/2017: Đọc hiểu cơ chế back stack
 public class HomeActivity extends AppCompatActivity implements HomeView, OnItemClickListener, FragmentManager.OnBackStackChangedListener {
     @BindView(R.id.list_item)

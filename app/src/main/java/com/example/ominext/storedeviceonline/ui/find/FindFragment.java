@@ -1,5 +1,6 @@
 package com.example.ominext.storedeviceonline.ui.find;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -13,6 +14,7 @@ import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -70,6 +72,9 @@ public class FindFragment extends Fragment implements FindView, OnItemClickListe
 
     //khi thay đổi trong text thì thay đổi trong list
     public void init() {
+        edtFind.requestFocus();
+        InputMethodManager inputMethodManager = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+        inputMethodManager.showSoftInput(edtFind, InputMethodManager.SHOW_IMPLICIT);
         mAdapter = new FindAdapter(getContext(), productList);
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getContext(), 1);
         rvListFind.setLayoutManager(layoutManager);

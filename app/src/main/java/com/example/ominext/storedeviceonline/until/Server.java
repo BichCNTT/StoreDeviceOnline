@@ -12,6 +12,4 @@ public class Server {
     public static String urlLaptop = "http://" + localhost + "/server/getlaptopproduct.php";
     public static String urlProduct = "http://" + localhost + "/server/getproduct.php";
     public static String urlPostClientInfo = "http://" + localhost + "/server/postclientinfo.php";
-    public static String urlPostOrderProduct = "http://" + localhost + "server/postorderproduct.php";
-    public static String urlPostDetailOrder = "http://" + localhost + "server/postdetailorder.php";
 }

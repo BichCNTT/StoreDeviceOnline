@@ -31,6 +31,10 @@ import com.example.ominext.storedeviceonline.ui.userinfo.UserInfoFragment;
 import com.example.ominext.storedeviceonline.until.CheckConnectionInternet;
 import com.example.ominext.storedeviceonline.until.Server;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.File;
 import java.io.IOException;
 import java.text.DateFormat;
@@ -103,6 +107,7 @@ public class OrderFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         init();
         initFile();
+        setMoney();
     }
 
     @Override
@@ -111,6 +116,7 @@ public class OrderFragment extends Fragment {
         unbinder.unbind();
     }
 
+    //thêm dữ liệu lên bảng có khóa đã điền thông tin ->kbiết
     @OnClick(R.id.btn_order_product)
     public void onViewClicked() {
         if (CheckConnectionInternet.haveNetWorkConnection(getContext())) {
@@ -137,61 +143,39 @@ public class OrderFragment extends Fragment {
             }) {
                 @Override
                 protected Map<String, String> getParams() throws AuthFailureError {
-                    Map<String, String> map = new HashMap<String, String>();
-                    map.put("name", name);
-                    map.put("phone", phone);
-                    map.put("address", address);
-                    return map;
+                    HashMap<String, String> hashMap;
+                    JSONArray jsonArray = new JSONArray();
+                    for (int i = 0; i < cartList.size(); i++) {
+                        JSONObject object = new JSONObject();
+                        try {
+                            object.put("name", name);
+                            object.put("phone", phone);
+                            object.put("address", address);
+                            object.put("nameProduct", cartList.get(i).getName());
+                            object.put("priceProduct", cartList.get(i).getPrice());
+                            object.put("numberProduct", cartList.get(i).getNumber());
+                            object.put("moneyProduct", cartList.get(i).getMoney());
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        jsonArray.put(object);
+                    }
+                    hashMap = new HashMap<>();
+                    hashMap.put("json", jsonArray.toString());
+                    return hashMap;
                 }
             };
             requestQueue.add(clientInfoStringRequest);
-//            requestQueue.add(clientInfoStringRequest);
-////            ---------------------------------------------------------------------------------------------------------------------------------------------------------------
-//            StringRequest orderProductStringRequest = new StringRequest(Request.Method.POST, Server.urlPostOrderProduct, new Response.Listener<String>() {
-//                @Override
-//                public void onResponse(String response) {
-//                    Log.e("========>", response);
-//                }
-//            }, new Response.ErrorListener() {
-//                @Override
-//                public void onErrorResponse(VolleyError error) {
-//                    Log.e("=========>error", error.toString());
-//                    Toast.makeText(getContext(), "Đơn hàng chưa được đặt. Không thể kết nối được với máy chủ", Toast.LENGTH_SHORT).show();
-//                }
-//            }) {
-//                @Override
-//                protected Map<String, String> getParams() throws AuthFailureError {
-//                    HashMap<String, String> hashMap = new HashMap<>();
-//                    DateFormat df = new SimpleDateFormat("dd/MM/yyyy, HH:mm");
-//                    String date = df.format(Calendar.getInstance().getTime());
-//                    hashMap.put("orderDate", date);
-//                    return hashMap;
-//                }
-//            };
-//            requestQueue.add(orderProductStringRequest);
-//            //            ---------------------------------------------------------------------------------------------------------------------------------------------------------------
-//            StringRequest detailOrderStringRequest = new StringRequest(Request.Method.POST, Server.urlPostDetailOrder, new Response.Listener<String>() {
-//                @Override
-//                public void onResponse(String response) {
-//                    Log.e("========>", response);
-//                }
-//            }, new Response.ErrorListener() {
-//                @Override
-//                public void onErrorResponse(VolleyError error) {
-//                    Log.e("=========>error", error.toString());
-//                    Toast.makeText(getContext(), "Đơn hàng chưa được đặt. Không thể kết nối được với máy chủ", Toast.LENGTH_SHORT).show();
-//                }
-//            }) {
-//                @Override
-//                protected Map<String, String> getParams() throws AuthFailureError {
-//                    HashMap<String, String> hashMap = new HashMap<>();
-//                    hashMap.put("numberProduct", "");
-//                    return hashMap;
-//                }
-//            };
-//            requestQueue.add(detailOrderStringRequest);
         } else {
             Toast.makeText(getContext(), "Đơn hàng chưa được đặt. Kiểm tra lại kết nối", Toast.LENGTH_LONG).show();
+        }
+    }
+
+    private void setMoney() {
+        int money;
+        for (int i = 0; i < cartList.size(); i++) {
+            money = cartList.get(i).getPrice() * cartList.get(i).getNumber();
+            cartList.get(i).setMoney(money);
         }
     }
 

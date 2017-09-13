@@ -108,6 +108,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.RecyclerViewHo
             super(itemView);
             ButterKnife.bind(this, itemView);
             itemView.setTag(itemView);
+            initFile();
             btnSubtraction.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -115,11 +116,25 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.RecyclerViewHo
                     int number = cart.getNumber();
                     int price = cart.getPrice();
                     if (number > 1) {
+//                  xóa sản phẩm
+                        try {
+                            String productDelete = Cache.writeJsonStream(cart);
+                            Cache.delete(path, fileNameInPut, fileNameOutPut, productDelete);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
                         number--;
                         tvNumber.setText(number + "");
                         cart.setNumber(number);
                         int money = price * number;
                         cart.setMoney(money);
+//                        thêm lại sản phẩm
+                        try {
+                            String productSave = Cache.writeJsonStream(cart);
+                            Cache.saveToFile(path, fileNameInPut, productSave);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
                         if (clickListener != null)
                             clickListener.onItemClick(view, getAdapterPosition());
                     }
@@ -132,11 +147,23 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.RecyclerViewHo
                     int number = cart.getNumber();
                     int price = cart.getPrice();
                     if (number < 10) {
+                        try {
+                            String productDelete = Cache.writeJsonStream(cart);
+                            Cache.delete(path, fileNameInPut, fileNameOutPut, productDelete);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
                         number++;
                         tvNumber.setText(number + "");
                         cart.setNumber(number);
                         int money = price * number;
                         cart.setMoney(money);
+                        try {
+                            String productSave = Cache.writeJsonStream(cart);
+                            Cache.saveToFile(path, fileNameInPut, productSave);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
                         if (clickListener != null)
                             clickListener.onItemClick(view, getAdapterPosition());
                     }
@@ -157,7 +184,6 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.RecyclerViewHo
                                 @Override
                                 public void onClick(DialogInterface dialogInterface, int i) {
                                     try {
-                                        initFile();
                                         String productDelete = Cache.writeJsonStream(cartList.get(getAdapterPosition()));
                                         Cache.delete(path, fileNameInPut, fileNameOutPut, productDelete);
                                         cartList.remove(getAdapterPosition());

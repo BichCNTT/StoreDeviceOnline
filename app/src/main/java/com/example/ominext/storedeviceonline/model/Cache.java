@@ -29,7 +29,7 @@ import static com.android.volley.VolleyLog.TAG;
  */
 //lưu lại các mặt hàng đã thêm vào giỏ hàng khi chưa thanh toán
 public class Cache {
-
+//chuyển thành chuỗi json
     public static String writeJsonStream(Cart data) throws Exception {
         StringWriter output = new StringWriter();
         JsonWriter jsonWriter = new JsonWriter(output);
@@ -42,7 +42,7 @@ public class Cache {
         String jsonText = output.toString();
         return jsonText;
     }
-
+//chuyển thành đối tượng
     public static Cart readJsonStream(JSONObject object) throws Exception {
         Cart cart = new Cart();
         String image = object.getString("image");
@@ -85,7 +85,6 @@ public class Cache {
         String currentLine;
         boolean successful = false;
         try {
-            //file Input, tên file truyền vào phải là nv1.txt
             inputStream = new FileInputStream(input);
             InputStreamReader inputStreamReader = new InputStreamReader(inputStream);
             BufferedReader reader = new BufferedReader(inputStreamReader);

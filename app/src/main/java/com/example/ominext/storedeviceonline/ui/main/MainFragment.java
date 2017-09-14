@@ -1,8 +1,10 @@
 package com.example.ominext.storedeviceonline.ui.main;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -15,9 +17,9 @@ import android.widget.Toast;
 import android.widget.ViewFlipper;
 
 import com.example.ominext.storedeviceonline.R;
-import com.example.ominext.storedeviceonline.model.Product;
 import com.example.ominext.storedeviceonline.helper.ImageViewUtil;
 import com.example.ominext.storedeviceonline.listener.OnItemClickListener;
+import com.example.ominext.storedeviceonline.model.Product;
 import com.example.ominext.storedeviceonline.ui.detail.DetailProductFragment;
 import com.example.ominext.storedeviceonline.ui.home.HomeActivity;
 
@@ -28,7 +30,7 @@ import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
 //fragment chứa giao diện chính <- giao diện lúc mở máy lên
-public class MainFragment extends Fragment implements MainFragmentView, OnItemClickListener {
+public class MainFragment extends Fragment implements MainFragmentView, OnItemClickListener, SwipeRefreshLayout.OnRefreshListener {
 
     @BindView(R.id.view_flipper)
     ViewFlipper viewFlipper;
@@ -39,6 +41,8 @@ public class MainFragment extends Fragment implements MainFragmentView, OnItemCl
     ArrayList<Product> listProduct = new ArrayList<>();
     NewProductAdapter productAdapter;
     MainFragmentPresenter mPresenter;
+    @BindView(R.id.swipe_refresh_layout_main)
+    SwipeRefreshLayout swipeRefreshLayoutMain;
 
     public MainFragment() {
 
@@ -77,9 +81,29 @@ public class MainFragment extends Fragment implements MainFragmentView, OnItemCl
         viewMain.setAdapter(productAdapter);
         productAdapter.setClickListener(this);
         mPresenter = new MainFragmentPresenter(MainFragment.this.getContext(), this);
-        mPresenter.getListProduct();
-        ActionViewFlipper();
+        swipeRefreshLayoutMain.setOnRefreshListener(this);
+        swipeRefreshLayoutMain.post(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            swipeRefreshLayoutMain.setRefreshing(true);
+                                            refreshContent();
+                                        }
+                                    }
+        );
     }
+
+    private void refreshContent() {
+        swipeRefreshLayoutMain.setRefreshing(true);
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                ActionViewFlipper();
+                mPresenter.getListProduct();
+                swipeRefreshLayoutMain.setRefreshing(false);
+            }
+        }, 1000);
+    }
+
     //tao hinh anh di chuyen (chay quang cao) va lam mo 1 danh sach anh cho truoc
     public void ActionViewFlipper() {
         ArrayList<String> urlImageList = new ArrayList<>();
@@ -115,14 +139,21 @@ public class MainFragment extends Fragment implements MainFragmentView, OnItemCl
         fragment.setArguments(bundle);
         ((HomeActivity) getActivity()).addFragment(fragment);
     }
+
     @Override
     public void getListProductSuccess(ArrayList<Product> products) {
         listProduct.clear();
         listProduct.addAll(products);
         productAdapter.notifyDataSetChanged();
     }
+
     @Override
     public void getListProductFailed(String s) {
         Toast.makeText(getContext(), "Lỗi tải trang", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onRefresh() {
+        refreshContent();
     }
 }

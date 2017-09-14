@@ -38,13 +38,14 @@ public class PhonePresenter {
     String imageProduct = "";
     String describeProduct = "";
 
-    public void getListPhone() {
-        final List<Product> productList = new ArrayList<>();
+
+    public void getList(String url) {
         final RequestQueue requestQueue = Volley.newRequestQueue(mContext);
-        JsonArrayRequest arrayRequest = new JsonArrayRequest(Server.urlPhone, new Response.Listener<JSONArray>() {
+        final List<Product> productList = new ArrayList<>();
+        JsonArrayRequest arrayRequest = new JsonArrayRequest(url, new Response.Listener<JSONArray>() {
             @Override
             public void onResponse(JSONArray response) {
-                if (response != null) {
+                if ((response != null) && (response.length() > 0)) {
                     for (int i = 0; i < response.length(); i++) {
                         try {
                             JSONObject jsonObject = response.getJSONObject(i);
@@ -55,13 +56,12 @@ public class PhonePresenter {
                             imageProduct = jsonObject.getString("imageProduct");
                             describeProduct = jsonObject.getString("describeProduct");
                             productList.add(new Product(idProduct, nameProduct, priceProduct, imageProduct, describeProduct, idProductType));
-//                            adapter.notifyDataSetChanged();
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
                     }
                 }
-              mPhoneView.getListPhoneSuccess(productList);
+                mPhoneView.getListPhoneSuccess(productList);
             }
         }, new Response.ErrorListener() {
             @Override
@@ -71,5 +71,17 @@ public class PhonePresenter {
             }
         });
         requestQueue.add(arrayRequest);
+    }
+
+    public void getListPhone() {
+        getList(Server.urlPhone);
+    }
+
+    public void getListSortDownLaptop() {
+        getList(Server.urlSortDownPhone);
+    }
+
+    public void getListSortUpLaptop() {
+        getList(Server.urlSortUpPhone);
     }
 }

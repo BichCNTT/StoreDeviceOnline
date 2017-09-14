@@ -5,37 +5,55 @@
     android:background="@color/white"
     tools:context="com.example.ominext.storedeviceonline.ui.phone.PhoneFragment">
 
-    <LinearLayout
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/swipe_refresh_layout_phone"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="wrap_content">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="5sp"
-            android:gravity="right"
-            android:orientation="horizontal">
+            android:layout_height="match_parent"
+            android:layout_margin="7dp"
+            android:orientation="vertical">
 
-            <Spinner
-                android:id="@+id/spinner_filter"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="right|center_vertical"></Spinner>
+                android:layout_margin="5sp"
+                android:orientation="horizontal">
 
-            <ImageView
-                android:id="@+id/img_filter"
-                android:layout_width="20dp"
-                android:layout_height="wrap_content"
-                android:src="@drawable/ic_filter"
-                android:textColor="@color/white" />
+                <ImageView
+                    android:id="@+id/img_change"
+                    android:layout_width="20dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="120dp"
+                    android:gravity="left"
+                    android:src="@drawable/ic_change" />
+
+                <Spinner
+                    android:id="@+id/spinner_filter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right|center_vertical"></Spinner>
+
+                <ImageView
+                    android:id="@+id/img_filter"
+                    android:layout_width="20dp"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_arrangement"
+                    android:textColor="@color/white" />
+            </LinearLayout>
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rv_phone"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"></android.support.v7.widget.RecyclerView>
+
+            <TextView
+                android:id="@+id/empty"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
         </LinearLayout>
-
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/rv_phone"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"></android.support.v7.widget.RecyclerView>
-
-    </LinearLayout>
+    </android.support.v4.widget.SwipeRefreshLayout>
 
 </FrameLayout>

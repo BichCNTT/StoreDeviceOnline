@@ -51,8 +51,6 @@ import butterknife.ButterKnife;
 
 //TASK 0: Hoàn thành hết tất cả các nhóm sản phẩm
 //TASK 1: Sửa lại keyboard cho scoll lại vs màn hình đăng kí
-//TASK 3: Lọc sản phẩm theo giá từ thấp đến cao và từ cao đến thấp ở mỗi màn
-//GET dữ liệu trên server về->cho hiển thị lại trên màn ds
 //TASK 4: Hiển thị được địa chỉ người bán
 //TASK 6: Làm thêm load more và refresh ứng dụng
 //11/9/2017: Đọc hiểu cơ chế back stack

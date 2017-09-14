@@ -1,8 +1,10 @@
 package com.example.ominext.storedeviceonline.ui.phone;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -16,6 +18,7 @@ import android.widget.Toast;
 
 import com.example.ominext.storedeviceonline.R;
 import com.example.ominext.storedeviceonline.listener.OnItemClickListener;
+import com.example.ominext.storedeviceonline.listener.OnLoadMoreListener;
 import com.example.ominext.storedeviceonline.model.Product;
 import com.example.ominext.storedeviceonline.ui.detail.DetailProductFragment;
 import com.example.ominext.storedeviceonline.ui.home.HomeActivity;
@@ -29,9 +32,10 @@ import butterknife.OnClick;
 import butterknife.Unbinder;
 
 
-public class PhoneFragment extends Fragment implements OnItemClickListener, PhoneView {
+public class PhoneFragment extends Fragment implements OnItemClickListener, PhoneView, SwipeRefreshLayout.OnRefreshListener {
     PhoneAdapter adapter;
     List<Product> productList = new ArrayList<>();
+    List<Product> products = new ArrayList<>();
     @BindView(R.id.rv_phone)
     RecyclerView rvPhone;
     Unbinder unbinder;
@@ -39,8 +43,15 @@ public class PhoneFragment extends Fragment implements OnItemClickListener, Phon
     Spinner spinnerFilter;
     @BindView(R.id.img_filter)
     ImageView imgFilter;
-
+    @BindView(R.id.img_change)
+    ImageView imgChange;
+    int change = 1;
+    @BindView(R.id.swipe_refresh_layout_phone)
+    SwipeRefreshLayout swipeRefreshLayoutPhone;
+    @BindView(R.id.empty)
+    TextView tvEmpty;
     private PhonePresenter mPresenter;
+    protected Handler handler;
 
     public PhoneFragment() {
         // Required empty public constructor
@@ -72,18 +83,61 @@ public class PhoneFragment extends Fragment implements OnItemClickListener, Phon
     }
 
     private void init() {
-        adapter = new PhoneAdapter(productList, getContext());
-        RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getContext(), 1);
+        handler = new Handler();
+        adapter = new PhoneAdapter(productList, getContext(), rvPhone);
+        RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getContext(), change);
         rvPhone.setLayoutManager(layoutManager);
         rvPhone.setHasFixedSize(true);
         rvPhone.setAdapter(adapter);
         adapter.setClickListener(this);
         mPresenter = new PhonePresenter(PhoneFragment.this.getContext(), this);
-        mPresenter.getListPhone();
         final ArrayAdapter<CharSequence> adapterFilter = ArrayAdapter.createFromResource(getContext(),
                 R.array.fitter_array, android.R.layout.simple_spinner_item);
         adapterFilter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerFilter.setAdapter(adapterFilter);
+
+        swipeRefreshLayoutPhone.setOnRefreshListener(this);
+        swipeRefreshLayoutPhone.post(new Runnable() {
+                                         @Override
+                                         public void run() {
+                                             swipeRefreshLayoutPhone.setRefreshing(true);
+                                             refreshContent();
+                                         }
+                                     }
+        );
+        products.addAll(productList);
+        adapter.setOnLoadMoreListener(new OnLoadMoreListener() {
+            @Override
+            public void onLoadMore() {
+                productList.clear();
+                adapter.notifyItemInserted(productList.size() - 1);
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        productList.remove(productList.size() - 1);
+                        adapter.notifyItemRemoved(productList.size());
+                        int start = productList.size();
+                        int end = start + 5;
+                        for (int i = start + 1; i <= end; i++) {
+                            productList.add(products.get(i));
+                            adapter.notifyItemInserted(productList.size());
+                        }
+                        adapter.setLoading();
+                    }
+                }, 2000);
+            }
+        });
+    }
+
+    private void refreshContent() {
+        swipeRefreshLayoutPhone.setRefreshing(true);
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                mPresenter.getListPhone();
+                swipeRefreshLayoutPhone.setRefreshing(false);
+            }
+        }, 1000);
     }
 
     @Override
@@ -118,64 +172,38 @@ public class PhoneFragment extends Fragment implements OnItemClickListener, Phon
         Toast.makeText(getContext(), "Lỗi tải trang", Toast.LENGTH_SHORT).show();
     }
 
-    @OnClick(R.id.img_filter)
-    public void onViewClicked() {
-        String chose = spinnerFilter.getSelectedItem().toString();
-        if (chose.equals("Giá từ thấp đến cao")) {
-            for (int pos = 0; pos < productList.size() - 1; pos++) {
-                for (int pos1 = pos + 1; pos1 < productList.size(); pos1++) {
-                    if (productList.get(pos).getPriceProduct() > productList.get(pos1).getPriceProduct()) {
-                        Product product = new Product(productList.get(pos).getIdProduct(),
-                                productList.get(pos).getNameProduct(),
-                                productList.get(pos).getPriceProduct(),
-                                productList.get(pos).getImageProduct(),
-                                productList.get(pos).getDescribeProduct(),
-                                productList.get(pos).getIdProductType());
+    public void change(int i) {
+        RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getContext(), i);
+        rvPhone.setLayoutManager(layoutManager);
+        rvPhone.setHasFixedSize(true);
+    }
 
-                        productList.get(pos).setNameProduct(productList.get(pos1).getNameProduct());
-                        productList.get(pos).setDescribeProduct(productList.get(pos1).getDescribeProduct());
-                        productList.get(pos).setIdProduct(productList.get(pos1).getIdProduct());
-                        productList.get(pos).setIdProductType(productList.get(pos1).getIdProductType());
-                        productList.get(pos).setImageProduct(productList.get(pos1).getImageProduct());
-                        productList.get(pos).setPriceProduct(productList.get(pos1).getPriceProduct());
-
-                        productList.get(pos1).setNameProduct(product.getNameProduct());
-                        productList.get(pos1).setDescribeProduct(product.getDescribeProduct());
-                        productList.get(pos1).setIdProduct(product.getIdProduct());
-                        productList.get(pos1).setIdProductType(product.getIdProductType());
-                        productList.get(pos1).setImageProduct(product.getImageProduct());
-                        productList.get(pos1).setPriceProduct(product.getPriceProduct());
-                    }
+    @OnClick({R.id.img_change, R.id.img_filter})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.img_change:
+                if (change == 1) {
+                    change = 2;
+                    change(change);
+                } else {
+                    change = 1;
+                    change(change);
                 }
-            }
-        } else {
-            for (int pos = 0; pos < productList.size() - 1; pos++) {
-                for (int pos1 = pos + 1; pos1 < productList.size(); pos1++) {
-                    if (productList.get(pos).getPriceProduct() < productList.get(pos1).getPriceProduct()) {
-                        Product product = new Product(productList.get(pos).getIdProduct(),
-                                productList.get(pos).getNameProduct(),
-                                productList.get(pos).getPriceProduct(),
-                                productList.get(pos).getImageProduct(),
-                                productList.get(pos).getDescribeProduct(),
-                                productList.get(pos).getIdProductType());
-
-                        productList.get(pos).setNameProduct(productList.get(pos1).getNameProduct());
-                        productList.get(pos).setDescribeProduct(productList.get(pos1).getDescribeProduct());
-                        productList.get(pos).setIdProduct(productList.get(pos1).getIdProduct());
-                        productList.get(pos).setIdProductType(productList.get(pos1).getIdProductType());
-                        productList.get(pos).setImageProduct(productList.get(pos1).getImageProduct());
-                        productList.get(pos).setPriceProduct(productList.get(pos1).getPriceProduct());
-
-                        productList.get(pos1).setNameProduct(product.getNameProduct());
-                        productList.get(pos1).setDescribeProduct(product.getDescribeProduct());
-                        productList.get(pos1).setIdProduct(product.getIdProduct());
-                        productList.get(pos1).setIdProductType(product.getIdProductType());
-                        productList.get(pos1).setImageProduct(product.getImageProduct());
-                        productList.get(pos1).setPriceProduct(product.getPriceProduct());
-                    }
+                break;
+            case R.id.img_filter:
+                String chose = spinnerFilter.getSelectedItem().toString();
+                if (chose.equals("Giá từ thấp đến cao")) {
+                    mPresenter.getListSortUpLaptop();
+                } else {
+                    mPresenter.getListSortDownLaptop();
                 }
-            }
+                adapter.notifyDataSetChanged();
+                break;
         }
-        adapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onRefresh() {
+        refreshContent();
     }
 }

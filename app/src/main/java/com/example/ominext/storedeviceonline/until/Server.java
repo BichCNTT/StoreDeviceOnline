@@ -12,4 +12,9 @@ public class Server {
     public static String urlLaptop = "http://" + localhost + "/server/getlaptopproduct.php";
     public static String urlProduct = "http://" + localhost + "/server/getproduct.php";
     public static String urlPostClientInfo = "http://" + localhost + "/server/postclientinfo.php";
+    public static String urlSortUpLaptop = "http://" + localhost + "/server/sortuplaptop.php";
+    public static String urlSortUpPhone = "http://" + localhost + "/server/sortupphone.php";
+    public static String urlSortDownLaptop = "http://" + localhost + "/server/sortdownlaptop.php";
+    public static String urlSortDownPhone = "http://" + localhost + "/server/sortdownphone.php";
+
 }

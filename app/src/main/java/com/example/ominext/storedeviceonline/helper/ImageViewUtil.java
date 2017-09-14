@@ -19,6 +19,7 @@ public class ImageViewUtil {
         Glide.with(context)
                 .load(url)
                 .asBitmap()
+                .error(R.drawable.ic_camera)
                 .format(DecodeFormat.PREFER_ARGB_8888)
                 .asIs()
                 .into(view);

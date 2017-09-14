@@ -12,4 +12,5 @@ public interface LaptopView {
     void getListLaptopSuccess(List<Product> products);
 
     void getListLaptopFailed(String s);
+
 }

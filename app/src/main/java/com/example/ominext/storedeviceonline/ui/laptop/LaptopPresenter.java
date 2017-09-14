@@ -38,10 +38,10 @@ public class LaptopPresenter {
         this.mLaptopView = mLaptopView;
     }
 
-    public void getListLaptop() {
+    public void getList(String url) {
         final RequestQueue requestQueue = Volley.newRequestQueue(mContext);
         final List<Product> productList = new ArrayList<>();
-        JsonArrayRequest arrayRequest = new JsonArrayRequest(Server.urlLaptop, new Response.Listener<JSONArray>() {
+        JsonArrayRequest arrayRequest = new JsonArrayRequest(url, new Response.Listener<JSONArray>() {
             @Override
             public void onResponse(JSONArray response) {
                 if ((response != null) && (response.length() > 0)) {
@@ -72,4 +72,15 @@ public class LaptopPresenter {
         requestQueue.add(arrayRequest);
     }
 
+    public void getListLaptop() {
+        getList(Server.urlLaptop);
+    }
+
+    public void getListSortDownLaptop() {
+        getList(Server.urlSortDownLaptop);
+    }
+
+    public void getListSortUpLaptop() {
+        getList(Server.urlSortUpLaptop);
+    }
 }

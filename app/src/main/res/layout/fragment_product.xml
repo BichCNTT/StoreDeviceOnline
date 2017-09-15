@@ -17,27 +17,30 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="5sp"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:weightSum="10">
 
                 <ImageView
                     android:id="@+id/img_change"
-                    android:layout_width="20dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="120dp"
+                    android:layout_width="0dp"
+                    android:layout_height="50dp"
+                    android:layout_weight="1"
                     android:gravity="left"
-                    android:src="@drawable/ic_change" />
+                    android:src="@drawable/ic_one_column" />
 
                 <Spinner
-                    android:id="@+id/spinner_filter"
-                    android:layout_width="wrap_content"
+                    android:id="@+id/spinner_sort"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="right|center_vertical"></Spinner>
+                    android:layout_gravity="right|center_vertical"
+                    android:layout_weight="8"></Spinner>
 
                 <ImageView
-                    android:id="@+id/img_filter"
-                    android:layout_width="20dp"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_arrangement"
+                    android:id="@+id/img_sort"
+                    android:layout_width="0dp"
+                    android:layout_height="50dp"
+                    android:layout_weight="1"
+                    android:src="@drawable/ic_up_and_down"
                     android:textColor="@color/white" />
             </LinearLayout>
 

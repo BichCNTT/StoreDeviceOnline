@@ -103,7 +103,6 @@ public class CartFragment extends Fragment implements CartView, OnItemClickListe
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-//        getActivity().setTitle("Giỏ hàng");
         initFile();
         tvNoData.setVisibility(View.GONE);
         Bundle bundle = getArguments();
@@ -185,13 +184,6 @@ public class CartFragment extends Fragment implements CartView, OnItemClickListe
                     }
                     builder.setTitle("Thông báo")
                             .setMessage("Bạn cần thêm hàng vào giỏ để tiến hành đặt hàng")
-                            .setPositiveButton("Mua tiếp", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialogInterface, int i) {
-                                    Intent intent = new Intent(getContext(), HomeActivity.class);
-                                    startActivity(intent);
-                                }
-                            })
                             .setNegativeButton("Thoát", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialogInterface, int i) {

@@ -1,6 +1,5 @@
 package com.example.ominext.storedeviceonline.ui.phone;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
@@ -14,17 +13,13 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.ominext.storedeviceonline.R;
 import com.example.ominext.storedeviceonline.listener.OnItemClickListener;
-import com.example.ominext.storedeviceonline.listener.OnLoadMoreListener;
 import com.example.ominext.storedeviceonline.model.Product;
 import com.example.ominext.storedeviceonline.ui.detail.DetailProductFragment;
-import com.example.ominext.storedeviceonline.ui.fashion.FashionFragment;
 import com.example.ominext.storedeviceonline.ui.home.HomeActivity;
-import com.example.ominext.storedeviceonline.ui.laptop.LaptopFragment;
 import com.example.ominext.storedeviceonline.ui.laptop.ProductAdapter;
 import com.example.ominext.storedeviceonline.ui.laptop.ProductPresenter;
 import com.example.ominext.storedeviceonline.ui.laptop.ProductView;
@@ -48,10 +43,10 @@ public class PhoneFragment extends Fragment implements OnItemClickListener, Prod
     ProductPresenter mPresenter;
     @BindView(R.id.img_change)
     ImageView imgChange;
-    @BindView(R.id.spinner_filter)
-    Spinner spinnerFilter;
-    @BindView(R.id.img_filter)
-    ImageView imgFilter;
+    @BindView(R.id.spinner_sort)
+    Spinner spinnerSort;
+    @BindView(R.id.img_sort)
+    ImageView imgSort;
     int change = 1;
     @BindView(R.id.swipe_refresh_layout_product)
     SwipeRefreshLayout swipeRefreshLayoutProduct;
@@ -101,7 +96,7 @@ public class PhoneFragment extends Fragment implements OnItemClickListener, Prod
         final ArrayAdapter<CharSequence> adapterFilter = ArrayAdapter.createFromResource(getContext(),
                 R.array.fitter_array, android.R.layout.simple_spinner_item);
         adapterFilter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinnerFilter.setAdapter(adapterFilter);
+        spinnerSort.setAdapter(adapterFilter);
         swipeRefreshLayoutProduct.setOnRefreshListener(this);
         swipeRefreshLayoutProduct.post(new Runnable() {
                                            @Override
@@ -155,7 +150,7 @@ public class PhoneFragment extends Fragment implements OnItemClickListener, Prod
         rvProduct.setHasFixedSize(true);
     }
 
-    @OnClick({R.id.img_change, R.id.img_filter})
+    @OnClick({R.id.img_change, R.id.img_sort})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.img_change:
@@ -168,8 +163,8 @@ public class PhoneFragment extends Fragment implements OnItemClickListener, Prod
                 }
 
                 break;
-            case R.id.img_filter:
-                String chose = spinnerFilter.getSelectedItem().toString();
+            case R.id.img_sort:
+                String chose = spinnerSort.getSelectedItem().toString();
                 if (chose.equals("Giá từ thấp đến cao")) {
                     mPresenter.getListSortUpPhone();
                 } else {

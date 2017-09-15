@@ -36,10 +36,10 @@
                     android:id="@+id/tv_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:fontFamily="casual"
+                    android:fontFamily="serif"
                     android:text="Tên laptop"
                     android:textColor="@color/green"
-                    android:textSize="15sp"
+                    android:textSize="13sp"
                     android:textStyle="bold" />
 
                 <TextView

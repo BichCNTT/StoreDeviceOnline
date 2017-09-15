@@ -42,9 +42,9 @@ public class KitchenFragment extends Fragment implements OnItemClickListener, Pr
     ProductPresenter mPresenter;
     @BindView(R.id.img_change)
     ImageView imgChange;
-    @BindView(R.id.spinner_filter)
+    @BindView(R.id.spinner_sort)
     Spinner spinnerFilter;
-    @BindView(R.id.img_filter)
+    @BindView(R.id.img_sort)
     ImageView imgFilter;
     int change = 1;
     @BindView(R.id.swipe_refresh_layout_product)
@@ -149,7 +149,7 @@ public class KitchenFragment extends Fragment implements OnItemClickListener, Pr
         rvProduct.setHasFixedSize(true);
     }
 
-    @OnClick({R.id.img_change, R.id.img_filter})
+    @OnClick({R.id.img_change, R.id.img_sort})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.img_change:
@@ -162,7 +162,7 @@ public class KitchenFragment extends Fragment implements OnItemClickListener, Pr
                 }
 
                 break;
-            case R.id.img_filter:
+            case R.id.img_sort:
                 String chose = spinnerFilter.getSelectedItem().toString();
                 if (chose.equals("Giá từ thấp đến cao")) {
                     mPresenter.getListSortUpKitchen();

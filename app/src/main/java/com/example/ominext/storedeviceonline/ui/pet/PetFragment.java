@@ -1,7 +1,5 @@
 package com.example.ominext.storedeviceonline.ui.pet;
 
-import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
@@ -22,7 +20,6 @@ import com.example.ominext.storedeviceonline.listener.OnItemClickListener;
 import com.example.ominext.storedeviceonline.model.Product;
 import com.example.ominext.storedeviceonline.ui.detail.DetailProductFragment;
 import com.example.ominext.storedeviceonline.ui.home.HomeActivity;
-import com.example.ominext.storedeviceonline.ui.jewelry.JewelryFragment;
 import com.example.ominext.storedeviceonline.ui.laptop.ProductAdapter;
 import com.example.ominext.storedeviceonline.ui.laptop.ProductPresenter;
 import com.example.ominext.storedeviceonline.ui.laptop.ProductView;
@@ -45,9 +42,9 @@ public class PetFragment extends Fragment implements OnItemClickListener, Produc
     ProductPresenter mPresenter;
     @BindView(R.id.img_change)
     ImageView imgChange;
-    @BindView(R.id.spinner_filter)
+    @BindView(R.id.spinner_sort)
     Spinner spinnerFilter;
-    @BindView(R.id.img_filter)
+    @BindView(R.id.img_sort)
     ImageView imgFilter;
     int change = 1;
     @BindView(R.id.swipe_refresh_layout_product)
@@ -152,7 +149,7 @@ public class PetFragment extends Fragment implements OnItemClickListener, Produc
         rvProduct.setHasFixedSize(true);
     }
 
-    @OnClick({R.id.img_change, R.id.img_filter})
+    @OnClick({R.id.img_change, R.id.img_sort})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.img_change:
@@ -165,7 +162,7 @@ public class PetFragment extends Fragment implements OnItemClickListener, Produc
                 }
 
                 break;
-            case R.id.img_filter:
+            case R.id.img_sort:
                 String chose = spinnerFilter.getSelectedItem().toString();
                 if (chose.equals("Giá từ thấp đến cao")) {
                     mPresenter.getListSortUpPet();

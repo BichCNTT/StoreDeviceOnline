@@ -2,11 +2,12 @@ package com.example.ominext.storedeviceonline.ui.find;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AppCompatActivity;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
@@ -22,6 +23,7 @@ import com.example.ominext.storedeviceonline.R;
 import com.example.ominext.storedeviceonline.listener.OnItemClickListener;
 import com.example.ominext.storedeviceonline.model.Product;
 import com.example.ominext.storedeviceonline.ui.detail.DetailProductFragment;
+import com.example.ominext.storedeviceonline.until.VietNamese;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,15 +32,18 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
-public class FindFragment extends Fragment implements FindView, OnItemClickListener {
+public class FindFragment extends Fragment implements FindView, OnItemClickListener, SwipeRefreshLayout.OnRefreshListener {
     @BindView(R.id.edt_find)
     EditText edtFind;
+    @BindView(R.id.swipe_refresh_layout_find)
+    SwipeRefreshLayout swipeRefreshLayoutFind;
     private FindAdapter mAdapter;
     List<Product> productList = new ArrayList<>();
     private FindPresenter mPresenter;
     @BindView(R.id.rv_list_find)
     RecyclerView rvListFind;
     Unbinder unbinder;
+    VietNamese vietNamese = new VietNamese();
 
     public FindFragment() {
         // Required empty public constructor
@@ -66,7 +71,6 @@ public class FindFragment extends Fragment implements FindView, OnItemClickListe
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        getActivity().setTitle("Tìm kiếm");
         init();
     }
 
@@ -82,7 +86,25 @@ public class FindFragment extends Fragment implements FindView, OnItemClickListe
         rvListFind.setAdapter(mAdapter);
         mAdapter.setClickListener(this);
         mPresenter = new FindPresenter(FindFragment.this.getContext(), this);
-        mPresenter.getListFind();
+        swipeRefreshLayoutFind.setOnRefreshListener(this);
+        swipeRefreshLayoutFind.post(new Runnable() {
+            @Override
+            public void run() {
+                swipeRefreshLayoutFind.setRefreshing(true);
+                refreshContent();
+            }
+        });
+    }
+
+    public void refreshContent() {
+        swipeRefreshLayoutFind.setRefreshing(true);
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                mPresenter.getListFind();
+                swipeRefreshLayoutFind.setRefreshing(false);
+            }
+        }, 1000);
     }
 
     @Override
@@ -104,8 +126,10 @@ public class FindFragment extends Fragment implements FindView, OnItemClickListe
                     productList.addAll(listFind);
                     mAdapter.notifyDataSetChanged();
                 } else {
-                    for (Product product : listFind) {
-                        if (!product.getNameProduct().toLowerCase().contains(stringSequence)) {
+                    for (int index = 0; index < listFind.size(); index++) {
+                        Product product = listFind.get(index);
+                        if (!vietNamese.ConvertString(product.getNameProduct().toLowerCase())
+                                .contains(charSequence.toString().toLowerCase()) == true) {
                             productList.remove(product);
                         }
                     }
@@ -146,5 +170,10 @@ public class FindFragment extends Fragment implements FindView, OnItemClickListe
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
+    }
+
+    @Override
+    public void onRefresh() {
+        refreshContent();
     }
 }

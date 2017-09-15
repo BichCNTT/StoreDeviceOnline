@@ -50,9 +50,12 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 //TASK 1: Sửa lại keyboard cho scoll lại vs màn hình đăng kí
+//
 //TASK 4: Hiển thị được địa chỉ người bán
-//TASK 6: Làm thêm load more
+//TASK 6: Làm thêm load more cho màn
+//scoll cho màn hình chi tiết sản phẩm
 //11/9/2017: Đọc hiểu cơ chế back stack
+//TASK: LÀm báo cáo,
 public class HomeActivity extends AppCompatActivity implements HomeView, OnItemClickListener, FragmentManager.OnBackStackChangedListener {
     @BindView(R.id.list_item)
     ListView listItem;

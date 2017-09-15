@@ -23,7 +23,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
-public class InformationFragment extends Fragment {
+public class InformationFragment extends Fragment implements OnMapReadyCallback {
 
     @BindView(R.id.map_view)
     MapView mapView;
@@ -110,5 +110,10 @@ public class InformationFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
+    }
+
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+
     }
 }

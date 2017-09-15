@@ -107,11 +107,11 @@ public class MainFragment extends Fragment implements MainFragmentView, OnItemCl
     //tao hinh anh di chuyen (chay quang cao) va lam mo 1 danh sach anh cho truoc
     public void ActionViewFlipper() {
         ArrayList<String> urlImageList = new ArrayList<>();
-        urlImageList.add("http://cms.kienthuc.net.vn/zoom/1000/uploaded/nguyenvan/2016_12_07/song/anh-quang-cao-dien-thoai-don-tim-khan-gia-cua-song-joong-ki-hinh-4.jpg");
-        urlImageList.add("http://kenh14cdn.com/Images/Uploaded/Share/2011/06/14/b89110614tekb8.jpg");
-        urlImageList.add("http://dichvuseolentop.com/wp-content/uploads/2016/09/quang-cao-facebook-bang-fanpage-h1.jpg");
-        urlImageList.add("http://3.bp.blogspot.com/_QeQ79KKL88Q/SuZJHkKwNsI/AAAAAAAADKY/5LgOg_wIkAY/s400/SuperJuniorM_oppo2_mogocafe.jpg");
-        urlImageList.add("http://kenh14cdn.com/Images/Uploaded/Share/2011/06/27/110627tekLG5.jpg");
+        urlImageList.add("https://i.ytimg.com/vi/W6banMHMwq4/maxresdefault.jpg");
+        urlImageList.add("http://sangotunhienpbs.com/wp-content/uploads/2015/12/31.jpg");
+        urlImageList.add("http://2sao.vietnamnetjsc.vn/2016/06/25/09/09/streetstylegioitre1.jpg");
+        urlImageList.add("http://trangsuclopa.com/uploads/advertise/BANNER2s.jpg");
+        urlImageList.add("https://i.homeadore.com/2012/11/18.jpg");
         for (int i = 0; i < urlImageList.size(); i++) {
             ImageView imageView = new ImageView(getContext());
             ImageViewUtil.loadImg(getContext(), urlImageList.get(i), imageView);

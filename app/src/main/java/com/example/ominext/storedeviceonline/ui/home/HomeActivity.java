@@ -28,7 +28,7 @@ import com.example.ominext.storedeviceonline.ui.detail.DetailProductFragment;
 import com.example.ominext.storedeviceonline.ui.fashion.FashionFragment;
 import com.example.ominext.storedeviceonline.ui.find.FindFragment;
 import com.example.ominext.storedeviceonline.ui.furniture.FurnitureFragment;
-import com.example.ominext.storedeviceonline.ui.infopro.InformationFragment;
+import com.example.ominext.storedeviceonline.ui.infostore.InformationFragment;
 import com.example.ominext.storedeviceonline.ui.jewelry.JewelryFragment;
 import com.example.ominext.storedeviceonline.ui.kitchen.KitchenFragment;
 import com.example.ominext.storedeviceonline.ui.laptop.LaptopFragment;
@@ -49,10 +49,9 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-//TASK 0: Hoàn thành hết tất cả các nhóm sản phẩm
 //TASK 1: Sửa lại keyboard cho scoll lại vs màn hình đăng kí
 //TASK 4: Hiển thị được địa chỉ người bán
-//TASK 6: Làm thêm load more và refresh ứng dụng
+//TASK 6: Làm thêm load more
 //11/9/2017: Đọc hiểu cơ chế back stack
 public class HomeActivity extends AppCompatActivity implements HomeView, OnItemClickListener, FragmentManager.OnBackStackChangedListener {
     @BindView(R.id.list_item)

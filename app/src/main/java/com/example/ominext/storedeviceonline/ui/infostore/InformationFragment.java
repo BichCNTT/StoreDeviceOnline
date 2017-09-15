@@ -1,4 +1,4 @@
-package com.example.ominext.storedeviceonline.ui.infopro;
+package com.example.ominext.storedeviceonline.ui.infostore;
 
 import android.Manifest;
 import android.content.pm.PackageManager;

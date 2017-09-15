@@ -24,13 +24,13 @@ import butterknife.ButterKnife;
  * Created by Ominext on 8/22/2017.
  */
 
-public class LaptopAdapter extends RecyclerView.Adapter<LaptopAdapter.RecyclerViewHolder> {
+public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.RecyclerViewHolder> {
     List<Product> productList = new ArrayList<>();
     private OnItemClickListener clickListener;
     Context context;
     LayoutInflater inflater;
 
-    public LaptopAdapter(List<Product> productList, Context context) {
+    public ProductAdapter(List<Product> productList, Context context) {
         this.productList = productList;
         this.context = context;
         this.inflater = LayoutInflater.from(context);
@@ -39,7 +39,7 @@ public class LaptopAdapter extends RecyclerView.Adapter<LaptopAdapter.RecyclerVi
     @Override
     public RecyclerViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-        View view = inflater.inflate(R.layout.row_laptop, parent, false);
+        View view = inflater.inflate(R.layout.row_product, parent, false);
         return new RecyclerViewHolder(view);
     }
 

@@ -1,5 +1,6 @@
 package com.example.ominext.storedeviceonline.ui.phone;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
@@ -21,7 +22,12 @@ import com.example.ominext.storedeviceonline.listener.OnItemClickListener;
 import com.example.ominext.storedeviceonline.listener.OnLoadMoreListener;
 import com.example.ominext.storedeviceonline.model.Product;
 import com.example.ominext.storedeviceonline.ui.detail.DetailProductFragment;
+import com.example.ominext.storedeviceonline.ui.fashion.FashionFragment;
 import com.example.ominext.storedeviceonline.ui.home.HomeActivity;
+import com.example.ominext.storedeviceonline.ui.laptop.LaptopFragment;
+import com.example.ominext.storedeviceonline.ui.laptop.ProductAdapter;
+import com.example.ominext.storedeviceonline.ui.laptop.ProductPresenter;
+import com.example.ominext.storedeviceonline.ui.laptop.ProductView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,29 +38,25 @@ import butterknife.OnClick;
 import butterknife.Unbinder;
 
 
-public class PhoneFragment extends Fragment implements OnItemClickListener, PhoneView, SwipeRefreshLayout.OnRefreshListener {
-    PhoneAdapter adapter;
-    List<Product> productList = new ArrayList<>();
-    List<Product> products = new ArrayList<>();
-    @BindView(R.id.rv_phone)
-    RecyclerView rvPhone;
+public class PhoneFragment extends Fragment implements OnItemClickListener, ProductView, SwipeRefreshLayout.OnRefreshListener {
+    @BindView(R.id.rv_product)
+    RecyclerView rvProduct;
     Unbinder unbinder;
+    ProductAdapter adapter;
+    //    View itemView;
+    List<Product> productList = new ArrayList<>();
+    ProductPresenter mPresenter;
+    @BindView(R.id.img_change)
+    ImageView imgChange;
     @BindView(R.id.spinner_filter)
     Spinner spinnerFilter;
     @BindView(R.id.img_filter)
     ImageView imgFilter;
-    @BindView(R.id.img_change)
-    ImageView imgChange;
     int change = 1;
-    @BindView(R.id.swipe_refresh_layout_phone)
-    SwipeRefreshLayout swipeRefreshLayoutPhone;
-    @BindView(R.id.empty)
-    TextView tvEmpty;
-    private PhonePresenter mPresenter;
-    protected Handler handler;
+    @BindView(R.id.swipe_refresh_layout_product)
+    SwipeRefreshLayout swipeRefreshLayoutProduct;
 
     public PhoneFragment() {
-        // Required empty public constructor
     }
 
     public static PhoneFragment newInstance() {
@@ -77,73 +79,49 @@ public class PhoneFragment extends Fragment implements OnItemClickListener, Phon
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_phone, container, false);
+        View view = inflater.inflate(R.layout.fragment_product, container, false);
         unbinder = ButterKnife.bind(this, view);
         return view;
-    }
-
-    private void init() {
-        handler = new Handler();
-        adapter = new PhoneAdapter(productList, getContext(), rvPhone);
-        RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getContext(), change);
-        rvPhone.setLayoutManager(layoutManager);
-        rvPhone.setHasFixedSize(true);
-        rvPhone.setAdapter(adapter);
-        adapter.setClickListener(this);
-        mPresenter = new PhonePresenter(PhoneFragment.this.getContext(), this);
-        final ArrayAdapter<CharSequence> adapterFilter = ArrayAdapter.createFromResource(getContext(),
-                R.array.fitter_array, android.R.layout.simple_spinner_item);
-        adapterFilter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinnerFilter.setAdapter(adapterFilter);
-
-        swipeRefreshLayoutPhone.setOnRefreshListener(this);
-        swipeRefreshLayoutPhone.post(new Runnable() {
-                                         @Override
-                                         public void run() {
-                                             swipeRefreshLayoutPhone.setRefreshing(true);
-                                             refreshContent();
-                                         }
-                                     }
-        );
-        products.addAll(productList);
-        adapter.setOnLoadMoreListener(new OnLoadMoreListener() {
-            @Override
-            public void onLoadMore() {
-                productList.clear();
-                adapter.notifyItemInserted(productList.size() - 1);
-                handler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        productList.remove(productList.size() - 1);
-                        adapter.notifyItemRemoved(productList.size());
-                        int start = productList.size();
-                        int end = start + 5;
-                        for (int i = start + 1; i <= end; i++) {
-                            productList.add(products.get(i));
-                            adapter.notifyItemInserted(productList.size());
-                        }
-                        adapter.setLoading();
-                    }
-                }, 2000);
-            }
-        });
-    }
-
-    private void refreshContent() {
-        swipeRefreshLayoutPhone.setRefreshing(true);
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                mPresenter.getListPhone();
-                swipeRefreshLayoutPhone.setRefreshing(false);
-            }
-        }, 1000);
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
         unbinder.unbind();
+    }
+
+    private void init() {
+        adapter = new ProductAdapter(productList, getContext());
+        RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getContext(), change);
+        rvProduct.setLayoutManager(layoutManager);
+        rvProduct.setHasFixedSize(true);
+        rvProduct.setAdapter(adapter);
+        adapter.setClickListener(this);
+        mPresenter = new ProductPresenter(PhoneFragment.this.getContext(), this);
+        final ArrayAdapter<CharSequence> adapterFilter = ArrayAdapter.createFromResource(getContext(),
+                R.array.fitter_array, android.R.layout.simple_spinner_item);
+        adapterFilter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerFilter.setAdapter(adapterFilter);
+        swipeRefreshLayoutProduct.setOnRefreshListener(this);
+        swipeRefreshLayoutProduct.post(new Runnable() {
+                                           @Override
+                                           public void run() {
+                                               swipeRefreshLayoutProduct.setRefreshing(true);
+                                               refreshContent();
+                                           }
+                                       }
+        );
+    }
+
+    private void refreshContent() {
+        swipeRefreshLayoutProduct.setRefreshing(true);
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                mPresenter.getListPhone();
+                swipeRefreshLayoutProduct.setRefreshing(false);
+            }
+        }, 1000);
     }
 
     @Override
@@ -156,26 +134,25 @@ public class PhoneFragment extends Fragment implements OnItemClickListener, Phon
         bundle.putString("describe", product.getDescribeProduct());
         bundle.putString("image", product.getImageProduct());
         fragment.setArguments(bundle);
-//thêm vào
         ((HomeActivity) getActivity()).addFragment(fragment);
     }
 
     @Override
-    public void getListPhoneSuccess(List<Product> products) {
+    public void getListProductSuccessFull(List<Product> products) {
         productList.clear();
         productList.addAll(products);
         adapter.notifyDataSetChanged();
     }
 
     @Override
-    public void getListPhoneFailed(String s) {
+    public void getListProductFailed(String s) {
         Toast.makeText(getContext(), "Lỗi tải trang", Toast.LENGTH_SHORT).show();
     }
 
     public void change(int i) {
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getContext(), i);
-        rvPhone.setLayoutManager(layoutManager);
-        rvPhone.setHasFixedSize(true);
+        rvProduct.setLayoutManager(layoutManager);
+        rvProduct.setHasFixedSize(true);
     }
 
     @OnClick({R.id.img_change, R.id.img_filter})
@@ -189,13 +166,14 @@ public class PhoneFragment extends Fragment implements OnItemClickListener, Phon
                     change = 1;
                     change(change);
                 }
+
                 break;
             case R.id.img_filter:
                 String chose = spinnerFilter.getSelectedItem().toString();
                 if (chose.equals("Giá từ thấp đến cao")) {
-                    mPresenter.getListSortUpLaptop();
+                    mPresenter.getListSortUpPhone();
                 } else {
-                    mPresenter.getListSortDownLaptop();
+                    mPresenter.getListSortDownPhone();
                 }
                 adapter.notifyDataSetChanged();
                 break;

@@ -21,6 +21,7 @@ import com.example.ominext.storedeviceonline.listener.OnItemClickListener;
 import com.example.ominext.storedeviceonline.model.Product;
 import com.example.ominext.storedeviceonline.ui.detail.DetailProductFragment;
 import com.example.ominext.storedeviceonline.ui.home.HomeActivity;
+import com.example.ominext.storedeviceonline.ui.phone.PhoneFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,14 +31,14 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
 
-public class LaptopFragment extends Fragment implements OnItemClickListener, LaptopView, SwipeRefreshLayout.OnRefreshListener {
-    @BindView(R.id.rv_laptop)
-    RecyclerView rvLaptop;
+public class LaptopFragment extends Fragment implements OnItemClickListener, ProductView, SwipeRefreshLayout.OnRefreshListener {
+    @BindView(R.id.rv_product)
+    RecyclerView rvProduct;
     Unbinder unbinder;
-    LaptopAdapter adapter;
+    ProductAdapter adapter;
     //    View itemView;
     List<Product> productList = new ArrayList<>();
-    LaptopPresenter mPresenter;
+    ProductPresenter mPresenter;
     @BindView(R.id.img_change)
     ImageView imgChange;
     @BindView(R.id.spinner_filter)
@@ -45,8 +46,8 @@ public class LaptopFragment extends Fragment implements OnItemClickListener, Lap
     @BindView(R.id.img_filter)
     ImageView imgFilter;
     int change = 1;
-    @BindView(R.id.swipe_refresh_layout_laptop)
-    SwipeRefreshLayout swipeRefreshLayoutLaptop;
+    @BindView(R.id.swipe_refresh_layout_product)
+    SwipeRefreshLayout swipeRefreshLayoutProduct;
 
     public LaptopFragment() {
     }
@@ -64,8 +65,6 @@ public class LaptopFragment extends Fragment implements OnItemClickListener, Lap
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        LayoutInflater inflater = (LayoutInflater) view.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-//        itemView = inflater.inflate(R.layout.progressbar, null);
         init();
     }
 
@@ -73,7 +72,7 @@ public class LaptopFragment extends Fragment implements OnItemClickListener, Lap
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_laptop, container, false);
+        View view = inflater.inflate(R.layout.fragment_product, container, false);
         unbinder = ButterKnife.bind(this, view);
         return view;
     }
@@ -85,36 +84,35 @@ public class LaptopFragment extends Fragment implements OnItemClickListener, Lap
     }
 
     private void init() {
-        adapter = new LaptopAdapter(productList, getContext());
+        adapter = new ProductAdapter(productList, getContext());
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getContext(), change);
-        rvLaptop.setLayoutManager(layoutManager);
-        rvLaptop.setHasFixedSize(true);
-        rvLaptop.setAdapter(adapter);
+        rvProduct.setLayoutManager(layoutManager);
+        rvProduct.setHasFixedSize(true);
+        rvProduct.setAdapter(adapter);
         adapter.setClickListener(this);
-        mPresenter = new LaptopPresenter(LaptopFragment.this.getContext(), this);
-//        mPresenter.getListLaptop();
+        mPresenter = new ProductPresenter(LaptopFragment.this.getContext(), this);
         final ArrayAdapter<CharSequence> adapterFilter = ArrayAdapter.createFromResource(getContext(),
                 R.array.fitter_array, android.R.layout.simple_spinner_item);
         adapterFilter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerFilter.setAdapter(adapterFilter);
-        swipeRefreshLayoutLaptop.setOnRefreshListener(this);
-        swipeRefreshLayoutLaptop.post(new Runnable() {
-                                          @Override
-                                          public void run() {
-                                              swipeRefreshLayoutLaptop.setRefreshing(true);
-                                              refreshContent();
-                                          }
-                                      }
+        swipeRefreshLayoutProduct.setOnRefreshListener(this);
+        swipeRefreshLayoutProduct.post(new Runnable() {
+                                           @Override
+                                           public void run() {
+                                               swipeRefreshLayoutProduct.setRefreshing(true);
+                                               refreshContent();
+                                           }
+                                       }
         );
     }
 
     private void refreshContent() {
-        swipeRefreshLayoutLaptop.setRefreshing(true);
+        swipeRefreshLayoutProduct.setRefreshing(true);
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
                 mPresenter.getListLaptop();
-                swipeRefreshLayoutLaptop.setRefreshing(false);
+                swipeRefreshLayoutProduct.setRefreshing(false);
             }
         }, 1000);
     }
@@ -133,21 +131,21 @@ public class LaptopFragment extends Fragment implements OnItemClickListener, Lap
     }
 
     @Override
-    public void getListLaptopSuccess(List<Product> products) {
+    public void getListProductSuccessFull(List<Product> products) {
         productList.clear();
         productList.addAll(products);
         adapter.notifyDataSetChanged();
     }
 
     @Override
-    public void getListLaptopFailed(String s) {
+    public void getListProductFailed(String s) {
         Toast.makeText(getContext(), "Lỗi tải trang", Toast.LENGTH_SHORT).show();
     }
 
     public void change(int i) {
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getContext(), i);
-        rvLaptop.setLayoutManager(layoutManager);
-        rvLaptop.setHasFixedSize(true);
+        rvProduct.setLayoutManager(layoutManager);
+        rvProduct.setHasFixedSize(true);
     }
 
     @OnClick({R.id.img_change, R.id.img_filter})

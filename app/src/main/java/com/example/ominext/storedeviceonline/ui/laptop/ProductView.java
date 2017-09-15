@@ -8,9 +8,9 @@ import java.util.List;
  * Created by Ominext on 8/28/2017.
  */
 
-public interface LaptopView {
-    void getListLaptopSuccess(List<Product> products);
+public interface ProductView {
+    void getListProductSuccessFull(List<Product> products);
 
-    void getListLaptopFailed(String s);
+    void getListProductFailed(String s);
 
 }

@@ -13,17 +13,17 @@
     <string name="thank3">Lưu ý rằng: Đơn hàng của quý khách có thể sẽ được giao nhiều lần nếu có sản phẩm được bán bởi các đơn vị Thương nhân khác nhau.
     Kính chúc quý khách có trải nghiệm mua sắm trực tuyến tuyệt vời nhất tại An Nguyên!</string>
     <string-array name="quantity_array">
-    <item>1</item>
-    <item>2</item>
-    <item>3</item>
-    <item>4</item>
-    <item>5</item>
-    <item>6</item>
-    <item>7</item>
-    <item>8</item>
-    <item>9</item>
-    <item>10</item>
-</string-array>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+        <item>8</item>
+        <item>9</item>
+        <item>10</item>
+    </string-array>
     <string-array name="fitter_array">
         <item>Giá từ thấp đến cao</item>
         <item>Giá từ cao xuống thấp</item>

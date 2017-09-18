@@ -3,6 +3,7 @@ package com.example.ominext.storedeviceonline.ui.find;
 import android.content.Context;
 import android.util.Log;
 
+import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -32,6 +33,8 @@ public class FindPresenter {
     int mPriceProduct = 0;
     private Context mContext;
     private FindView mFindView;
+    private RequestQueue requestQueue;
+    private int requestCount = 1;
 
     public FindPresenter(Context mContext, FindView mFindView) {
         this.mContext = mContext;
@@ -39,8 +42,9 @@ public class FindPresenter {
     }
 
     public void getListFind() {
+        requestQueue = Volley.newRequestQueue(mContext);
+//        getData();
         final List<Product> listFind = new ArrayList<>();
-        final RequestQueue requestQueue = Volley.newRequestQueue(mContext);
         JsonArrayRequest arrayRequest = new JsonArrayRequest(Server.urlProduct, new Response.Listener<JSONArray>() {
             @Override
             public void onResponse(JSONArray response) {
@@ -71,4 +75,41 @@ public class FindPresenter {
         });
         requestQueue.add(arrayRequest);
     }
+//    public void getData() {
+//        requestQueue.add(getDataFromSerVer(requestCount));
+//        requestCount++;
+//    }
+//
+//    private JsonArrayRequest getDataFromSerVer(int requestCount) {
+//        final List<Product> listFind = new ArrayList<>();
+//        JsonArrayRequest arrayRequest = new JsonArrayRequest(Server.urlFind + String.valueOf(requestCount), new Response.Listener<JSONArray>() {
+//            @Override
+//            public void onResponse(JSONArray response) {
+//                if (response != null) {
+//                    for (int i = 0; i < response.length(); i++) {
+//                        try {
+//                            JSONObject jsonObject = response.getJSONObject(i);
+//                            mIdProduct = jsonObject.getInt("IdProduct");
+//                            mTdProductType = jsonObject.getInt("IdProductType");
+//                            mDescribeProduct = jsonObject.getString("describeProduct");
+//                            mImgProduct = jsonObject.getString("imageProduct");
+//                            mPriceProduct = jsonObject.getInt("priceProduct");
+//                            mNameProduct = jsonObject.getString("nameProduct");
+//                            listFind.add(new Product(mIdProduct, mNameProduct, mPriceProduct, mImgProduct, mDescribeProduct, mTdProductType));
+//                        } catch (JSONException e) {
+//                            e.printStackTrace();
+//                        }
+//                    }
+//                }
+//                mFindView.getListFindSuccess(listFind);
+//            }
+//        }, new Response.ErrorListener() {
+//            @Override
+//            public void onErrorResponse(VolleyError error) {
+//                Log.e("==============>", error.toString());
+//                mFindView.getListFindFailed(error.toString());
+//            }
+//        });
+//        return arrayRequest;
+//    }
 }

@@ -49,7 +49,7 @@ public class CartFragment extends Fragment implements CartView, OnItemClickListe
     @BindView(R.id.btn_continue)
     Button btnContinue;
     Unbinder unbinder;
-    CartAdapter adapter=new CartAdapter();
+    CartAdapter adapter = new CartAdapter();
     List<Cart> cartList = new ArrayList<>();
     String name = "";
     int price = 0;
@@ -65,11 +65,14 @@ public class CartFragment extends Fragment implements CartView, OnItemClickListe
     String path = null;
     String fileName = "cart.txt";
     File file = null;
+    String fileNameOutPut = "cart1.txt";
 
     public CartFragment() {
         // Required empty public constructor
     }
 
+    //gop san pham giong nhau lam mot
+//    truoc khi them vao list. ktra xem danh sach do co chua pham tu tuong tu hay khong. neu co thi so luong sp number se bang cai cu ma cong voi cai moi va them vao list trog ds
     public static CartFragment newInstance() {
         CartFragment fragment = new CartFragment();
         return fragment;
@@ -112,13 +115,53 @@ public class CartFragment extends Fragment implements CartView, OnItemClickListe
             price = bundle.getInt("price");
             image = bundle.getString("image");
             number = bundle.getInt("number");
-            Cart cart = new Cart(name, image, number, price);
-            cartList.add(cart);
-            try {
-                String jsonText = Cache.writeJsonStream(cart);
-                Cache.saveToFile(path, fileName, jsonText);
-            } catch (Exception e) {
-                e.printStackTrace();
+            cartList = Cache.readFile(path + fileName);
+//            them vao nay->doc file txt ra xog ktra
+            int check = 0;//check de ktra xem cai tong so luong co lon hon so luong san pham toi da co the co hay khong neu lon hon thi thong bao khong duoc vuot qua 10 sp
+            if (!cartList.isEmpty()) {
+                for (int i = 0; i < cartList.size(); i++) {
+                    if ((cartList.get(i).getName().equals(name)) && (cartList.get(i).getImage().equals(image)) && (cartList.get(i).getPrice() == price)) {
+                        if(number + cartList.get(i).getNumber() <= 10){
+//                            xoa trong file text di sau do them vao 1 ptu moi
+//                        bien phan tu thu i thanh chuoi json xong xoa
+                            try {
+                                number += cartList.get(i).getNumber();
+                                Cache.delete(path, fileName, fileNameOutPut, Cache.writeJsonStream(cartList.get(i)));
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                            break;
+                        } else {
+                                check = 1;
+                            }
+                        }
+                    }
+                }
+            if (check != 1) {
+                Cart cart = new Cart(name, image, number, price);
+                cartList.add(cart);
+                try {
+                    String jsonText = Cache.writeJsonStream(cart);
+                    Cache.saveToFile(path, fileName, jsonText);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            } else {
+                AlertDialog.Builder builder;
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    builder = new AlertDialog.Builder(getContext(), android.R.style.Theme_Material_Dialog_Alert);
+                } else {
+                    builder = new AlertDialog.Builder(getContext());
+                }
+                builder.setTitle("Lưu ý")
+                        .setMessage("Mặt hàng này đã tồn tại. Số lượng sản phẩm cộng dồn lớn hơn mức cho phép. Bạn chỉ có thể thêm vào giỏ tối đa 10 sản phẩm cho mỗi mặt hàng")
+                        .setPositiveButton("Đồng ý", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                            }
+                        })
+                        .setIcon(android.R.drawable.ic_secure)
+                        .show();
             }
         }
         cartList = Cache.readFile(path + fileName);

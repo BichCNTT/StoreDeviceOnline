@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -33,7 +34,7 @@ import butterknife.OnClick;
 import butterknife.Unbinder;
 
 
-public class PhoneFragment extends Fragment implements OnItemClickListener, ProductView, SwipeRefreshLayout.OnRefreshListener {
+public class PhoneFragment extends Fragment implements OnItemClickListener, ProductView, SwipeRefreshLayout.OnRefreshListener{
     @BindView(R.id.rv_product)
     RecyclerView rvProduct;
     Unbinder unbinder;
@@ -50,6 +51,8 @@ public class PhoneFragment extends Fragment implements OnItemClickListener, Prod
     int change = 1;
     @BindView(R.id.swipe_refresh_layout_product)
     SwipeRefreshLayout swipeRefreshLayoutProduct;
+    @BindView(R.id.progressbar_product)
+    ProgressBar progressbarProduct;
 
     public PhoneFragment() {
     }
@@ -106,6 +109,7 @@ public class PhoneFragment extends Fragment implements OnItemClickListener, Prod
                                            }
                                        }
         );
+//        rvProduct.setOnScrollChangeListener(this);
     }
 
     private void refreshContent() {
@@ -179,4 +183,9 @@ public class PhoneFragment extends Fragment implements OnItemClickListener, Prod
     public void onRefresh() {
         refreshContent();
     }
+//
+//    @Override
+//    public void onScrollChange(View view, int i, int i1, int i2, int i3) {
+//        mPresenter.getListPhone();
+//    }
 }

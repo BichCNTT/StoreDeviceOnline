@@ -179,7 +179,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.RecyclerViewHo
                         builder = new AlertDialog.Builder(context);
                     }
                     builder.setTitle("Cảnh báo")
-                            .setMessage("Bạn có chắc chắn muốn xóa đơn hàng này")
+                            .setMessage("Bạn có chắc chắn muốn xóa mặt hàng này")
                             .setPositiveButton("Có", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialogInterface, int i) {

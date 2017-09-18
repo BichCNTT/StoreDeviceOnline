@@ -28,7 +28,6 @@ import com.example.ominext.storedeviceonline.ui.detail.DetailProductFragment;
 import com.example.ominext.storedeviceonline.ui.fashion.FashionFragment;
 import com.example.ominext.storedeviceonline.ui.find.FindFragment;
 import com.example.ominext.storedeviceonline.ui.furniture.FurnitureFragment;
-import com.example.ominext.storedeviceonline.ui.infostore.InformationFragment;
 import com.example.ominext.storedeviceonline.ui.jewelry.JewelryFragment;
 import com.example.ominext.storedeviceonline.ui.kitchen.KitchenFragment;
 import com.example.ominext.storedeviceonline.ui.laptop.LaptopFragment;
@@ -40,6 +39,7 @@ import com.example.ominext.storedeviceonline.ui.pet.PetFragment;
 import com.example.ominext.storedeviceonline.ui.phone.PhoneFragment;
 import com.example.ominext.storedeviceonline.ui.sport.SportFragment;
 import com.example.ominext.storedeviceonline.ui.stationery.StationeryFragment;
+import com.example.ominext.storedeviceonline.ui.storeinfo.StoreInfoFragment;
 import com.example.ominext.storedeviceonline.ui.technologyequipment.TechnologyEquipmentFragment;
 import com.example.ominext.storedeviceonline.ui.userinfo.UserInfoFragment;
 
@@ -49,13 +49,12 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-//TASK 1: Sửa lại keyboard cho scoll lại vs màn hình đăng kí
-//
-//TASK 4: Hiển thị được địa chỉ người bán
+//Task: Loc gia
 //TASK 6: Làm thêm load more cho màn
-//scoll cho màn hình chi tiết sản phẩm
-//11/9/2017: Đọc hiểu cơ chế back stack
-//TASK: LÀm báo cáo,
+//  - Hiển số lượng mặt hàng đã thêm vào giỏ trên icon giỏ hàng
+//                                    - Thông báo về máy nếu có sản phẩm mới (notification)
+//                                            - Đẩy lên host dùng hostinger
+//TASK: LÀm báo cáo
 public class HomeActivity extends AppCompatActivity implements HomeView, OnItemClickListener, FragmentManager.OnBackStackChangedListener {
     @BindView(R.id.list_item)
     ListView listItem;
@@ -147,7 +146,7 @@ public class HomeActivity extends AppCompatActivity implements HomeView, OnItemC
                 fragmentCurrent = ContactFragment.newInstance();
                 break;
             case 14:
-                fragmentCurrent = InformationFragment.newInstance();
+                fragmentCurrent = StoreInfoFragment.newInstance();
                 break;
             default:
                 break;

@@ -32,6 +32,8 @@ public class ProductPresenter {
     int priceProduct = 0;
     String imageProduct = "";
     String describeProduct = "";
+    RequestQueue requestQueue;
+//    int requestCount = 1;
 
     public ProductPresenter(Context mContext, ProductView mLaptopView) {
         this.mContext = mContext;
@@ -39,7 +41,8 @@ public class ProductPresenter {
     }
 
     public void getList(String url) {
-        final RequestQueue requestQueue = Volley.newRequestQueue(mContext);
+        requestQueue = Volley.newRequestQueue(mContext);
+//        getData(url);
         final List<Product> productList = new ArrayList<>();
         JsonArrayRequest arrayRequest = new JsonArrayRequest(url, new Response.Listener<JSONArray>() {
             @Override
@@ -71,6 +74,45 @@ public class ProductPresenter {
         });
         requestQueue.add(arrayRequest);
     }
+
+    //
+//    public void getData(String url) {
+//        requestQueue.add(getDataFromSerVer(requestCount, url));
+//        requestCount++;
+//    }
+//
+//    private JsonArrayRequest getDataFromSerVer(int requestCount, String url) {
+//        final List<Product> productList = new ArrayList<>();
+//        JsonArrayRequest arrayRequest = new JsonArrayRequest(url + requestCount, new Response.Listener<JSONArray>() {
+//            @Override
+//            public void onResponse(JSONArray response) {
+//                if ((response != null) && (response.length() > 0)) {
+//                    for (int i = 0; i < response.length(); i++) {
+//                        try {
+//                            JSONObject jsonObject = response.getJSONObject(i);
+//                            idProductType = jsonObject.getInt("IdProductType");
+//                            idProduct = jsonObject.getInt("IdProduct");
+//                            nameProduct = jsonObject.getString("nameProduct");
+//                            priceProduct = jsonObject.getInt("priceProduct");
+//                            imageProduct = jsonObject.getString("imageProduct");
+//                            describeProduct = jsonObject.getString("describeProduct");
+//                            productList.add(new Product(idProduct, nameProduct, priceProduct, imageProduct, describeProduct, idProductType));
+//                        } catch (JSONException e) {
+//                            e.printStackTrace();
+//                        }
+//                    }
+//                }
+//                mLaptopView.getListProductSuccessFull(productList);
+//            }
+//        }, new Response.ErrorListener() {
+//            @Override
+//            public void onErrorResponse(VolleyError error) {
+//                Log.e("==============>", error.toString());
+//                mLaptopView.getListProductFailed(error.toString());
+//            }
+//        });
+//        return arrayRequest;
+//    }
 
     //PHONE
     public void getListPhone() {
@@ -154,7 +196,7 @@ public class ProductPresenter {
 
     //   CleanningStuff
     public void getListSortDownCleanningStuff() {
-        getList(Server.urlSortUpCleanningStuff);
+        getList(Server.urlSortDownCleanningStuff);
     }
 
     public void getListSortUpCleanningStuff() {

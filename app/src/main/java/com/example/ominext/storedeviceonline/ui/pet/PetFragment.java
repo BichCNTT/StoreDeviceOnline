@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -49,6 +50,8 @@ public class PetFragment extends Fragment implements OnItemClickListener, Produc
     int change = 1;
     @BindView(R.id.swipe_refresh_layout_product)
     SwipeRefreshLayout swipeRefreshLayoutProduct;
+    @BindView(R.id.progressbar_product)
+    ProgressBar progressbarProduct;
 
     public PetFragment() {
     }

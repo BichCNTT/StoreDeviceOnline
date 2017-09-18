@@ -7,8 +7,10 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.widget.NestedScrollView;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -17,8 +19,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import com.android.volley.RequestQueue;
 import com.example.ominext.storedeviceonline.R;
 import com.example.ominext.storedeviceonline.listener.OnItemClickListener;
 import com.example.ominext.storedeviceonline.model.Product;
@@ -37,6 +41,8 @@ public class FindFragment extends Fragment implements FindView, OnItemClickListe
     EditText edtFind;
     @BindView(R.id.swipe_refresh_layout_find)
     SwipeRefreshLayout swipeRefreshLayoutFind;
+    //    @BindView(R.id.progressbar_find)
+//    ProgressBar progressbarFind;
     private FindAdapter mAdapter;
     List<Product> productList = new ArrayList<>();
     private FindPresenter mPresenter;
@@ -94,6 +100,7 @@ public class FindFragment extends Fragment implements FindView, OnItemClickListe
                 refreshContent();
             }
         });
+//        rvListFind.setOnScrollChangeListener(this);
     }
 
     public void refreshContent() {
@@ -176,4 +183,23 @@ public class FindFragment extends Fragment implements FindView, OnItemClickListe
     public void onRefresh() {
         refreshContent();
     }
+
+    private boolean isLastItemDisplaying(RecyclerView recyclerView) {
+        if (recyclerView.getAdapter().getItemCount() != 0) {
+            int lastVisibleItemPosition = ((LinearLayoutManager) recyclerView.getLayoutManager()).findLastVisibleItemPosition();
+            if (lastVisibleItemPosition != RecyclerView.NO_POSITION && lastVisibleItemPosition == recyclerView.getAdapter().getItemCount() - 1) {
+                return true;
+            }
+        }
+        return false;
+    }
+//
+//    @Override
+//    public void onScrollChange(View view, int i, int i1, int i2, int i3) {
+//        if (isLastItemDisplaying(rvListFind)) {
+////            progressbarFind.setVisibility(View.VISIBLE);
+//            mPresenter.getListFind();
+////            progressbarFind.setVisibility(View.GONE);
+//        }
+//    }
 }

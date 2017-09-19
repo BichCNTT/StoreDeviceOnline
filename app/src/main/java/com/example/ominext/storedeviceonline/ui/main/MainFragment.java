@@ -28,7 +28,7 @@ import java.util.ArrayList;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
-
+//khi mà refresh thì gọi lại cái page đầu tiên trong loadmore. Viết lại loadmore. Sửa api, sửa ở trong
 //fragment chứa giao diện chính <- giao diện lúc mở máy lên
 public class MainFragment extends Fragment implements MainFragmentView, OnItemClickListener, SwipeRefreshLayout.OnRefreshListener {
 

@@ -1,9 +1,18 @@
 package com.example.ominext.storedeviceonline.ui.home;
 
+import com.example.ominext.storedeviceonline.model.Cache;
+import com.mikepenz.materialdrawer.Drawer;
+import com.mikepenz.materialdrawer.DrawerBuilder;
+import com.mikepenz.materialdrawer.model.DividerDrawerItem;
+import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
+import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
+
 import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -42,6 +51,9 @@ import com.example.ominext.storedeviceonline.ui.stationery.StationeryFragment;
 import com.example.ominext.storedeviceonline.ui.storeinfo.StoreInfoFragment;
 import com.example.ominext.storedeviceonline.ui.technologyequipment.TechnologyEquipmentFragment;
 import com.example.ominext.storedeviceonline.ui.userinfo.UserInfoFragment;
+import com.mikepenz.actionitembadge.library.ActionItemBadge;
+import com.mikepenz.actionitembadge.library.ActionItemBadgeAdder;
+import com.mikepenz.actionitembadge.library.utils.BadgeStyle;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -51,9 +63,6 @@ import butterknife.ButterKnife;
 
 //Task: Loc gia
 //TASK 6: Làm thêm load more cho màn
-//  - Hiển số lượng mặt hàng đã thêm vào giỏ trên icon giỏ hàng
-//                                    - Thông báo về máy nếu có sản phẩm mới (notification)
-//                                            - Đẩy lên host dùng hostinger
 //TASK: LÀm báo cáo
 public class HomeActivity extends AppCompatActivity implements HomeView, OnItemClickListener, FragmentManager.OnBackStackChangedListener {
     @BindView(R.id.list_item)
@@ -73,6 +82,7 @@ public class HomeActivity extends AppCompatActivity implements HomeView, OnItemC
     HomePresenter mPresenter;
     List<Product> listFind = new ArrayList<>();
     private int tabCurrent = 0;
+    int count = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,6 +104,7 @@ public class HomeActivity extends AppCompatActivity implements HomeView, OnItemC
 
     private void init() {
         mPresenter = new HomePresenter(HomeActivity.this, this);
+        count = mPresenter.getSizeProduct();
         ActionBar();
         mPresenter.getListProductType();
     }
@@ -189,6 +200,9 @@ public class HomeActivity extends AppCompatActivity implements HomeView, OnItemC
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main_menu, menu);
+        if (count != 0) {
+            ActionItemBadge.update(this, menu.findItem(R.id.menu_cart), ContextCompat.getDrawable(this, R.drawable.ic_cart), ActionItemBadge.BadgeStyles.RED.getStyle(), count);
+        }
         return true;
     }
 
@@ -196,6 +210,8 @@ public class HomeActivity extends AppCompatActivity implements HomeView, OnItemC
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menu_cart:
+                count = Integer.MIN_VALUE;
+                ActionItemBadge.update(item, count);
                 Bundle bundle = new Bundle();
                 bundle.putInt("key", 0);
                 Fragment fragment = CartFragment.newInstance();

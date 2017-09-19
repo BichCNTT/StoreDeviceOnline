@@ -29,6 +29,7 @@ import static com.android.volley.VolleyLog.TAG;
  */
 //lưu lại các mặt hàng đã thêm vào giỏ hàng khi chưa thanh toán
 public class Cache {
+    public static int size=0;
 //chuyển thành chuỗi json
     public static String writeJsonStream(Cart data) throws Exception {
         StringWriter output = new StringWriter();
@@ -121,6 +122,7 @@ public class Cache {
         } catch (Exception e) {
             Log.e("==============>Error: ", e.toString());
         }
+        size=cartList.size();
         return cartList;
     }
 }

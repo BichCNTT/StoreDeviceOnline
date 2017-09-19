@@ -36,13 +36,13 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
-public class FindFragment extends Fragment implements FindView, OnItemClickListener, SwipeRefreshLayout.OnRefreshListener {
+public class FindFragment extends Fragment implements FindView, OnItemClickListener, SwipeRefreshLayout.OnRefreshListener, RecyclerView.OnScrollChangeListener {
     @BindView(R.id.edt_find)
     EditText edtFind;
     @BindView(R.id.swipe_refresh_layout_find)
     SwipeRefreshLayout swipeRefreshLayoutFind;
-    //    @BindView(R.id.progressbar_find)
-//    ProgressBar progressbarFind;
+//    @BindView(R.id.progressbar_find)
+//    public ProgressBar progressbarFind;
     private FindAdapter mAdapter;
     List<Product> productList = new ArrayList<>();
     private FindPresenter mPresenter;
@@ -80,8 +80,8 @@ public class FindFragment extends Fragment implements FindView, OnItemClickListe
         init();
     }
 
-    //khi thay đổi trong text thì thay đổi trong list
     public void init() {
+//        progressbarFind.setVisibility(View.GONE);
         edtFind.requestFocus();
         InputMethodManager inputMethodManager = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
         inputMethodManager.showSoftInput(edtFind, InputMethodManager.SHOW_IMPLICIT);
@@ -89,6 +89,8 @@ public class FindFragment extends Fragment implements FindView, OnItemClickListe
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getContext(), 1);
         rvListFind.setLayoutManager(layoutManager);
         rvListFind.setHasFixedSize(true);
+        rvListFind.setOnScrollChangeListener(this);
+        getActivity().setProgressBarIndeterminateVisibility(true);
         rvListFind.setAdapter(mAdapter);
         mAdapter.setClickListener(this);
         mPresenter = new FindPresenter(FindFragment.this.getContext(), this);
@@ -100,7 +102,6 @@ public class FindFragment extends Fragment implements FindView, OnItemClickListe
                 refreshContent();
             }
         });
-//        rvListFind.setOnScrollChangeListener(this);
     }
 
     public void refreshContent() {
@@ -108,7 +109,8 @@ public class FindFragment extends Fragment implements FindView, OnItemClickListe
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                mPresenter.getListFind();
+//                truyền vào 1 khi mà muốn load lại page 1 -> chức năng refresh
+                mPresenter.getListFind(1);
                 swipeRefreshLayoutFind.setRefreshing(false);
             }
         }, 1000);
@@ -153,7 +155,7 @@ public class FindFragment extends Fragment implements FindView, OnItemClickListe
 
     @Override
     public void getListFindFailed(String s) {
-        Toast.makeText(getContext(), "Lỗi tải trang", Toast.LENGTH_SHORT).show();
+//        Toast.makeText(getContext(), "Lỗi tải trang", Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -193,13 +195,13 @@ public class FindFragment extends Fragment implements FindView, OnItemClickListe
         }
         return false;
     }
-//
-//    @Override
-//    public void onScrollChange(View view, int i, int i1, int i2, int i3) {
-//        if (isLastItemDisplaying(rvListFind)) {
-////            progressbarFind.setVisibility(View.VISIBLE);
-//            mPresenter.getListFind();
-////            progressbarFind.setVisibility(View.GONE);
-//        }
-//    }
+
+    @Override
+    public void onScrollChange(View view, int i, int i1, int i2, int i3) {
+        if (isLastItemDisplaying(rvListFind)) {
+//            truyền vào 0 khi vẫn tiếp tục loadmore
+            mPresenter.getListFind(0);
+//            progressbarFind.setVisibility(View.GONE);
+        }
+    }
 }

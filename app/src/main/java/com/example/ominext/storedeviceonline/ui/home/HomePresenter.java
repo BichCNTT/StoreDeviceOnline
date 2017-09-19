@@ -1,6 +1,7 @@
 package com.example.ominext.storedeviceonline.ui.home;
 
 import android.content.Context;
+import android.os.Environment;
 import android.util.Log;
 
 import com.android.volley.DefaultRetryPolicy;
@@ -10,6 +11,7 @@ import com.android.volley.RetryPolicy;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.ominext.storedeviceonline.model.Cache;
 import com.example.ominext.storedeviceonline.model.ProductType;
 import com.example.ominext.storedeviceonline.until.Server;
 
@@ -17,8 +19,12 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
+import static java.security.AccessController.getContext;
 
 /**
  * Created by Ominext on 8/28/2017.
@@ -32,9 +38,39 @@ public class HomePresenter {
     private Context mContext;
     private HomeView mHomeView;
 
+    String path = null;
+    File file = null;
+    String fileName = "cart.txt";
+
     public HomePresenter(Context context, HomeView homeView) {
         this.mContext = context;
         this.mHomeView = homeView;
+    }
+
+    public void initFile() {
+        File file1 = new File(Environment.getExternalStorageDirectory(), mContext.getPackageName());
+        if (!file1.exists())
+            file1.mkdir();
+        path = file1.getAbsolutePath() + "/";
+
+        File file2 = new File(path);
+        if (!file2.exists()) {
+            file2.mkdirs();
+        }
+        file = new File(path + fileName);
+        if (!file.exists()) {
+            try {
+                file.createNewFile();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public int getSizeProduct() {
+        initFile();
+        Cache.readFile(path + fileName);
+        return Cache.size;
     }
 
     public void getListProductType() {

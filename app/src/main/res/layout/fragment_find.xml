@@ -15,24 +15,29 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:weightSum="10">
 
             <EditText
                 android:id="@+id/edt_find"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="0dp"
+                android:layout_weight="1"
                 android:hint="Search..."
                 android:singleLine="true" />
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/rv_list_find"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"></android.support.v7.widget.RecyclerView>
+                android:layout_height="0dp"
+                android:layout_weight="9"></android.support.v7.widget.RecyclerView>
 
             <ProgressBar
                 android:id="@+id/progressbar_find"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="0dp"
+                android:layout_gravity="center"
+                android:layout_weight="0.5" />
         </LinearLayout>
 
     </android.support.v4.widget.SwipeRefreshLayout>

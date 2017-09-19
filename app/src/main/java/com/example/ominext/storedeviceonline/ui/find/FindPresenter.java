@@ -2,6 +2,7 @@ package com.example.ominext.storedeviceonline.ui.find;
 
 import android.content.Context;
 import android.util.Log;
+import android.view.View;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -35,54 +36,17 @@ public class FindPresenter {
     private FindView mFindView;
     private RequestQueue requestQueue;
     private int requestCount = 1;
-
     public FindPresenter(Context mContext, FindView mFindView) {
         this.mContext = mContext;
         this.mFindView = mFindView;
     }
 
-    public void getListFind() {
+    //nếu mà load more
+    public void getListFind(int page) {
         requestQueue = Volley.newRequestQueue(mContext);
-//        getData();
-        final List<Product> listFind = new ArrayList<>();
-        JsonArrayRequest arrayRequest = new JsonArrayRequest(Server.urlProduct, new Response.Listener<JSONArray>() {
-            @Override
-            public void onResponse(JSONArray response) {
-                if (response != null) {
-                    for (int i = 0; i < response.length(); i++) {
-                        try {
-                            JSONObject jsonObject = response.getJSONObject(i);
-                            mIdProduct = jsonObject.getInt("IdProduct");
-                            mTdProductType = jsonObject.getInt("IdProductType");
-                            mDescribeProduct = jsonObject.getString("describeProduct");
-                            mImgProduct = jsonObject.getString("imageProduct");
-                            mPriceProduct = jsonObject.getInt("priceProduct");
-                            mNameProduct = jsonObject.getString("nameProduct");
-                            listFind.add(new Product(mIdProduct, mNameProduct, mPriceProduct, mImgProduct, mDescribeProduct, mTdProductType));
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }
-                mFindView.getListFindSuccess(listFind);
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Log.e("==============>", error.toString());
-                mFindView.getListFindFailed(error.toString());
-            }
-        });
-        requestQueue.add(arrayRequest);
-    }
-//    public void getData() {
-//        requestQueue.add(getDataFromSerVer(requestCount));
-//        requestCount++;
-//    }
-//
-//    private JsonArrayRequest getDataFromSerVer(int requestCount) {
+        getData(page);
 //        final List<Product> listFind = new ArrayList<>();
-//        JsonArrayRequest arrayRequest = new JsonArrayRequest(Server.urlFind + String.valueOf(requestCount), new Response.Listener<JSONArray>() {
+//        JsonArrayRequest arrayRequest = new JsonArrayRequest(Server.urlProduct, new Response.Listener<JSONArray>() {
 //            @Override
 //            public void onResponse(JSONArray response) {
 //                if (response != null) {
@@ -110,6 +74,50 @@ public class FindPresenter {
 //                mFindView.getListFindFailed(error.toString());
 //            }
 //        });
-//        return arrayRequest;
-//    }
+//        requestQueue.add(arrayRequest);
+    }
+
+    //    page=0 cho tự động tăng, page=1 cho load từ đầu
+    public void getData(int page) {
+        if (page == 0) {
+            requestQueue.add(getDataFromSerVer(requestCount));
+            requestCount++;
+        } else {
+            requestCount = page;
+            requestQueue.add(getDataFromSerVer(requestCount));
+        }
+    }
+
+    private JsonArrayRequest getDataFromSerVer(int requestCount) {
+        final List<Product> listFind = new ArrayList<>();
+        JsonArrayRequest arrayRequest = new JsonArrayRequest(Server.urlFind + String.valueOf(requestCount), new Response.Listener<JSONArray>() {
+            @Override
+            public void onResponse(JSONArray response) {
+                if (response != null) {
+                    for (int i = 0; i < response.length(); i++) {
+                        try {
+                            JSONObject jsonObject = response.getJSONObject(i);
+                            mIdProduct = jsonObject.getInt("IdProduct");
+                            mTdProductType = jsonObject.getInt("IdProductType");
+                            mDescribeProduct = jsonObject.getString("describeProduct");
+                            mImgProduct = jsonObject.getString("imageProduct");
+                            mPriceProduct = jsonObject.getInt("priceProduct");
+                            mNameProduct = jsonObject.getString("nameProduct");
+                            listFind.add(new Product(mIdProduct, mNameProduct, mPriceProduct, mImgProduct, mDescribeProduct, mTdProductType));
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+                mFindView.getListFindSuccess(listFind);
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e("==============>", error.toString());
+                mFindView.getListFindFailed(error.toString());
+            }
+        });
+        return arrayRequest;
+    }
 }

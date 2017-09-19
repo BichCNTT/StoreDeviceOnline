@@ -50,7 +50,7 @@ public class CartFragment extends Fragment implements CartView, OnItemClickListe
     Button btnContinue;
     Unbinder unbinder;
     CartAdapter adapter = new CartAdapter();
-    List<Cart> cartList = new ArrayList<>();
+    public List<Cart> cartList = new ArrayList<>();
     String name = "";
     int price = 0;
     String image = "";

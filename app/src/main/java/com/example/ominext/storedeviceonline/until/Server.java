@@ -9,7 +9,7 @@ public class Server {
     public static String urlProductType = "http://" + localhost + "/server/getproducttype.php";
     public static String urlNewProduct = "http://" + localhost + "/server/getnewproduct.php";
     public static String urlProduct = "http://" + localhost + "/server/getproduct.php";
-//    public static String urlFind = "http://" + localhost + "/server/getproduct.php";
+    public static String urlFind = "http://" + localhost + "/server/loadmorefind.php?page=";
     public static String urlPostClientInfo = "http://" + localhost + "/server/postclientinfo.php";
 
     public static String urlSortUpLaptop = "http://" + localhost + "/server/sortuplaptop.php";

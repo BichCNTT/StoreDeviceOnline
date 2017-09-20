@@ -1,15 +1,11 @@
 package com.example.ominext.storedeviceonline.ui.home;
 
-import com.example.ominext.storedeviceonline.model.Cache;
-import com.mikepenz.materialdrawer.Drawer;
-import com.mikepenz.materialdrawer.DrawerBuilder;
-import com.mikepenz.materialdrawer.model.DividerDrawerItem;
-import com.mikepenz.materialdrawer.model.PrimaryDrawerItem;
-import com.mikepenz.materialdrawer.model.interfaces.IDrawerItem;
-
+import android.Manifest;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.os.PersistableBundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
@@ -52,8 +48,6 @@ import com.example.ominext.storedeviceonline.ui.storeinfo.StoreInfoFragment;
 import com.example.ominext.storedeviceonline.ui.technologyequipment.TechnologyEquipmentFragment;
 import com.example.ominext.storedeviceonline.ui.userinfo.UserInfoFragment;
 import com.mikepenz.actionitembadge.library.ActionItemBadge;
-import com.mikepenz.actionitembadge.library.ActionItemBadgeAdder;
-import com.mikepenz.actionitembadge.library.utils.BadgeStyle;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -82,13 +76,17 @@ public class HomeActivity extends AppCompatActivity implements HomeView, OnItemC
     HomePresenter mPresenter;
     List<Product> listFind = new ArrayList<>();
     private int tabCurrent = 0;
-    int count = 0;
+    public int count = 0;
+    public Menu optionsMenu;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
         ButterKnife.bind(this);
+        ActivityCompat.requestPermissions(HomeActivity.this,
+                new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
+                1);
         init();
         listItem.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -197,12 +195,15 @@ public class HomeActivity extends AppCompatActivity implements HomeView, OnItemC
         });
     }
 
+    //sau khi đặt hàng các thứ xong. tiếp tục đặt hàng chuyển từ màn chi tiết sang màn giỏ hàng thì bị
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        optionsMenu = menu;
         getMenuInflater().inflate(R.menu.main_menu, menu);
-        if (count != 0) {
-            ActionItemBadge.update(this, menu.findItem(R.id.menu_cart), ContextCompat.getDrawable(this, R.drawable.ic_cart), ActionItemBadge.BadgeStyles.RED.getStyle(), count);
+        if (count == 0) {
+            count = Integer.MIN_VALUE;
         }
+        ActionItemBadge.update(this, menu.findItem(R.id.menu_cart), ContextCompat.getDrawable(this, R.drawable.ic_cart), ActionItemBadge.BadgeStyles.RED.getStyle(), count);
         return true;
     }
 
@@ -210,8 +211,7 @@ public class HomeActivity extends AppCompatActivity implements HomeView, OnItemC
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menu_cart:
-                count = Integer.MIN_VALUE;
-                ActionItemBadge.update(item, count);
+                ActionItemBadge.update(this, optionsMenu.findItem(R.id.menu_cart), ContextCompat.getDrawable(this, R.drawable.ic_cart), ActionItemBadge.BadgeStyles.RED.getStyle(), count);
                 Bundle bundle = new Bundle();
                 bundle.putInt("key", 0);
                 Fragment fragment = CartFragment.newInstance();
@@ -322,6 +322,28 @@ public class HomeActivity extends AppCompatActivity implements HomeView, OnItemC
         if (fragment instanceof UserInfoFragment) {
             setTitle("Thông tin khách hàng");
             return;
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        switch (requestCode) {
+            case 1: {
+
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+                    // permission was granted, yay! Do the
+                    // contacts-related task you need to do.
+                } else {
+
+                    // permission denied, boo! Disable the
+                    // functionality that depends on this permission.
+                    Toast.makeText(HomeActivity.this, "Permission denied to read your External storage", Toast.LENGTH_SHORT).show();
+                }
+                return;
+            }
         }
     }
 }

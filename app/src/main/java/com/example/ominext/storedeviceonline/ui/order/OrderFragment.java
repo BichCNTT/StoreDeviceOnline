@@ -30,6 +30,7 @@ import com.example.ominext.storedeviceonline.ui.notifi.NotificationFragment;
 import com.example.ominext.storedeviceonline.ui.userinfo.UserInfoFragment;
 import com.example.ominext.storedeviceonline.until.CheckConnectionInternet;
 import com.example.ominext.storedeviceonline.until.Server;
+import com.mikepenz.actionitembadge.library.ActionItemBadge;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -133,6 +134,7 @@ public class OrderFragment extends Fragment {
 //                    sau khi đặt hàng xong xóa giỏ hàng khỏi bộ nhớ đệm
                     File f = new File(path + fileName);
                     f.delete();
+                    ActionItemBadge.update(((HomeActivity) getActivity()).optionsMenu.findItem(R.id.menu_cart), Integer.MIN_VALUE);
                 }
             }, new Response.ErrorListener() {
                 @Override

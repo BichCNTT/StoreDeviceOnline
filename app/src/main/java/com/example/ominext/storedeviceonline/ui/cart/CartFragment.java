@@ -2,6 +2,7 @@ package com.example.ominext.storedeviceonline.ui.cart;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.location.LocationProvider;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
@@ -9,10 +10,12 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,6 +30,7 @@ import com.example.ominext.storedeviceonline.model.Cart;
 import com.example.ominext.storedeviceonline.model.Product;
 import com.example.ominext.storedeviceonline.ui.home.HomeActivity;
 import com.example.ominext.storedeviceonline.ui.userinfo.UserInfoFragment;
+import com.mikepenz.actionitembadge.library.ActionItemBadge;
 
 import java.io.File;
 import java.io.IOException;
@@ -121,8 +125,8 @@ public class CartFragment extends Fragment implements CartView, OnItemClickListe
             if (!cartList.isEmpty()) {
                 for (int i = 0; i < cartList.size(); i++) {
                     if ((cartList.get(i).getName().equals(name)) && (cartList.get(i).getImage().equals(image)) && (cartList.get(i).getPrice() == price)) {
-                        if(number + cartList.get(i).getNumber() <= 10){
-//                            xoa trong file text di sau do them vao 1 ptu moi
+                        if (number + cartList.get(i).getNumber() <= 10) {
+//                        xoa trong file text di sau do them vao 1 ptu moi
 //                        bien phan tu thu i thanh chuoi json xong xoa
                             try {
                                 number += cartList.get(i).getNumber();
@@ -132,11 +136,11 @@ public class CartFragment extends Fragment implements CartView, OnItemClickListe
                             }
                             break;
                         } else {
-                                check = 1;
-                            }
+                            check = 1;
                         }
                     }
                 }
+            }
             if (check != 1) {
                 Cart cart = new Cart(name, image, number, price);
                 cartList.add(cart);
@@ -165,6 +169,9 @@ public class CartFragment extends Fragment implements CartView, OnItemClickListe
             }
         }
         cartList = Cache.readFile(path + fileName);
+        if (cartList.size() != 0) {
+            ActionItemBadge.update(((HomeActivity) getContext()).optionsMenu.findItem(R.id.menu_cart), cartList.size());
+        }
         if (cartList.isEmpty()) {
             tvNoData.setVisibility(View.VISIBLE);
             tvMoney.setVisibility(View.GONE);
@@ -218,40 +225,39 @@ public class CartFragment extends Fragment implements CartView, OnItemClickListe
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.btn_pay:
-                if (cartList.isEmpty()) {
-                    AlertDialog.Builder builder;
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                        builder = new AlertDialog.Builder(getContext(), android.R.style.Theme_Material_Dialog_Alert);
-                    } else {
-                        builder = new AlertDialog.Builder(getContext());
-                    }
-                    builder.setTitle("Thông báo")
-                            .setMessage("Bạn cần thêm hàng vào giỏ để tiến hành đặt hàng")
-                            .setNegativeButton("Thoát", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialogInterface, int i) {
-
-                                }
-                            })
-                            .setIcon(android.R.drawable.ic_dialog_alert)
-                            .show();
-                } else {
-                    Bundle bundle = new Bundle();
-                    bundle.putInt("key", 1);
-                    bundle.putInt("totalMoney", getTotalMoney());
-                    Fragment fragment = UserInfoFragment.newInstance();
-                    fragment.setArguments(bundle);
-                    FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-                    FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                    fragmentTransaction.add(R.id.frame_layout, fragment);
-                    fragmentTransaction.addToBackStack(null);
-                    fragmentTransaction.commit();
-                }
+//                if (cartList.isEmpty()) {
+//                    AlertDialog.Builder builder;
+//                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+//                        builder = new AlertDialog.Builder(getContext(), android.R.style.Theme_Material_Dialog_Alert);
+//                    } else {
+//                        builder = new AlertDialog.Builder(getContext());
+//                    }
+//                    builder.setTitle("Thông báo")
+//                            .setMessage("Bạn cần thêm hàng vào giỏ để tiến hành đặt hàng")
+//                            .setNegativeButton("Thoát", new DialogInterface.OnClickListener() {
+//                                @Override
+//                                public void onClick(DialogInterface dialogInterface, int i) {
+//
+//                                }
+//                            })
+//                            .setIcon(android.R.drawable.ic_dialog_alert)
+//                            .show();
+//                } else {
+                Bundle bundle = new Bundle();
+                bundle.putInt("key", 1);
+                bundle.putInt("totalMoney", getTotalMoney());
+                Fragment fragment = UserInfoFragment.newInstance();
+                fragment.setArguments(bundle);
+                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.add(R.id.frame_layout, fragment);
+                fragmentTransaction.addToBackStack(null);
+                fragmentTransaction.commit();
+//                }
                 break;
             case R.id.btn_continue:
                 Intent intent = new Intent(getContext(), HomeActivity.class);
                 startActivity(intent);
-                break;
         }
     }
 
@@ -267,8 +273,15 @@ public class CartFragment extends Fragment implements CartView, OnItemClickListe
 
     @Override
     public void onItemClick(View view, int position) {
-        if (cartList.isEmpty()) {
+        if (!cartList.isEmpty()) {
+            ActionItemBadge.update(((HomeActivity) getActivity()).optionsMenu.findItem(R.id.menu_cart), cartList.size());
+        } else {
             tvNoData.setVisibility(View.VISIBLE);
+            ActionItemBadge.update(((HomeActivity) getActivity()).optionsMenu.findItem(R.id.menu_cart), Integer.MIN_VALUE);
+            btnPay.setVisibility(View.GONE);
+            btnContinue.setVisibility(View.GONE);
+            tvTotal.setVisibility(View.GONE);
+            tvMoney.setVisibility(View.GONE);
         }
         setMoney();
         money = getTotalMoney();

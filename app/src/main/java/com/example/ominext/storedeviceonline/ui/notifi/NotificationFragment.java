@@ -61,6 +61,7 @@ public class NotificationFragment extends Fragment {
     @OnClick(R.id.btn_comeback)
     public void onViewClicked() {
         Intent intent = new Intent(getContext(), HomeActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
     }
 }

@@ -1,12 +1,11 @@
 package com.example.ominext.storedeviceonline.ui.detail;
 
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,7 +18,10 @@ import android.widget.TextView;
 import com.example.ominext.storedeviceonline.R;
 import com.example.ominext.storedeviceonline.helper.ImageViewUtil;
 import com.example.ominext.storedeviceonline.helper.PriceFormatUtil;
+import com.example.ominext.storedeviceonline.model.Cache;
 import com.example.ominext.storedeviceonline.ui.cart.CartFragment;
+import com.example.ominext.storedeviceonline.ui.home.HomeActivity;
+import com.mikepenz.actionitembadge.library.ActionItemBadge;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

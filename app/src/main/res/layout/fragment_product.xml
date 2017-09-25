@@ -16,6 +16,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:gravity="center"
                 android:layout_margin="5sp"
                 android:orientation="horizontal"
                 android:weightSum="10">
@@ -23,7 +24,7 @@
                 <ImageView
                     android:id="@+id/img_change"
                     android:layout_width="0dp"
-                    android:layout_height="50dp"
+                    android:layout_height="30dp"
                     android:layout_weight="1"
                     android:gravity="left"
                     android:src="@drawable/ic_one_column" />
@@ -48,11 +49,6 @@
                 android:id="@+id/rv_product"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"></android.support.v7.widget.RecyclerView>
-
-            <ProgressBar
-                android:id="@+id/progressbar_product"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
         </LinearLayout>
     </android.support.v4.widget.SwipeRefreshLayout>
 

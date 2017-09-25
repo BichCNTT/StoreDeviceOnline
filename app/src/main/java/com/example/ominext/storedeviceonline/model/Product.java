@@ -35,24 +35,14 @@ public class Product {
         return idProduct;
     }
 
-    public void setIdProduct(int idProduct) {
-        this.idProduct = idProduct;
-    }
 
     public String getNameProduct() {
         return nameProduct;
     }
 
-    public void setNameProduct(String nameProduct) {
-        this.nameProduct = nameProduct;
-    }
 
     public int getPriceProduct() {
         return priceProduct;
-    }
-
-    public void setPriceProduct(int priceProduct) {
-        this.priceProduct = priceProduct;
     }
 
     public String getImageProduct() {
@@ -65,10 +55,6 @@ public class Product {
 
     public String getDescribeProduct() {
         return describeProduct;
-    }
-
-    public void setDescribeProduct(String describeProduct) {
-        this.describeProduct = describeProduct;
     }
 
     public int getIdProductType() {

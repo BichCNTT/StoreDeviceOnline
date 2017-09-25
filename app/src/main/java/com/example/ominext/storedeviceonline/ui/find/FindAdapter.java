@@ -13,7 +13,6 @@ import com.example.ominext.storedeviceonline.helper.ImageViewUtil;
 import com.example.ominext.storedeviceonline.listener.OnItemClickListener;
 import com.example.ominext.storedeviceonline.model.Product;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -24,22 +23,21 @@ import butterknife.ButterKnife;
  */
 
 public class FindAdapter extends RecyclerView.Adapter<FindAdapter.RecyclerViewHolder> {
-    List<Product> mProductList;
-    List<Product> mFilteredList;
-    Context context;
-    LayoutInflater inflater;
+    List<Product> productList;
+    private List<Product> mFilteredList;
+    private Context mContext;
+    private LayoutInflater mInflater;
     private OnItemClickListener clickListener;
 
     public void setClickListener(OnItemClickListener clickListener) {
         this.clickListener = clickListener;
     }
 
-
     public FindAdapter(Context context, List<Product> productList) {
-        this.context = context;
-        this.mProductList = productList;
+        this.mContext = context;
+        this.productList = productList;
         this.mFilteredList = productList;
-        this.inflater = LayoutInflater.from(context);
+        this.mInflater = LayoutInflater.from(context);
     }
 
     @Override
@@ -52,7 +50,7 @@ public class FindAdapter extends RecyclerView.Adapter<FindAdapter.RecyclerViewHo
     @Override
     public void onBindViewHolder(RecyclerViewHolder holder, int position) {
         holder.tvNameFind.setText(mFilteredList.get(position).getNameProduct());
-        ImageViewUtil.loadImg(context, mFilteredList.get(position).getImageProduct(), holder.imgFind);
+        ImageViewUtil.loadImg(mContext, mFilteredList.get(position).getImageProduct(), holder.imgFind);
     }
 
     @Override

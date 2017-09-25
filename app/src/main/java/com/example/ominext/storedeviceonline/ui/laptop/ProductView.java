@@ -12,5 +12,4 @@ public interface ProductView {
     void getListProductSuccessFull(List<Product> products);
 
     void getListProductFailed(String s);
-
 }

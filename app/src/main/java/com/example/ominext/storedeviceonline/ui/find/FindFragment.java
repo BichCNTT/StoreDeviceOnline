@@ -36,13 +36,11 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 
-public class FindFragment extends Fragment implements FindView, OnItemClickListener, SwipeRefreshLayout.OnRefreshListener, RecyclerView.OnScrollChangeListener {
+public class FindFragment extends Fragment implements FindView, OnItemClickListener, SwipeRefreshLayout.OnRefreshListener {
     @BindView(R.id.edt_find)
     EditText edtFind;
     @BindView(R.id.swipe_refresh_layout_find)
     SwipeRefreshLayout swipeRefreshLayoutFind;
-//    @BindView(R.id.progressbar_find)
-//    public ProgressBar progressbarFind;
     private FindAdapter mAdapter;
     List<Product> productList = new ArrayList<>();
     private FindPresenter mPresenter;
@@ -52,7 +50,6 @@ public class FindFragment extends Fragment implements FindView, OnItemClickListe
     VietNamese vietNamese = new VietNamese();
 
     public FindFragment() {
-        // Required empty public constructor
     }
 
     public static FindFragment newInstance() {
@@ -81,7 +78,6 @@ public class FindFragment extends Fragment implements FindView, OnItemClickListe
     }
 
     public void init() {
-//        progressbarFind.setVisibility(View.GONE);
         edtFind.requestFocus();
         InputMethodManager inputMethodManager = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
         inputMethodManager.showSoftInput(edtFind, InputMethodManager.SHOW_IMPLICIT);
@@ -89,8 +85,8 @@ public class FindFragment extends Fragment implements FindView, OnItemClickListe
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getContext(), 1);
         rvListFind.setLayoutManager(layoutManager);
         rvListFind.setHasFixedSize(true);
-        rvListFind.setOnScrollChangeListener(this);
-        getActivity().setProgressBarIndeterminateVisibility(true);
+//        rvListFind.setOnScrollChangeListener(this);
+//        getActivity().setProgressBarIndeterminateVisibility(true);
         rvListFind.setAdapter(mAdapter);
         mAdapter.setClickListener(this);
         mPresenter = new FindPresenter(FindFragment.this.getContext(), this);
@@ -110,7 +106,8 @@ public class FindFragment extends Fragment implements FindView, OnItemClickListe
             @Override
             public void run() {
 //                truyền vào 1 khi mà muốn load lại page 1 -> chức năng refresh
-                mPresenter.getListFind(1);
+//                mPresenter.getListFind(1);
+                mPresenter.getListFind();
                 swipeRefreshLayoutFind.setRefreshing(false);
             }
         }, 1000);
@@ -155,7 +152,7 @@ public class FindFragment extends Fragment implements FindView, OnItemClickListe
 
     @Override
     public void getListFindFailed(String s) {
-//        Toast.makeText(getContext(), "Lỗi tải trang", Toast.LENGTH_SHORT).show();
+        Toast.makeText(getContext(), "Lỗi tải trang", Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -186,22 +183,22 @@ public class FindFragment extends Fragment implements FindView, OnItemClickListe
         refreshContent();
     }
 
-    private boolean isLastItemDisplaying(RecyclerView recyclerView) {
-        if (recyclerView.getAdapter().getItemCount() != 0) {
-            int lastVisibleItemPosition = ((LinearLayoutManager) recyclerView.getLayoutManager()).findLastVisibleItemPosition();
-            if (lastVisibleItemPosition != RecyclerView.NO_POSITION && lastVisibleItemPosition == recyclerView.getAdapter().getItemCount() - 1) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    @Override
-    public void onScrollChange(View view, int i, int i1, int i2, int i3) {
-        if (isLastItemDisplaying(rvListFind)) {
-//            truyền vào 0 khi vẫn tiếp tục loadmore
-            mPresenter.getListFind(0);
-//            progressbarFind.setVisibility(View.GONE);
-        }
-    }
+//    private boolean isLastItemDisplaying(RecyclerView recyclerView) {
+//        if (recyclerView.getAdapter().getItemCount() != 0) {
+//            int lastVisibleItemPosition = ((LinearLayoutManager) recyclerView.getLayoutManager()).findLastVisibleItemPosition();
+//            if (lastVisibleItemPosition != RecyclerView.NO_POSITION && lastVisibleItemPosition == recyclerView.getAdapter().getItemCount() - 1) {
+//                return true;
+//            }
+//        }
+//        return false;
+//    }
+//
+//    @Override
+//    public void onScrollChange(View view, int i, int i1, int i2, int i3) {
+//        if (isLastItemDisplaying(rvListFind)) {
+////            truyền vào 0 khi vẫn tiếp tục loadmore
+////            mPresenter.getListFind(0);
+//            mPresenter.getListFind();
+//        }
+//    }
 }

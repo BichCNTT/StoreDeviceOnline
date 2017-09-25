@@ -26,6 +26,7 @@ import com.example.ominext.storedeviceonline.R;
 import com.example.ominext.storedeviceonline.listener.OnItemClickListener;
 import com.example.ominext.storedeviceonline.model.Product;
 import com.example.ominext.storedeviceonline.model.ProductType;
+import com.example.ominext.storedeviceonline.ui.loginandregister.LoginAndRegisterFragment;
 import com.example.ominext.storedeviceonline.ui.cart.CartFragment;
 import com.example.ominext.storedeviceonline.ui.cleanningstuff.CleanningStuffFragment;
 import com.example.ominext.storedeviceonline.ui.contact.ContactFragment;
@@ -113,49 +114,54 @@ public class HomeActivity extends AppCompatActivity implements HomeView, OnItemC
         tabCurrent = pos;
         switch (pos) {
             case 0:
-                fragmentCurrent = MainFragment.newInstance();
+                fragmentCurrent = LoginAndRegisterFragment.newInstance();
                 break;
             case 1:
-                fragmentCurrent = PhoneFragment.newInstance();
+                fragmentCurrent = MainFragment.newInstance();
                 break;
             case 2:
-                fragmentCurrent = LaptopFragment.newInstance();
+                fragmentCurrent = PhoneFragment.newInstance();
                 break;
             case 3:
-                fragmentCurrent = FashionFragment.newInstance();
+                fragmentCurrent = LaptopFragment.newInstance();
                 break;
             case 4:
-                fragmentCurrent = FurnitureFragment.newInstance();
+                fragmentCurrent = FashionFragment.newInstance();
                 break;
             case 5:
-                fragmentCurrent = SportFragment.newInstance();
+                fragmentCurrent = FurnitureFragment.newInstance();
                 break;
             case 6:
-                fragmentCurrent = MotherKidFragment.newInstance();
+                fragmentCurrent = SportFragment.newInstance();
                 break;
             case 7:
-                fragmentCurrent = CleanningStuffFragment.newInstance();
+                fragmentCurrent = MotherKidFragment.newInstance();
                 break;
             case 8:
-                fragmentCurrent = KitchenFragment.newInstance();
+                fragmentCurrent = CleanningStuffFragment.newInstance();
                 break;
             case 9:
-                fragmentCurrent = TechnologyEquipmentFragment.newInstance();
+                fragmentCurrent = KitchenFragment.newInstance();
                 break;
             case 10:
-                fragmentCurrent = StationeryFragment.newInstance();
+                fragmentCurrent = TechnologyEquipmentFragment.newInstance();
                 break;
             case 11:
-                fragmentCurrent = JewelryFragment.newInstance();
+                fragmentCurrent = StationeryFragment.newInstance();
                 break;
             case 12:
-                fragmentCurrent = PetFragment.newInstance();
+                fragmentCurrent = JewelryFragment.newInstance();
                 break;
             case 13:
-                fragmentCurrent = ContactFragment.newInstance();
+                fragmentCurrent = PetFragment.newInstance();
                 break;
             case 14:
+                fragmentCurrent = ContactFragment.newInstance();
+                break;
+            case 15:
                 fragmentCurrent = StoreInfoFragment.newInstance();
+                break;
+            case 16:
                 break;
             default:
                 break;
@@ -211,7 +217,7 @@ public class HomeActivity extends AppCompatActivity implements HomeView, OnItemC
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menu_cart:
-                ActionItemBadge.update(this, optionsMenu.findItem(R.id.menu_cart), ContextCompat.getDrawable(this, R.drawable.ic_cart), ActionItemBadge.BadgeStyles.RED.getStyle(), count);
+//                ActionItemBadge.update(this, optionsMenu.findItem(R.id.menu_cart), ContextCompat.getDrawable(this, R.drawable.ic_cart), ActionItemBadge.BadgeStyles.RED.getStyle(), count);
                 Bundle bundle = new Bundle();
                 bundle.putInt("key", 0);
                 Fragment fragment = CartFragment.newInstance();
@@ -232,8 +238,8 @@ public class HomeActivity extends AppCompatActivity implements HomeView, OnItemC
         listProductType = productTypes;
         productTypeAdapter = new ProductTypeAdapter(listProductType, this);
         listItem.setAdapter(productTypeAdapter);
-        changeHome(0);
-        setTitle(listProductType.get(0).getNameProductType());
+        changeHome(1);
+        setTitle(listProductType.get(1).getNameProductType());
         productTypeAdapter.notifyDataSetChanged();
     }
 
@@ -269,8 +275,8 @@ public class HomeActivity extends AppCompatActivity implements HomeView, OnItemC
                 Log.e("------>", "quay lại");
             }
 //            ngược lại nếu tab hiện tại khác 0 thì quay về màn home để set lại title cho nó và thay nó về màn home
-            else if (tabCurrent != 0) {
-                changeHome(0);
+            else if (tabCurrent != 1) {
+                changeHome(1);
             }
         }
     }
@@ -333,7 +339,6 @@ public class HomeActivity extends AppCompatActivity implements HomeView, OnItemC
                 // If request is cancelled, the result arrays are empty.
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-
                     // permission was granted, yay! Do the
                     // contacts-related task you need to do.
                 } else {

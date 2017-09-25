@@ -75,7 +75,8 @@ public class HomePresenter {
 
     public void getListProductType() {
         final List<ProductType> listProductType = new ArrayList<>();
-        listProductType.add(new ProductType(0, "Trang chủ", "https://image.flaticon.com/icons/png/512/25/25694.png"));
+        listProductType.add(new ProductType(0, "Đăng nhập", ""));
+        listProductType.add(new ProductType(1, "Trang chủ", "https://image.flaticon.com/icons/png/512/25/25694.png"));
         final RequestQueue requestQueue = Volley.newRequestQueue(mContext);
         JsonArrayRequest arrayRequest = new JsonArrayRequest(Server.urlProductType, new Response.Listener<JSONArray>() {
             @Override
@@ -92,8 +93,9 @@ public class HomePresenter {
                             e.printStackTrace();
                         }
                     }
-                    listProductType.add(new ProductType(13, "Liên hệ", "http://www.freeiconspng.com/uploads/phone-icon-old-phone-telephone-icon-9.png"));
-                    listProductType.add(new ProductType(14, "Thông tin", "http://www.freeiconspng.com/uploads/details-info-information-more-details-icon--icon-search-engine--7.png"));
+                    listProductType.add(new ProductType(14, "Liên hệ", "http://www.freeiconspng.com/uploads/phone-icon-old-phone-telephone-icon-9.png"));
+                    listProductType.add(new ProductType(15, "Thông tin", "http://www.freeiconspng.com/uploads/details-info-information-more-details-icon--icon-search-engine--7.png"));
+                    listProductType.add(new ProductType(16, "Đăng xuất", ""));
                     mHomeView.getListProductTypeSuccess(listProductType);
                 }
             }
@@ -102,7 +104,6 @@ public class HomePresenter {
             public void onErrorResponse(VolleyError error) {
                 error.printStackTrace();
                 Log.e("==============>", error.toString());
-
                 mHomeView.getListProductTypeFailed(error.toString());
             }
         });

@@ -29,6 +29,14 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.Recycler
     private OnItemClickListener clickListener;
     Context context;
     LayoutInflater inflater;
+    private int change = 1;
+
+    public ProductAdapter(int change, List<Product> productList, Context context) {
+        this.change = change;
+        this.productList = productList;
+        this.context = context;
+        this.inflater = LayoutInflater.from(context);
+    }
 
     public ProductAdapter(List<Product> productList, Context context) {
         this.productList = productList;
@@ -46,10 +54,18 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.Recycler
     @Override
     public void onBindViewHolder(RecyclerViewHolder holder, int position) {
         Product product = productList.get(position);
-        ImageViewUtil.loadImg(context, product.getImageProduct(), holder.imgLaptop);
-        holder.tvName.setText(product.getNameProduct());
-        PriceFormatUtil.priceFormat(holder.tvPrice, product.getPriceProduct());
-        holder.tvDescribe.setText(productList.get(position).getDescribeProduct());
+        if (change == 1) {
+            ImageViewUtil.loadImg(context, product.getImageProduct(), holder.imgLaptop);
+            holder.tvName.setText(product.getNameProduct());
+            PriceFormatUtil.priceFormat(holder.tvPrice, product.getPriceProduct());
+            holder.tvDescribe.setText(productList.get(position).getDescribeProduct());
+        } else {
+            ImageViewUtil.loadImg(context, product.getImageProduct(), holder.imgLaptop);
+            holder.tvName.setText(product.getNameProduct());
+            PriceFormatUtil.priceFormat(holder.tvPrice, product.getPriceProduct());
+            holder.tvDescribe.setVisibility(View.GONE);
+        }
+
     }
 
     public void setClickListener(OnItemClickListener itemClickListener) {
@@ -80,7 +96,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.Recycler
 
         @Override
         public void onClick(View view) {
-            if (clickListener != null) clickListener.onItemClick(view,getAdapterPosition());
+            if (clickListener != null) clickListener.onItemClick(view, getAdapterPosition());
         }
     }
 }

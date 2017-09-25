@@ -54,8 +54,7 @@ public class FashionFragment extends Fragment implements OnItemClickListener, Pr
     int change = 1;
     @BindView(R.id.swipe_refresh_layout_product)
     SwipeRefreshLayout swipeRefreshLayoutProduct;
-    @BindView(R.id.progressbar_product)
-    ProgressBar progressbarProduct;
+
 
     public FashionFragment() {
     }
@@ -92,12 +91,7 @@ public class FashionFragment extends Fragment implements OnItemClickListener, Pr
     }
 
     private void init() {
-        adapter = new ProductAdapter(productList, getContext());
-        RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getContext(), change);
-        rvProduct.setLayoutManager(layoutManager);
-        rvProduct.setHasFixedSize(true);
-        rvProduct.setAdapter(adapter);
-        adapter.setClickListener(this);
+        change(change);
         mPresenter = new ProductPresenter(FashionFragment.this.getContext(), this);
         final ArrayAdapter<CharSequence> adapterFilter = ArrayAdapter.createFromResource(getContext(),
                 R.array.fitter_array, android.R.layout.simple_spinner_item);
@@ -150,9 +144,12 @@ public class FashionFragment extends Fragment implements OnItemClickListener, Pr
     }
 
     public void change(int i) {
+        adapter = new ProductAdapter(i, productList, getContext());
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getContext(), i);
         rvProduct.setLayoutManager(layoutManager);
         rvProduct.setHasFixedSize(true);
+        rvProduct.setAdapter(adapter);
+        adapter.setClickListener(this);
     }
 
     @OnClick({R.id.img_change, R.id.img_sort})
@@ -162,11 +159,12 @@ public class FashionFragment extends Fragment implements OnItemClickListener, Pr
                 if (change == 1) {
                     change = 2;
                     change(change);
+                    imgChange.setImageResource(R.drawable.ic_two_column);
                 } else {
                     change = 1;
                     change(change);
+                    imgChange.setImageResource(R.drawable.ic_one_column);
                 }
-
                 break;
             case R.id.img_sort:
                 String chose = spinnerFilter.getSelectedItem().toString();

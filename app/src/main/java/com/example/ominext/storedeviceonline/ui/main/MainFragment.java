@@ -28,6 +28,7 @@ import java.util.ArrayList;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
+
 //khi mà refresh thì gọi lại cái page đầu tiên trong loadmore. Viết lại loadmore. Sửa api, sửa ở trong
 //fragment chứa giao diện chính <- giao diện lúc mở máy lên
 public class MainFragment extends Fragment implements MainFragmentView, OnItemClickListener, SwipeRefreshLayout.OnRefreshListener {
@@ -35,14 +36,14 @@ public class MainFragment extends Fragment implements MainFragmentView, OnItemCl
     @BindView(R.id.view_flipper)
     ViewFlipper viewFlipper;
     @BindView(R.id.view_main)
-    RecyclerView viewMain;
-    Unbinder unbinder;
+    RecyclerView mViewMain;
+    Unbinder mUnbinder;
 
-    ArrayList<Product> listProduct = new ArrayList<>();
-    NewProductAdapter productAdapter;
+    ArrayList<Product> mListProduct = new ArrayList<>();
+    NewProductAdapter mProductAdapter;
     MainFragmentPresenter mPresenter;
     @BindView(R.id.swipe_refresh_layout_main)
-    SwipeRefreshLayout swipeRefreshLayoutMain;
+    SwipeRefreshLayout mSwipeRefreshLayoutMain;
 
     public MainFragment() {
 
@@ -54,52 +55,52 @@ public class MainFragment extends Fragment implements MainFragmentView, OnItemCl
     }
 
     @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_main, container, false);
+        mUnbinder = ButterKnife.bind(this, view);
+        return view;
+    }
+
+    @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         init();
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_main, container, false);
-        unbinder = ButterKnife.bind(this, view);
-        return view;
-    }
-
-    @Override
     public void onDestroyView() {
         super.onDestroyView();
-        unbinder.unbind();
+        mUnbinder.unbind();
     }
 
     private void init() {
-        productAdapter = new NewProductAdapter(getContext(), listProduct);
+        mProductAdapter = new NewProductAdapter(getContext(), mListProduct);
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(MainFragment.this.getContext(), 2);
-        viewMain.setLayoutManager(layoutManager);
-        viewMain.setHasFixedSize(true);
-        viewMain.setAdapter(productAdapter);
-        productAdapter.setClickListener(this);
+        mViewMain.setLayoutManager(layoutManager);
+        mViewMain.setHasFixedSize(true);
+        mViewMain.setAdapter(mProductAdapter);
+        mProductAdapter.setClickListener(this);
         mPresenter = new MainFragmentPresenter(MainFragment.this.getContext(), this);
-        swipeRefreshLayoutMain.setOnRefreshListener(this);
-        swipeRefreshLayoutMain.post(new Runnable() {
-                                        @Override
-                                        public void run() {
-                                            swipeRefreshLayoutMain.setRefreshing(true);
-                                            refreshContent();
-                                        }
-                                    }
+        mSwipeRefreshLayoutMain.setOnRefreshListener(this);
+        mSwipeRefreshLayoutMain.post(new Runnable() {
+                                         @Override
+                                         public void run() {
+                                             mSwipeRefreshLayoutMain.setRefreshing(true);
+                                             refreshContent();
+                                         }
+                                     }
         );
     }
 
     private void refreshContent() {
-        swipeRefreshLayoutMain.setRefreshing(true);
+        mSwipeRefreshLayoutMain.setRefreshing(true);
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
                 ActionViewFlipper();
                 mPresenter.getListProduct();
-                swipeRefreshLayoutMain.setRefreshing(false);
+                mSwipeRefreshLayoutMain.setRefreshing(false);
             }
         }, 1000);
     }
@@ -131,7 +132,7 @@ public class MainFragment extends Fragment implements MainFragmentView, OnItemCl
     public void onItemClick(View view, int position) {
         DetailProductFragment fragment = DetailProductFragment.newInstance();
         Bundle bundle = new Bundle();
-        Product product = listProduct.get(position);
+        Product product = mListProduct.get(position);
         bundle.putString("name", product.getNameProduct());
         bundle.putInt("price", product.getPriceProduct());
         bundle.putString("describe", product.getDescribeProduct());
@@ -142,9 +143,9 @@ public class MainFragment extends Fragment implements MainFragmentView, OnItemCl
 
     @Override
     public void getListProductSuccess(ArrayList<Product> products) {
-        listProduct.clear();
-        listProduct.addAll(products);
-        productAdapter.notifyDataSetChanged();
+        mListProduct.clear();
+        mListProduct.addAll(products);
+        mProductAdapter.notifyDataSetChanged();
     }
 
     @Override

@@ -24,6 +24,7 @@ import android.widget.Toast;
 
 import com.android.volley.RequestQueue;
 import com.example.ominext.storedeviceonline.R;
+import com.example.ominext.storedeviceonline.helper.KeyboardUtil;
 import com.example.ominext.storedeviceonline.listener.OnItemClickListener;
 import com.example.ominext.storedeviceonline.model.Product;
 import com.example.ominext.storedeviceonline.ui.detail.DetailProductFragment;
@@ -47,8 +48,6 @@ public class FindFragment extends Fragment implements FindView, OnItemClickListe
     @BindView(R.id.rv_list_find)
     RecyclerView rvListFind;
     Unbinder unbinder;
-    VietNamese vietNamese = new VietNamese();
-
     public FindFragment() {
     }
 
@@ -126,21 +125,10 @@ public class FindFragment extends Fragment implements FindView, OnItemClickListe
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                String stringSequence = charSequence.toString();
-                if (stringSequence.isEmpty()) {
-                    productList.clear();
-                    productList.addAll(listFind);
-                    mAdapter.notifyDataSetChanged();
-                } else {
-                    for (int index = 0; index < listFind.size(); index++) {
-                        Product product = listFind.get(index);
-                        if (!vietNamese.ConvertString(product.getNameProduct().toLowerCase())
-                                .contains(charSequence.toString().toLowerCase()) == true) {
-                            productList.remove(product);
-                        }
-                    }
-                    mAdapter.notifyDataSetChanged();
-                }
+                mAdapter.filter(charSequence.toString().trim(), listFind);
+                rvListFind.invalidate();
+                rvListFind.smoothScrollToPosition(0);
+                KeyboardUtil.hideKeyBoard(getView(), getActivity());
             }
 
             @Override
@@ -160,6 +148,7 @@ public class FindFragment extends Fragment implements FindView, OnItemClickListe
         DetailProductFragment fragment = DetailProductFragment.newInstance();
         Bundle bundle = new Bundle();
         Product product = productList.get(position);
+        bundle.putInt("id", product.getIdProduct());
         bundle.putString("name", product.getNameProduct());
         bundle.putInt("price", product.getPriceProduct());
         bundle.putString("describe", product.getDescribeProduct());

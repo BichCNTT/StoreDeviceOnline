@@ -32,9 +32,9 @@ public class UserInfoFragment extends Fragment {
     Button btnAccept;
     Unbinder unbinder;
     int totalMoney = 0;
+    int id = 0;
 
     public UserInfoFragment() {
-        // Required empty public constructor
     }
 
     public static UserInfoFragment newInstance() {
@@ -50,7 +50,6 @@ public class UserInfoFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_user_info, container, false);
         unbinder = ButterKnife.bind(this, view);
         return view;
@@ -60,6 +59,7 @@ public class UserInfoFragment extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         Bundle bundle = getArguments();
+        id = bundle.getInt("id");
         totalMoney = bundle.getInt("totalMoney");
         if (bundle.getInt("key") == 0) {
             edtNameUser.setText(bundle.getString("nameUser"));
@@ -81,6 +81,7 @@ public class UserInfoFragment extends Fragment {
             if (CheckConnectionInternet.haveNetWorkConnection(getContext())) {
                 OrderFragment fragment = OrderFragment.newInstance();
                 Bundle bundle = new Bundle();
+                bundle.putInt("id", id);
                 bundle.putInt("totalMoney", totalMoney);
                 bundle.putString("nameUser", edtNameUser.getText().toString());
                 bundle.putString("phoneUser", edtPhone.getText().toString());

@@ -75,7 +75,6 @@ public class ProductPresenter {
         requestQueue.add(arrayRequest);
     }
 
-    //
 //    public void getData(String url) {
 //        requestQueue.add(getDataFromSerVer(requestCount, url));
 //        requestCount++;

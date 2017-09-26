@@ -59,7 +59,7 @@ public class LoginPresenter {
                             address = jsonObject.getString("address");
                             nameUser = jsonObject.getString("nameUser");
                             password = jsonObject.getString("password");
-                            users.add(new User(email, password, name, address, id, nameUser));
+                            users.add(new User(id, email, password, name, address, nameUser));
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }

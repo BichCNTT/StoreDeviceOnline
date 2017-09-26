@@ -29,12 +29,14 @@ import static com.android.volley.VolleyLog.TAG;
  */
 //lưu lại các mặt hàng đã thêm vào giỏ hàng khi chưa thanh toán
 public class Cache {
-    public static int size=0;
-//chuyển thành chuỗi json
+    public static int size = 0;
+
+    //chuyển thành chuỗi json
     public static String writeJsonStream(Cart data) throws Exception {
         StringWriter output = new StringWriter();
         JsonWriter jsonWriter = new JsonWriter(output);
         jsonWriter.beginObject();
+        jsonWriter.name("id").value(data.getId());
         jsonWriter.name("image").value(data.getImage());
         jsonWriter.name("name").value(data.getName());
         jsonWriter.name("number").value(data.getNumber());
@@ -43,13 +45,16 @@ public class Cache {
         String jsonText = output.toString();
         return jsonText;
     }
-//chuyển thành đối tượng
+
+    //chuyển thành đối tượng
     public static Cart readJsonStream(JSONObject object) throws Exception {
         Cart cart = new Cart();
+        int id = object.getInt("id");
         String image = object.getString("image");
         String name = object.getString("name");
         String number = object.getString("number");
         String price = object.getString("price");
+        cart.setId(id);
         cart.setImage(image);
         cart.setName(name);
         cart.setNumber(Integer.parseInt(number));
@@ -77,6 +82,7 @@ public class Cache {
         }
         return false;
     }
+
     public static boolean delete(String path, String fileNameInPut, String fileNameOutPut, String lineToRemove) {
         //đọc file ra 1 chuỗi json rồi xóa
         File input = new File(path + fileNameInPut);
@@ -106,6 +112,7 @@ public class Cache {
         }
         return successful;
     }
+
     public static List<Cart> readFile(String path) {
         List<Cart> cartList = new ArrayList<>();
         try {
@@ -122,7 +129,7 @@ public class Cache {
         } catch (Exception e) {
             Log.e("==============>Error: ", e.toString());
         }
-        size=cartList.size();
+        size = cartList.size();
         return cartList;
     }
 }

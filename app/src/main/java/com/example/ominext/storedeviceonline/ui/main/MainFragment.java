@@ -133,6 +133,7 @@ public class MainFragment extends Fragment implements MainFragmentView, OnItemCl
         DetailProductFragment fragment = DetailProductFragment.newInstance();
         Bundle bundle = new Bundle();
         Product product = mListProduct.get(position);
+        bundle.putInt("id", product.getIdProduct());
         bundle.putString("name", product.getNameProduct());
         bundle.putInt("price", product.getPriceProduct());
         bundle.putString("describe", product.getDescribeProduct());

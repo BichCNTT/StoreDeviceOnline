@@ -46,6 +46,7 @@ public class DetailProductFragment extends Fragment {
     int price = 0;
     String describe = "";
     String image = "";
+    int id = 0;
     @BindView(R.id.img_product)
     ImageView imgProduct;
     @BindView(R.id.spinner_quantity)
@@ -68,6 +69,7 @@ public class DetailProductFragment extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         Bundle bundle = this.getArguments();
+        id = bundle.getInt("id");
         name = bundle.getString("name");
         price = bundle.getInt("price");
         describe = bundle.getString("describe");
@@ -100,6 +102,7 @@ public class DetailProductFragment extends Fragment {
     public void onViewClicked() {
 //        kích vào đặt hàng thì truyền list và số lượng sp sang -> dùng bundle
         Bundle bundle = new Bundle();
+        bundle.putInt("id", id);
         bundle.putInt("number", Integer.parseInt(spinnerQuantity.getSelectedItem().toString()));
         bundle.putString("name", name);
         bundle.putString("image", image);

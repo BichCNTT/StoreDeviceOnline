@@ -12,8 +12,10 @@ import com.example.ominext.storedeviceonline.R;
 import com.example.ominext.storedeviceonline.helper.ImageViewUtil;
 import com.example.ominext.storedeviceonline.listener.OnItemClickListener;
 import com.example.ominext.storedeviceonline.model.Product;
+import com.example.ominext.storedeviceonline.until.VietNamese;
 
 import java.util.List;
+import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -28,6 +30,7 @@ public class FindAdapter extends RecyclerView.Adapter<FindAdapter.RecyclerViewHo
     private Context mContext;
     private LayoutInflater mInflater;
     private OnItemClickListener clickListener;
+    VietNamese vietNamese = new VietNamese();
 
     public void setClickListener(OnItemClickListener clickListener) {
         this.clickListener = clickListener;
@@ -38,6 +41,21 @@ public class FindAdapter extends RecyclerView.Adapter<FindAdapter.RecyclerViewHo
         this.productList = productList;
         this.mFilteredList = productList;
         this.mInflater = LayoutInflater.from(context);
+    }
+
+    public void filter(String charText, List<Product> productList) {
+        charText = charText.toLowerCase(Locale.getDefault());
+        this.productList.clear();
+        if (charText.length() == 0) {
+            this.productList.addAll(productList);
+        } else {
+            for (Product p : productList) {
+                if ((p.getNameProduct().toLowerCase(Locale.getDefault()).contains(charText)) || (vietNamese.ConvertString(p.getNameProduct().toLowerCase()).contains(charText))) {
+                    this.productList.add(p);
+                }
+            }
+        }
+        notifyDataSetChanged();
     }
 
     @Override

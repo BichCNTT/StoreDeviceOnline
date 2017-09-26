@@ -26,6 +26,7 @@ import com.example.ominext.storedeviceonline.R;
 import com.example.ominext.storedeviceonline.listener.OnItemClickListener;
 import com.example.ominext.storedeviceonline.model.Product;
 import com.example.ominext.storedeviceonline.model.ProductType;
+import com.example.ominext.storedeviceonline.ui.login.LoginFragment;
 import com.example.ominext.storedeviceonline.ui.loginandregister.LoginAndRegisterFragment;
 import com.example.ominext.storedeviceonline.ui.cart.CartFragment;
 import com.example.ominext.storedeviceonline.ui.cleanningstuff.CleanningStuffFragment;
@@ -43,6 +44,7 @@ import com.example.ominext.storedeviceonline.ui.notifi.NotificationFragment;
 import com.example.ominext.storedeviceonline.ui.order.OrderFragment;
 import com.example.ominext.storedeviceonline.ui.pet.PetFragment;
 import com.example.ominext.storedeviceonline.ui.phone.PhoneFragment;
+import com.example.ominext.storedeviceonline.ui.register.RegisterFragment;
 import com.example.ominext.storedeviceonline.ui.sport.SportFragment;
 import com.example.ominext.storedeviceonline.ui.stationery.StationeryFragment;
 import com.example.ominext.storedeviceonline.ui.storeinfo.StoreInfoFragment;
@@ -56,9 +58,6 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-//Task: Loc gia
-//TASK 6: Làm thêm load more cho màn
-//TASK: LÀm báo cáo
 public class HomeActivity extends AppCompatActivity implements HomeView, OnItemClickListener, FragmentManager.OnBackStackChangedListener {
     @BindView(R.id.list_item)
     ListView listItem;
@@ -66,9 +65,9 @@ public class HomeActivity extends AppCompatActivity implements HomeView, OnItemC
     NavigationView navigationViewMain;
     @BindView(R.id.drawer_layout)
     DrawerLayout drawerLayout;
-
-    List<ProductType> listProductType = new ArrayList<>();
-    ProductTypeAdapter productTypeAdapter;
+    public static DrawerLayout layout;
+    public static List<ProductType> listProductType = new ArrayList<>();
+    public static ProductTypeAdapter productTypeAdapter;
     Fragment fragmentCurrent = null;
     @BindView(R.id.tool_bar_main)
     Toolbar toolBarMain;
@@ -85,6 +84,7 @@ public class HomeActivity extends AppCompatActivity implements HomeView, OnItemC
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
         ButterKnife.bind(this);
+        layout = drawerLayout;
         ActivityCompat.requestPermissions(HomeActivity.this,
                 new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
                 1);
@@ -161,8 +161,6 @@ public class HomeActivity extends AppCompatActivity implements HomeView, OnItemC
             case 15:
                 fragmentCurrent = StoreInfoFragment.newInstance();
                 break;
-            case 16:
-                break;
             default:
                 break;
         }
@@ -171,7 +169,7 @@ public class HomeActivity extends AppCompatActivity implements HomeView, OnItemC
         }
     }
 
-    private void replaceFragment(Fragment fragment) {
+    public void replaceFragment(Fragment fragment) {
         getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.frame_layout, fragment)
@@ -201,7 +199,6 @@ public class HomeActivity extends AppCompatActivity implements HomeView, OnItemC
         });
     }
 
-    //sau khi đặt hàng các thứ xong. tiếp tục đặt hàng chuyển từ màn chi tiết sang màn giỏ hàng thì bị
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         optionsMenu = menu;
@@ -217,7 +214,6 @@ public class HomeActivity extends AppCompatActivity implements HomeView, OnItemC
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.menu_cart:
-//                ActionItemBadge.update(this, optionsMenu.findItem(R.id.menu_cart), ContextCompat.getDrawable(this, R.drawable.ic_cart), ActionItemBadge.BadgeStyles.RED.getStyle(), count);
                 Bundle bundle = new Bundle();
                 bundle.putInt("key", 0);
                 Fragment fragment = CartFragment.newInstance();
@@ -329,6 +325,15 @@ public class HomeActivity extends AppCompatActivity implements HomeView, OnItemC
             setTitle("Thông tin khách hàng");
             return;
         }
+        if (fragment instanceof LoginAndRegisterFragment) {
+            setTitle("Đăng nhập");
+        }
+//        if (fragment instanceof RegisterFragment) {
+//            setTitle("Đăng ký");
+//        }
+//        if (fragment instanceof LoginFragment) {
+//            setTitle("Đăng nhập");
+//        }
     }
 
     @Override

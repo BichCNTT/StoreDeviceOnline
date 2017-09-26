@@ -10,20 +10,18 @@ public class User {
     private String mPassword;
     private String mName;
     private String mAddress;
-    private String mPhone;
     private String mNameUser;
 
-    public User(String mEmail, String mPassword, String mName, String mAddress, String mPhone, String mNameUser) {
+    public User() {
+    }
+
+    public User(int mId, String mEmail, String mPassword, String mName, String mAddress, String mNameUser) {
+        this.mId = mId;
         this.mEmail = mEmail;
         this.mPassword = mPassword;
         this.mName = mName;
         this.mAddress = mAddress;
-        this.mPhone = mPhone;
         this.mNameUser = mNameUser;
-    }
-
-    public User(String email, String password, String name, String address, int id, String nameUser) {
-
     }
 
     public int getId() {
@@ -64,14 +62,6 @@ public class User {
 
     public void setAddress(String mAddress) {
         this.mAddress = mAddress;
-    }
-
-    public String getPhone() {
-        return mPhone;
-    }
-
-    public void setPhone(String mPhone) {
-        this.mPhone = mPhone;
     }
 
     public String getNameUser() {

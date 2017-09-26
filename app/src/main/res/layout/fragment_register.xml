@@ -8,56 +8,99 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Cần điền đầy đủ tất cả các mục" />
+        android:layout_marginBottom="5dp"
+        android:layout_marginTop="5dp"
+        android:text="Cần điền đầy đủ tất cả các mục"
+        android:textColor="@color/red"
+        android:textSize="10sp"
+        android:textStyle="italic" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Tên tài khoản"
+        android:textColor="@color/blue" />
 
     <EditText
         android:id="@+id/edt_account_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Tên tài khoản"
         android:singleLine="true" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Email"
+        android:textColor="@color/blue" />
 
     <EditText
         android:id="@+id/edt_email"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Địa chỉ email"
         android:singleLine="true" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Mật khẩu"
+        android:textColor="@color/blue" />
 
     <EditText
         android:id="@+id/edt_password"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Mật khẩu"
+        android:inputType="textPassword"
         android:singleLine="true" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Nhập lại mật khẩu"
+        android:textColor="@color/blue" />
 
     <EditText
         android:id="@+id/edt_confirm_password"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Nhập lại mật khẩu"
+        android:inputType="textPassword"
         android:singleLine="true" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Họ và tên"
+        android:textColor="@color/blue" />
 
     <EditText
         android:id="@+id/edt_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Họ tên"
         android:singleLine="true" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Số điện thoại"
+        android:textColor="@color/blue" />
 
     <EditText
         android:id="@+id/edt_phone"
         android:layout_width="match_parent"
-        android:inputType="phone"
         android:layout_height="wrap_content"
-        android:hint="Số điện thoại"
+        android:inputType="phone"
         android:singleLine="true" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Địa chỉ"
+        android:textColor="@color/blue" />
 
     <EditText
         android:id="@+id/edt_address"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Địa chỉ" />
+        android:layout_height="wrap_content" />
 
     <Button
         android:id="@+id/btn_register"

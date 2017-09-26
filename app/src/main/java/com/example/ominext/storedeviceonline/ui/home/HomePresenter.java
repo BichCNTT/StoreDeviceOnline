@@ -75,7 +75,7 @@ public class HomePresenter {
 
     public void getListProductType() {
         final List<ProductType> listProductType = new ArrayList<>();
-        listProductType.add(new ProductType(0, "Đăng nhập", ""));
+        listProductType.add(new ProductType(0, "Đăng nhập", "https://cdn2.iconfinder.com/data/icons/website-icons/512/User_Avatar-512.png"));
         listProductType.add(new ProductType(1, "Trang chủ", "https://image.flaticon.com/icons/png/512/25/25694.png"));
         final RequestQueue requestQueue = Volley.newRequestQueue(mContext);
         JsonArrayRequest arrayRequest = new JsonArrayRequest(Server.urlProductType, new Response.Listener<JSONArray>() {
@@ -95,7 +95,6 @@ public class HomePresenter {
                     }
                     listProductType.add(new ProductType(14, "Liên hệ", "http://www.freeiconspng.com/uploads/phone-icon-old-phone-telephone-icon-9.png"));
                     listProductType.add(new ProductType(15, "Thông tin", "http://www.freeiconspng.com/uploads/details-info-information-more-details-icon--icon-search-engine--7.png"));
-                    listProductType.add(new ProductType(16, "Đăng xuất", ""));
                     mHomeView.getListProductTypeSuccess(listProductType);
                 }
             }

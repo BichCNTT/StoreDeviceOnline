@@ -29,6 +29,9 @@ import com.example.ominext.storedeviceonline.model.Cache;
 import com.example.ominext.storedeviceonline.model.Cart;
 import com.example.ominext.storedeviceonline.model.Product;
 import com.example.ominext.storedeviceonline.ui.home.HomeActivity;
+import com.example.ominext.storedeviceonline.ui.loginandregister.LoginAndRegisterFragment;
+import com.example.ominext.storedeviceonline.ui.main.MainFragment;
+import com.example.ominext.storedeviceonline.ui.order.OrderFragment;
 import com.example.ominext.storedeviceonline.ui.userinfo.UserInfoFragment;
 import com.mikepenz.actionitembadge.library.ActionItemBadge;
 
@@ -42,7 +45,6 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
 
-//xóa trong file text
 public class CartFragment extends Fragment implements CartView, OnItemClickListener {
     @BindView(R.id.rv_cart)
     RecyclerView rvCart;
@@ -61,6 +63,7 @@ public class CartFragment extends Fragment implements CartView, OnItemClickListe
     int number = 0;
     int money = 0;
     int key;
+    int id = 0;
     @BindView(R.id.tv_no_data)
     public TextView tvNoData;
     @BindView(R.id.tv_total)
@@ -72,11 +75,8 @@ public class CartFragment extends Fragment implements CartView, OnItemClickListe
     String fileNameOutPut = "cart1.txt";
 
     public CartFragment() {
-        // Required empty public constructor
     }
 
-    //gop san pham giong nhau lam mot
-//    truoc khi them vao list. ktra xem danh sach do co chua pham tu tuong tu hay khong. neu co thi so luong sp number se bang cai cu ma cong voi cai moi va them vao list trog ds
     public static CartFragment newInstance() {
         CartFragment fragment = new CartFragment();
         return fragment;
@@ -115,6 +115,7 @@ public class CartFragment extends Fragment implements CartView, OnItemClickListe
         Bundle bundle = getArguments();
         key = bundle.getInt("key");
         if (key == 1) {
+            id = bundle.getInt("id");
             name = bundle.getString("name");
             price = bundle.getInt("price");
             image = bundle.getString("image");
@@ -142,7 +143,7 @@ public class CartFragment extends Fragment implements CartView, OnItemClickListe
                 }
             }
             if (check != 1) {
-                Cart cart = new Cart(name, image, number, price);
+                Cart cart = new Cart(id, name, image, number, price);
                 cartList.add(cart);
                 try {
                     String jsonText = Cache.writeJsonStream(cart);
@@ -243,17 +244,23 @@ public class CartFragment extends Fragment implements CartView, OnItemClickListe
 //                            .setIcon(android.R.drawable.ic_dialog_alert)
 //                            .show();
 //                } else {
-                Bundle bundle = new Bundle();
-                bundle.putInt("key", 1);
-                bundle.putInt("totalMoney", getTotalMoney());
-                Fragment fragment = UserInfoFragment.newInstance();
-                fragment.setArguments(bundle);
-                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.add(R.id.frame_layout, fragment);
-                fragmentTransaction.addToBackStack(null);
-                fragmentTransaction.commit();
-//                }
+                if (!HomeActivity.listProductType.get(0).getNameProductType().equals("Đăng nhập")) {
+                    Bundle bundle = new Bundle();
+                    bundle.putInt("key", 1);
+                    bundle.putInt("id", id);
+                    bundle.putInt("totalMoney", getTotalMoney());
+                    Fragment fragment = OrderFragment.newInstance();
+                    fragment.setArguments(bundle);
+                    FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                    FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                    fragmentTransaction.add(R.id.frame_layout, fragment);
+                    fragmentTransaction.addToBackStack(null);
+                    fragmentTransaction.commit();
+                } else {
+                    Fragment fragment = LoginAndRegisterFragment.newInstance();
+                    ((HomeActivity) getActivity()).addFragment(fragment);
+//                    getActivity().setTitle("Đăng nhập");
+                }
                 break;
             case R.id.btn_continue:
                 Intent intent = new Intent(getContext(), HomeActivity.class);

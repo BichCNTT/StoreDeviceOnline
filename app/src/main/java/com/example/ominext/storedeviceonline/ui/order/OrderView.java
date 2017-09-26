@@ -9,11 +9,7 @@ import java.util.List;
  */
 
 public interface OrderView {
-    void postOrderProductSuccess(List<Product> productList);
+    void getIdOrderProductSuccessfully(List<Integer> listId);
+    void getIdOrderProductFailed(String s);
 
-    void postOrderProductFailed(String s);
-
-    void postClientInfoSuccess();
-
-    void postClientInfoFailed(String s);
 }

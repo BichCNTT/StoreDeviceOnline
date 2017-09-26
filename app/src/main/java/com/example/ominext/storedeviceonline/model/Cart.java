@@ -5,6 +5,8 @@ package com.example.ominext.storedeviceonline.model;
  */
 
 public class Cart {
+    private int mId;
+
     private String mName;
     private String mImage;
     private int mNumber;
@@ -14,11 +16,20 @@ public class Cart {
     public Cart() {
     }
 
-    public Cart(String name, String image, int number, int price) {
+    public Cart(int mId, String name, String image, int number, int price) {
         this.mName = name;
         this.mImage = image;
         this.mNumber = number;
         this.mPrice = price;
+        this.mId = mId;
+    }
+
+    public int getId() {
+        return mId;
+    }
+
+    public void setId(int mId) {
+        this.mId = mId;
     }
 
     public int getMoney() {

@@ -27,6 +27,10 @@ public class ProductType {
         return mNameProductType;
     }
 
+    public void setNameProductType(String mNameProductType) {
+        this.mNameProductType = mNameProductType;
+    }
+
     public String getImageProductType() {
         return mImageProductType;
     }

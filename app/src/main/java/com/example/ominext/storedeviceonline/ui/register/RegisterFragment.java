@@ -3,7 +3,9 @@ package com.example.ominext.storedeviceonline.ui.register;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.text.TextUtils;
 import android.util.Log;
+import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,8 +21,10 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.ominext.storedeviceonline.R;
+import com.example.ominext.storedeviceonline.helper.KeyboardUtil;
 import com.example.ominext.storedeviceonline.model.User;
 import com.example.ominext.storedeviceonline.ui.home.HomeActivity;
+import com.example.ominext.storedeviceonline.ui.main.MainFragment;
 import com.example.ominext.storedeviceonline.ui.notifi.NotificationFragment;
 import com.example.ominext.storedeviceonline.until.CheckConnectionInternet;
 import com.example.ominext.storedeviceonline.until.Server;
@@ -62,6 +66,13 @@ public class RegisterFragment extends Fragment {
     @BindView(R.id.btn_register)
     Button btnRegister;
     Unbinder unbinder;
+    String phone;
+    String name;
+    String address;
+    String password;
+    String email;
+    String accountName;
+    String confirmPassWord;
 
     public RegisterFragment() {
     }
@@ -92,58 +103,104 @@ public class RegisterFragment extends Fragment {
 
     @OnClick(R.id.btn_register)
     public void onViewClicked() {
-//        khi kích vào btn đăng kí thì kiểm tra xem các ô có còn trống không. Nếu có 1 ô còn trống thì yc nhập lại
-        if (!edtConfirmPassword.getText().toString().equals(edtConfirmPassword.getText().toString())) {
-            edtConfirmPassword.setText("");
-            edtPassword.setText("");
-            if (!edtEmail.getText().toString().equals("")
-                    && !edtAccountName.getText().toString().equals("")
-                    && !edtAddress.getText().toString().equals("")
-                    && !edtName.getText().toString().equals("")
-                    && !edtPassword.getText().toString().equals("")
-                    && !edtPhone.getText().toString().equals("")) {
-                if (CheckConnectionInternet.haveNetWorkConnection(getContext())) {
-                    RequestQueue requestQueue = Volley.newRequestQueue(getContext());
-                    StringRequest clientInfoStringRequest = new StringRequest(Request.Method.POST, Server.urlUser, new Response.Listener<String>() {
-                        @Override
-                        public void onResponse(String response) {
-                            Toast.makeText(getContext(), "Đăng kí thành công", Toast.LENGTH_SHORT).show();
+        phone = edtPhone.getText().toString();
+        name = edtName.getText().toString();
+        address = edtAddress.getText().toString();
+        password = edtPassword.getText().toString();
+        email = edtEmail.getText().toString();
+        accountName = edtAccountName.getText().toString();
+        confirmPassWord = edtConfirmPassword.getText().toString();
+
+        if (TextUtils.isEmpty(accountName)) {
+            edtAccountName.setError("Nhập tên tài khoản");
+            edtAccountName.requestFocus();
+            return;
+        }
+        if (TextUtils.isEmpty(email)) {
+            edtEmail.setError("Nhập vào một email");
+            edtEmail.requestFocus();
+            return;
+        }
+        if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+            edtEmail.setError("Email của bạn không đúng");
+            edtEmail.requestFocus();
+            return;
+        }
+        if (TextUtils.isEmpty(password)) {
+            edtPassword.setError("Nhập mật khẩu");
+            edtPassword.requestFocus();
+            return;
+        }
+        if (TextUtils.isEmpty(confirmPassWord)) {
+            edtConfirmPassword.setError("Nhập lại mật khẩu");
+            edtConfirmPassword.requestFocus();
+            return;
+        }
+        if (TextUtils.isEmpty(name)) {
+            edtName.setError("Nhập họ tên");
+            edtName.requestFocus();
+            return;
+        }
+        if (TextUtils.isEmpty(phone)) {
+            edtPhone.setError("Nhập số điện thoại");
+            edtPhone.requestFocus();
+            return;
+        }
+
+        if (TextUtils.isEmpty(address)) {
+            edtAddress.setError("Nhập địa chỉ");
+            edtAddress.requestFocus();
+            return;
+        }
+        if (confirmPassWord.equals(password)) {
+            if (CheckConnectionInternet.haveNetWorkConnection(getContext())) {
+                RequestQueue requestQueue = Volley.newRequestQueue(getContext());
+                StringRequest clientInfoStringRequest = new StringRequest(Request.Method.POST, Server.urlUser, new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Toast.makeText(getContext(), "Đăng kí thành công", Toast.LENGTH_SHORT).show();
+                        MainFragment mainFragment = MainFragment.newInstance();
+                        ((HomeActivity) getActivity()).addFragment(mainFragment);
+                        getActivity().setTitle("Trang chủ");
+                        KeyboardUtil.hideKeyBoard(getView(), getActivity());
+                    }
+                }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.e("=========>error", error.toString());
+                        Toast.makeText(getContext(), "Tài khoản gmail đã tồn tại", Toast.LENGTH_SHORT).show();
+                    }
+                }) {
+                    @Override
+                    protected Map<String, String> getParams() throws AuthFailureError {
+                        HashMap<String, String> hashMap;
+                        JSONArray jsonArray = new JSONArray();
+                        JSONObject object = new JSONObject();
+                        try {
+                            object.put("id", phone);
+                            object.put("name", name);
+                            object.put("address", address);
+                            object.put("password", password);
+                            object.put("email", email);
+                            object.put("nameUser", accountName);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
                         }
-                    }, new Response.ErrorListener() {
-                        @Override
-                        public void onErrorResponse(VolleyError error) {
-                            Log.e("=========>error", error.toString());
-                            Toast.makeText(getContext(), "Tài khoản gmail đã tồn tại", Toast.LENGTH_SHORT).show();
-                        }
-                    }) {
-                        @Override
-                        protected Map<String, String> getParams() throws AuthFailureError {
-                            HashMap<String, String> hashMap;
-                            JSONArray jsonArray = new JSONArray();
-                            JSONObject object = new JSONObject();
-                            try {
-                                object.put("id", edtPhone.getText().toString());
-                                object.put("name", edtName.getText().toString());
-                                object.put("address", edtAddress.getText().toString());
-                                object.put("password", edtPassword.getText().toString());
-                                object.put("email", edtEmail.getText().toString());
-                                object.put("nameUser", edtAccountName.getText().toString());
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
-                            jsonArray.put(object);
-                            hashMap = new HashMap<>();
-                            hashMap.put("json", jsonArray.toString());
-                            return hashMap;
-                        }
-                    };
-                    requestQueue.add(clientInfoStringRequest);
-                } else {
-                    Toast.makeText(getContext(), "Kiểm tra lại kết nối của bạn", Toast.LENGTH_LONG).show();
-                }
+                        jsonArray.put(object);
+                        hashMap = new HashMap<>();
+                        hashMap.put("json", jsonArray.toString());
+                        return hashMap;
+                    }
+                };
+                requestQueue.add(clientInfoStringRequest);
             } else {
-                Toast.makeText(getContext(), "Điền đầy đủ thông tin", Toast.LENGTH_LONG).show();
+                Toast.makeText(getContext(), "Kiểm tra lại kết nối của bạn", Toast.LENGTH_LONG).show();
             }
+        } else {
+            edtConfirmPassword.setText("");
+            edtConfirmPassword.setError("Nhập lại mật khẩu");
+            edtConfirmPassword.requestFocus();
+            return;
         }
     }
 }

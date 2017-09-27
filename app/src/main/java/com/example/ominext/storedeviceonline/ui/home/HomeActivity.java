@@ -303,10 +303,6 @@ public class HomeActivity extends AppCompatActivity implements HomeView, OnItemC
             setTitle("Giỏ hàng");
             return;
         }
-        if (fragment instanceof LoginAndRegisterFragment) {
-            setTitle("Đăng nhập");
-            return;
-        }
         if (fragment instanceof NotificationFragment) {
             setTitle("");
             return;

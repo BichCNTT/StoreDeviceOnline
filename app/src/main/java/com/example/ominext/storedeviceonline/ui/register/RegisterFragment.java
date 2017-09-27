@@ -24,6 +24,8 @@ import com.example.ominext.storedeviceonline.R;
 import com.example.ominext.storedeviceonline.helper.KeyboardUtil;
 import com.example.ominext.storedeviceonline.model.User;
 import com.example.ominext.storedeviceonline.ui.home.HomeActivity;
+import com.example.ominext.storedeviceonline.ui.login.LoginPresenter;
+import com.example.ominext.storedeviceonline.ui.login.LoginView;
 import com.example.ominext.storedeviceonline.ui.main.MainFragment;
 import com.example.ominext.storedeviceonline.ui.notifi.NotificationFragment;
 import com.example.ominext.storedeviceonline.until.CheckConnectionInternet;
@@ -35,7 +37,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import butterknife.BindView;
@@ -47,7 +51,7 @@ import butterknife.Unbinder;
  * Created by Ominext on 9/21/2017.
  */
 //Đẩy dữ liệu lên bảng user gồm id, email, password, name, address.
-public class RegisterFragment extends Fragment {
+public class RegisterFragment extends Fragment implements LoginView {
 
     @BindView(R.id.edt_account_name)
     EditText edtAccountName;
@@ -73,6 +77,8 @@ public class RegisterFragment extends Fragment {
     String email;
     String accountName;
     String confirmPassWord;
+    List<User> listUser = new ArrayList<>();
+    LoginPresenter mPresenter;
 
     public RegisterFragment() {
     }
@@ -93,6 +99,8 @@ public class RegisterFragment extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        mPresenter = new LoginPresenter(getContext(), this);
+        mPresenter.getListUser();
     }
 
     @Override
@@ -146,7 +154,6 @@ public class RegisterFragment extends Fragment {
             edtPhone.requestFocus();
             return;
         }
-
         if (TextUtils.isEmpty(address)) {
             edtAddress.setError("Nhập địa chỉ");
             edtAddress.requestFocus();
@@ -154,45 +161,56 @@ public class RegisterFragment extends Fragment {
         }
         if (confirmPassWord.equals(password)) {
             if (CheckConnectionInternet.haveNetWorkConnection(getContext())) {
-                RequestQueue requestQueue = Volley.newRequestQueue(getContext());
-                StringRequest clientInfoStringRequest = new StringRequest(Request.Method.POST, Server.urlUser, new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        Toast.makeText(getContext(), "Đăng kí thành công", Toast.LENGTH_SHORT).show();
-                        MainFragment mainFragment = MainFragment.newInstance();
-                        ((HomeActivity) getActivity()).addFragment(mainFragment);
-                        getActivity().setTitle("Trang chủ");
-                        KeyboardUtil.hideKeyBoard(getView(), getActivity());
+                int check = 0;
+                for (int i = 0; i < listUser.size(); i++) {
+                    if (String.valueOf(listUser.get(i).getId()) == phone || listUser.get(i).getEmail().equals(email)) {
+                        check = 1;
                     }
-                }, new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Log.e("=========>error", error.toString());
-                        Toast.makeText(getContext(), "Tài khoản gmail đã tồn tại", Toast.LENGTH_SHORT).show();
-                    }
-                }) {
-                    @Override
-                    protected Map<String, String> getParams() throws AuthFailureError {
-                        HashMap<String, String> hashMap;
-                        JSONArray jsonArray = new JSONArray();
-                        JSONObject object = new JSONObject();
-                        try {
-                            object.put("id", phone);
-                            object.put("name", name);
-                            object.put("address", address);
-                            object.put("password", password);
-                            object.put("email", email);
-                            object.put("nameUser", accountName);
-                        } catch (JSONException e) {
-                            e.printStackTrace();
+                }
+                if (check != 1) {
+                    RequestQueue requestQueue = Volley.newRequestQueue(getContext());
+                    StringRequest clientInfoStringRequest = new StringRequest(Request.Method.POST, Server.urlUser, new Response.Listener<String>() {
+                        @Override
+                        public void onResponse(String response) {
+                            Toast.makeText(getContext(), "Đăng kí thành công", Toast.LENGTH_SHORT).show();
+                            MainFragment mainFragment = MainFragment.newInstance();
+                            ((HomeActivity) getActivity()).addFragment(mainFragment);
+                            getActivity().setTitle("Trang chủ");
+                            KeyboardUtil.hideKeyBoard(getView(), getActivity());
                         }
-                        jsonArray.put(object);
-                        hashMap = new HashMap<>();
-                        hashMap.put("json", jsonArray.toString());
-                        return hashMap;
-                    }
-                };
-                requestQueue.add(clientInfoStringRequest);
+                    }, new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            Log.e("=========>error", error.toString());
+                            Toast.makeText(getContext(), "Số điện thoại hoặc tài khoản đã được sử dụng", Toast.LENGTH_SHORT).show();
+                        }
+                    }) {
+                        @Override
+                        protected Map<String, String> getParams() throws AuthFailureError {
+                            HashMap<String, String> hashMap;
+                            JSONArray jsonArray = new JSONArray();
+                            JSONObject object = new JSONObject();
+                            try {
+                                object.put("id", phone);
+                                object.put("name", name);
+                                object.put("address", address);
+                                object.put("password", password);
+                                object.put("email", email);
+                                object.put("nameUser", accountName);
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                            jsonArray.put(object);
+                            hashMap = new HashMap<>();
+                            hashMap.put("json", jsonArray.toString());
+                            return hashMap;
+                        }
+                    };
+                    requestQueue.add(clientInfoStringRequest);
+                } else {
+                    Toast.makeText(getContext(), "Tài khoản đã tồn tại", Toast.LENGTH_SHORT).show();
+                }
+
             } else {
                 Toast.makeText(getContext(), "Kiểm tra lại kết nối của bạn", Toast.LENGTH_LONG).show();
             }
@@ -202,5 +220,15 @@ public class RegisterFragment extends Fragment {
             edtConfirmPassword.requestFocus();
             return;
         }
+    }
+
+    @Override
+    public void getListUserSuccessfully(List<User> users) {
+        listUser = users;
+    }
+
+    @Override
+    public void getListUserFailed(String s) {
+
     }
 }

@@ -11,17 +11,27 @@ public class User {
     private String mName;
     private String mAddress;
     private String mNameUser;
+    private String mAvartar;
 
     public User() {
     }
 
-    public User(int mId, String mEmail, String mPassword, String mName, String mAddress, String mNameUser) {
+    public User(int mId, String mEmail, String mPassword, String mName, String mAddress, String mNameUser, String mAvartar) {
         this.mId = mId;
         this.mEmail = mEmail;
         this.mPassword = mPassword;
         this.mName = mName;
         this.mAddress = mAddress;
         this.mNameUser = mNameUser;
+        this.mAvartar = mAvartar;
+    }
+
+    public String getmAvartar() {
+        return mAvartar;
+    }
+
+    public void setmAvartar(String mAvartar) {
+        this.mAvartar = mAvartar;
     }
 
     public int getId() {

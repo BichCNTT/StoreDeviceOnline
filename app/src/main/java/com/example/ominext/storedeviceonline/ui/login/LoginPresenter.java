@@ -34,6 +34,7 @@ public class LoginPresenter {
     String address = "";
     String nameUser = "";
     String password = "";
+    String avartar = "";
     RequestQueue requestQueue;
 //    int requestCount = 1;
 
@@ -44,7 +45,6 @@ public class LoginPresenter {
 
     public void getListUser() {
         requestQueue = Volley.newRequestQueue(mContext);
-//        getData(url);
         final List<User> users = new ArrayList<>();
         JsonArrayRequest arrayRequest = new JsonArrayRequest(Server.urlGetUser, new Response.Listener<JSONArray>() {
             @Override
@@ -59,7 +59,8 @@ public class LoginPresenter {
                             address = jsonObject.getString("address");
                             nameUser = jsonObject.getString("nameUser");
                             password = jsonObject.getString("password");
-                            users.add(new User(id, email, password, name, address, nameUser));
+                            avartar = jsonObject.getString("avartar");
+                            users.add(new User(id, email, password, name, address, nameUser, avartar));
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }

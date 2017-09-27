@@ -259,12 +259,13 @@ public class CartFragment extends Fragment implements CartView, OnItemClickListe
                 } else {
                     Fragment fragment = LoginAndRegisterFragment.newInstance();
                     ((HomeActivity) getActivity()).addFragment(fragment);
-//                    getActivity().setTitle("Đăng nhập");
+                    getActivity().setTitle("Đăng nhập");
                 }
                 break;
             case R.id.btn_continue:
-                Intent intent = new Intent(getContext(), HomeActivity.class);
-                startActivity(intent);
+                Fragment fragment = MainFragment.newInstance();
+                ((HomeActivity) getActivity()).addFragment(fragment);
+                getActivity().setTitle("Trang chủ");
         }
     }
 

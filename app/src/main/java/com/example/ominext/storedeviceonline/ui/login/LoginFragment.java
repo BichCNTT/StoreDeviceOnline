@@ -127,7 +127,7 @@ public class LoginFragment extends Fragment implements LoginView {
 //                        HomeActivity.layout.openDrawer(GravityCompat.START);
                         KeyboardUtil.hideKeyBoard(view, getActivity());
                         MainFragment fragment = MainFragment.newInstance();
-                        ((HomeActivity) getActivity()).replaceFragment(fragment);
+                        ((HomeActivity) getActivity()).addFragment(fragment);
                         getActivity().setTitle("Trang chủ");
                         check = 1;
                         break;

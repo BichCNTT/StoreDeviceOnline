@@ -44,7 +44,6 @@ import com.example.ominext.storedeviceonline.ui.notifi.NotificationFragment;
 import com.example.ominext.storedeviceonline.ui.order.OrderFragment;
 import com.example.ominext.storedeviceonline.ui.pet.PetFragment;
 import com.example.ominext.storedeviceonline.ui.phone.PhoneFragment;
-import com.example.ominext.storedeviceonline.ui.register.RegisterFragment;
 import com.example.ominext.storedeviceonline.ui.sport.SportFragment;
 import com.example.ominext.storedeviceonline.ui.stationery.StationeryFragment;
 import com.example.ominext.storedeviceonline.ui.storeinfo.StoreInfoFragment;
@@ -58,6 +57,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+//Nếu chuyển từ màn đầu tiên sang màn hình đăng nhập thì sẽ là add, còn chuyển từ màn hình giỏ hàng qua màn đăng nhập thì sẽ là replace
 public class HomeActivity extends AppCompatActivity implements HomeView, OnItemClickListener, FragmentManager.OnBackStackChangedListener {
     @BindView(R.id.list_item)
     ListView listItem;
@@ -290,7 +290,6 @@ public class HomeActivity extends AppCompatActivity implements HomeView, OnItemC
                 fragmentCurrent = MainFragment.newInstance();
             }
         }
-
         Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.frame_layout);
         if (fragment instanceof FindFragment) {
             setTitle("Tìm kiếm");
@@ -304,13 +303,8 @@ public class HomeActivity extends AppCompatActivity implements HomeView, OnItemC
             setTitle("Giỏ hàng");
             return;
         }
-        if (fragment instanceof PhoneFragment) {
-            setTitle("Điện thoại & máy tính bảng");
-            return;
-        }
-        if (fragment instanceof LaptopFragment) {
-            setTitle("Máy tính");
-            Log.e("----->fragmentCurrent ", ": " + getTitle());
+        if (fragment instanceof LoginAndRegisterFragment) {
+            setTitle("Đăng nhập");
             return;
         }
         if (fragment instanceof NotificationFragment) {
@@ -325,15 +319,6 @@ public class HomeActivity extends AppCompatActivity implements HomeView, OnItemC
             setTitle("Thông tin khách hàng");
             return;
         }
-        if (fragment instanceof LoginAndRegisterFragment) {
-            setTitle("Đăng nhập");
-        }
-//        if (fragment instanceof RegisterFragment) {
-//            setTitle("Đăng ký");
-//        }
-//        if (fragment instanceof LoginFragment) {
-//            setTitle("Đăng nhập");
-//        }
     }
 
     @Override

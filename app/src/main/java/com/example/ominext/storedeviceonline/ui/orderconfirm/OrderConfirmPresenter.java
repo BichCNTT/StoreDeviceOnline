@@ -1,4 +1,4 @@
-package com.example.ominext.storedeviceonline.ui.order;
+package com.example.ominext.storedeviceonline.ui.orderconfirm;
 
 import android.content.Context;
 import android.util.Log;
@@ -21,12 +21,12 @@ import java.util.List;
  * Created by Ominext on 9/12/2017.
  */
 
-public class OrderPresenter {
+public class OrderConfirmPresenter {
     private Context mContext;
-    private OrderView mOrderView;
+    private OrderConfirmView mOrderView;
     private int mId;
 
-    public OrderPresenter(Context mContext, OrderView mOrderView) {
+    public OrderConfirmPresenter(Context mContext, OrderConfirmView mOrderView) {
         this.mContext = mContext;
         this.mOrderView = mOrderView;
     }
@@ -59,5 +59,4 @@ public class OrderPresenter {
         });
         requestQueue.add(arrayRequest);
     }
-
 }

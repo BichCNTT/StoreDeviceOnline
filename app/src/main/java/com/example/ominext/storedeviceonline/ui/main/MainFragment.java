@@ -75,6 +75,7 @@ public class MainFragment extends Fragment implements MainFragmentView, OnItemCl
     }
 
     private void init() {
+        getActivity().setTitle("Trang chủ");
         mProductAdapter = new NewProductAdapter(getContext(), mListProduct);
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(MainFragment.this.getContext(), 2);
         mViewMain.setLayoutManager(layoutManager);

@@ -27,12 +27,11 @@ import com.example.ominext.storedeviceonline.model.Cache;
 import com.example.ominext.storedeviceonline.model.Cart;
 import com.example.ominext.storedeviceonline.ui.home.HomeActivity;
 import com.example.ominext.storedeviceonline.ui.login.LoginFragment;
-import com.example.ominext.storedeviceonline.ui.main.MainFragment;
-import com.example.ominext.storedeviceonline.ui.notifi.NotificationFragment;
-import com.example.ominext.storedeviceonline.ui.userinfo.UserInfoFragment;
+import com.example.ominext.storedeviceonline.ui.orderconfirm.OrderConfirmFragment;
+import com.example.ominext.storedeviceonline.ui.orderconfirm.OrderConfirmPresenter;
+import com.example.ominext.storedeviceonline.ui.orderconfirm.OrderConfirmView;
 import com.example.ominext.storedeviceonline.until.CheckConnectionInternet;
 import com.example.ominext.storedeviceonline.until.Server;
-import com.mikepenz.actionitembadge.library.ActionItemBadge;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -40,11 +39,7 @@ import org.json.JSONObject;
 
 import java.io.File;
 import java.io.IOException;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -53,9 +48,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
-import retrofit2.http.POST;
 
-public class OrderFragment extends Fragment implements OrderView {
+public class OrderFragment extends Fragment implements OrderConfirmView {
 
     @BindView(R.id.tv_name_user)
     TextView tvNameUser;
@@ -63,7 +57,7 @@ public class OrderFragment extends Fragment implements OrderView {
     TextView tvPhone;
     @BindView(R.id.tv_address)
     TextView tvAddress;
-//    @BindView(R.id.tv_edit)
+    //    @BindView(R.id.tv_edit)
 //    TextView tvEdit;
     @BindView(R.id.rv_product)
     RecyclerView rvProduct;
@@ -78,13 +72,12 @@ public class OrderFragment extends Fragment implements OrderView {
     String address = "";
     String path = null;
     int id = 0;
-    int idProduct = 199;
     String fileName = "cart.txt";
     File file = null;
     List<Cart> cartList = new ArrayList<>();
     OrderAdapter adapter;
     List<Integer> listId = new ArrayList<>();
-    OrderPresenter mPresenter;
+    OrderConfirmPresenter mPresenter;
 
     public OrderFragment() {
         // Required empty public constructor
@@ -112,11 +105,8 @@ public class OrderFragment extends Fragment implements OrderView {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        mPresenter = new OrderPresenter(getContext(), this);
-        mPresenter.getIdOrderProduct();
-        if (!listId.isEmpty()) {
-            idProduct = listId.get(listId.size() - 1);
-        }
+        getActivity().setTitle("Đơn hàng của tôi");
+        mPresenter = new OrderConfirmPresenter(getContext(), this);
         init();
         initFile();
         setMoney();
@@ -133,55 +123,14 @@ public class OrderFragment extends Fragment implements OrderView {
     public void onViewClicked() {
         if (CheckConnectionInternet.haveNetWorkConnection(getContext())) {
             RequestQueue requestQueue = Volley.newRequestQueue(getContext());
-//            StringRequest clientInfoStringRequest = new StringRequest(Request.Method.POST, Server.urlPostClientInfo, new Response.Listener<String>() {
-//                @Override
-//                public void onResponse(String response) {
-//                    Log.e("========>", response);
-//                    Bundle bundle = new Bundle();
-//                    bundle.putString("name", name);
-//                    Fragment fragment = NotificationFragment.newInstance();
-//                    fragment.setArguments(bundle);
-//                    ((HomeActivity) getActivity()).addFragment(fragment);
-////                    sau khi đặt hàng xong xóa giỏ hàng khỏi bộ nhớ đệm
-//                    File f = new File(path + fileName);
-//                    f.delete();
-//                    ActionItemBadge.update(((HomeActivity) getActivity()).optionsMenu.findItem(R.id.menu_cart), Integer.MIN_VALUE);
-//                }
-//            }, new Response.ErrorListener() {
-//                @Override
-//                public void onErrorResponse(VolleyError error) {
-//                    Log.e("=========>error", error.toString());
-//                    Toast.makeText(getContext(), "Đơn hàng chưa được đặt. Không thể kết nối được với máy chủ", Toast.LENGTH_SHORT).show();
-//                }
-//            }) {
-//                @Override
-//                protected Map<String, String> getParams() throws AuthFailureError {
-//                    HashMap<String, String> hashMap;
-//                    JSONArray jsonArray = new JSONArray();
-//                    for (int i = 0; i < cartList.size(); i++) {
-//                        JSONObject object = new JSONObject();
-//                        try {
-//                            object.put("name", name);
-//                            object.put("phone", phone);
-//                            object.put("address", address);
-//                            object.put("nameProduct", cartList.get(i).getName());
-//                            object.put("priceProduct", cartList.get(i).getPrice());
-//                            object.put("numberProduct", cartList.get(i).getNumber());
-//                            object.put("moneyProduct", cartList.get(i).getMoney());
-//                        } catch (JSONException e) {
-//                            e.printStackTrace();
-//                        }
-//                        jsonArray.put(object);
-//                    }
-//                    hashMap = new HashMap<>();
-//                    hashMap.put("json", jsonArray.toString());
-//                    return hashMap;
-//                }
-//            };
-//            requestQueue.add(clientInfoStringRequest);
             StringRequest orderProductStringRequest = new StringRequest(Request.Method.POST, Server.urlPostOrderProduct, new Response.Listener<String>() {
                 @Override
                 public void onResponse(String response) {
+                    Bundle bundle = new Bundle();
+                    bundle.putString("name", name);
+                    Fragment fragment = OrderConfirmFragment.newInstance();
+                    fragment.setArguments(bundle);
+                    ((HomeActivity) getActivity()).addFragment(fragment);
                 }
             }, new Response.ErrorListener() {
                 @Override
@@ -196,7 +145,7 @@ public class OrderFragment extends Fragment implements OrderView {
                     JSONArray jsonArray = new JSONArray();
                     JSONObject object = new JSONObject();
                     try {
-                        object.put("id", idProduct + 1);
+                        object.put("id", null);
                         object.put("idUser", LoginFragment.user.getId());
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -207,49 +156,6 @@ public class OrderFragment extends Fragment implements OrderView {
                 }
             };
             requestQueue.add(orderProductStringRequest);
-
-            StringRequest detailStringRequest = new StringRequest(Request.Method.POST, Server.urlPostDetail, new Response.Listener<String>() {
-                @Override
-                public void onResponse(String response) {
-                    Log.e("========>", response);
-                    Bundle bundle = new Bundle();
-                    bundle.putString("name", name);
-                    Fragment fragment = NotificationFragment.newInstance();
-                    fragment.setArguments(bundle);
-                    ((HomeActivity) getActivity()).addFragment(fragment);
-//                    sau khi đặt hàng xong xóa giỏ hàng khỏi bộ nhớ đệm
-                    File f = new File(path + fileName);
-                    f.delete();
-                    ActionItemBadge.update(((HomeActivity) getActivity()).optionsMenu.findItem(R.id.menu_cart), Integer.MIN_VALUE);
-                }
-            }, new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    Log.e("=========>error", error.toString());
-                    Toast.makeText(getContext(), "Đơn hàng chưa được đặt. Không thể kết nối được với máy chủ", Toast.LENGTH_SHORT).show();
-                }
-            }) {
-                @Override
-                protected Map<String, String> getParams() throws AuthFailureError {
-                    HashMap<String, String> hashMap;
-                    JSONArray jsonArray = new JSONArray();
-                    JSONObject object = new JSONObject();
-                    for (int i = 0; i < cartList.size(); i++) {
-                        try {
-                            object.put("id", idProduct - 1);
-                            object.put("idOrder", idProduct + 1);
-                            object.put("idProduct", cartList.get(i).getId());
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                        jsonArray.put(object);
-                    }
-                    hashMap = new HashMap<>();
-                    hashMap.put("json", jsonArray.toString());
-                    return hashMap;
-                }
-            };
-            requestQueue.add(detailStringRequest);
         } else {
             Toast.makeText(getContext(), "Đơn hàng chưa được đặt. Kiểm tra lại kết nối", Toast.LENGTH_LONG).show();
         }
@@ -272,7 +178,7 @@ public class OrderFragment extends Fragment implements OrderView {
         address = LoginFragment.user.getAddress();
         PriceFormatUtil.priceFormat(tvTotalMoney, totalMoney);
         tvNameUser.setText(name);
-        tvPhone.setText(phone+"");
+        tvPhone.setText(phone + "");
         tvAddress.setText(address);
 //        tvEdit.setOnClickListener(new View.OnClickListener() {
 //            @Override

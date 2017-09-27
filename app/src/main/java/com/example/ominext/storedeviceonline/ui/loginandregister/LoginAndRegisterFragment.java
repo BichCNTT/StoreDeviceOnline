@@ -130,7 +130,7 @@ public class LoginAndRegisterFragment extends Fragment implements LoginView {
         HomeActivity.listProductType.get(0).setNameProductType("Đăng nhập");
         HomeActivity.productTypeAdapter.notifyDataSetChanged();
         MainFragment fragment = MainFragment.newInstance();
-        ((HomeActivity) getActivity()).replaceFragment(fragment);
+        ((HomeActivity) getActivity()).addFragment(fragment);
         getActivity().setTitle("Trang chủ");
     }
 

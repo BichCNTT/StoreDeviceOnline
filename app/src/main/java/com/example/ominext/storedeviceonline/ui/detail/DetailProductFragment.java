@@ -68,6 +68,7 @@ public class DetailProductFragment extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        getActivity().setTitle("Chi tiết sản phẩm");
         Bundle bundle = this.getArguments();
         id = bundle.getInt("id");
         name = bundle.getString("name");

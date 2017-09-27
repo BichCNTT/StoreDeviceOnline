@@ -128,7 +128,6 @@ public class FindFragment extends Fragment implements FindView, OnItemClickListe
                 mAdapter.filter(charSequence.toString().trim(), listFind);
                 rvListFind.invalidate();
                 rvListFind.smoothScrollToPosition(0);
-                KeyboardUtil.hideKeyBoard(getView(), getActivity());
             }
 
             @Override

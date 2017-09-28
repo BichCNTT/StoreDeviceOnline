@@ -124,7 +124,6 @@ public class LoginFragment extends Fragment implements LoginView {
                         Toast.makeText(getContext(), "Đăng nhập thành công", Toast.LENGTH_SHORT).show();
                         HomeActivity.listProductType.get(0).setNameProductType("Hi! " + users.get(i).getNameUser());
                         HomeActivity.productTypeAdapter.notifyDataSetChanged();
-//                        HomeActivity.layout.openDrawer(GravityCompat.START);
                         KeyboardUtil.hideKeyBoard(view, getActivity());
                         MainFragment fragment = MainFragment.newInstance();
                         ((HomeActivity) getActivity()).addFragment(fragment);

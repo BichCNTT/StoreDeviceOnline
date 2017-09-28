@@ -38,7 +38,7 @@ import butterknife.Unbinder;
  */
 //Hiển thị thông tin tài khoản
 //    Họ tên, số điện thoại, địa chỉ giao hàng, tên tài khoản, email, mật khẩu. Nếu tên kp đăng xuất thì hiện view lên. Db lấy ở csdl
-public class LoginAndRegisterFragment extends Fragment implements LoginView {
+public class LoginAndRegisterFragment extends Fragment implements LoginView, FragmentManager.OnBackStackChangedListener {
     @BindView(R.id.tabs)
     TabLayout mTabLayout;
     @BindView(R.id.view_pager)
@@ -86,6 +86,9 @@ public class LoginAndRegisterFragment extends Fragment implements LoginView {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        init();
+    }
+    public void init(){
         if (HomeActivity.listProductType.get(0).getNameProductType().equals("Đăng nhập")) {
             linearLayoutUserDetail.setVisibility(View.GONE);
             linearLayoutLoginAndRegister.setVisibility(View.VISIBLE);
@@ -105,7 +108,6 @@ public class LoginAndRegisterFragment extends Fragment implements LoginView {
             tvPassWord.setText(user.getPassword());
         }
     }
-
     private void setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter mAdapter = new ViewPagerAdapter(getFragmentManager());
         mAdapter.addFragment(new LoginFragment());
@@ -132,6 +134,17 @@ public class LoginAndRegisterFragment extends Fragment implements LoginView {
         MainFragment fragment = MainFragment.newInstance();
         ((HomeActivity) getActivity()).addFragment(fragment);
         getActivity().setTitle("Trang chủ");
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        mUnbinder.unbind();
+    }
+
+    @Override
+    public void onBackStackChanged() {
+
     }
 
     class ViewPagerAdapter extends FragmentStatePagerAdapter {
@@ -162,9 +175,4 @@ public class LoginAndRegisterFragment extends Fragment implements LoginView {
         }
     }
 
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        mUnbinder.unbind();
-    }
 }

@@ -1,5 +1,8 @@
 package com.example.ominext.storedeviceonline.ui.orderconfirm;
 
+import android.app.ProgressDialog;
+import android.graphics.drawable.Drawable;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.annotation.Nullable;
@@ -115,7 +118,7 @@ public class OrderConfirmFragment extends Fragment implements OrderConfirmView {
                 @Override
                 public void onErrorResponse(VolleyError error) {
                     Log.e("=========>error", error.toString());
-                    Toast.makeText(getContext(), "Đơn hàng chưa được đặt. Không thể kết nối được với máy chủ", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "Đơn hàng chưa được đặt. Có lỗi trong quá trình xác nhận đặt hàng", Toast.LENGTH_SHORT).show();
                 }
             }) {
                 @Override
@@ -144,6 +147,7 @@ public class OrderConfirmFragment extends Fragment implements OrderConfirmView {
         } else {
             Toast.makeText(getContext(), "Đơn hàng chưa được đặt. Kiểm tra lại kết nối", Toast.LENGTH_LONG).show();
         }
+
     }
 
     public void initFile() {

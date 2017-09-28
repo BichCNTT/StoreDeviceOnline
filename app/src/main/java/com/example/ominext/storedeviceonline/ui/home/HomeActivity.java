@@ -58,6 +58,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 //Nếu chuyển từ màn đầu tiên sang màn hình đăng nhập thì sẽ là add, còn chuyển từ màn hình giỏ hàng qua màn đăng nhập thì sẽ là replace
+//TASK 1: chuyển nút thành progress bar
 public class HomeActivity extends AppCompatActivity implements HomeView, OnItemClickListener, FragmentManager.OnBackStackChangedListener {
     @BindView(R.id.list_item)
     ListView listItem;
@@ -84,10 +85,6 @@ public class HomeActivity extends AppCompatActivity implements HomeView, OnItemC
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
         ButterKnife.bind(this);
-        layout = drawerLayout;
-        ActivityCompat.requestPermissions(HomeActivity.this,
-                new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
-                1);
         init();
         listItem.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -102,6 +99,10 @@ public class HomeActivity extends AppCompatActivity implements HomeView, OnItemC
     }
 
     private void init() {
+        layout = drawerLayout;
+        ActivityCompat.requestPermissions(HomeActivity.this,
+                new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
+                1);
         mPresenter = new HomePresenter(HomeActivity.this, this);
         count = mPresenter.getSizeProduct();
         ActionBar();

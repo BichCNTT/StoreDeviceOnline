@@ -5,10 +5,16 @@
     android:background="@color/white"
     tools:context="com.example.ominext.storedeviceonline.ui.orderconfirm.OrderConfirmFragment">
 
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@drawable/ic_car" />
+
     <Button
         android:id="@+id/btn_confirm"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
         android:background="@drawable/border"
         android:text="Xác nhận đặt hàng"
         android:textColor="@color/white" />

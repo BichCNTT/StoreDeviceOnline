@@ -139,6 +139,11 @@ public class RegisterFragment extends Fragment implements LoginView {
             edtPassword.requestFocus();
             return;
         }
+        if (password.length() < 6) {
+            edtPassword.setError("Mật khẩu phải lớn hơn 5 kí tự");
+            edtPassword.requestFocus();
+            return;
+        }
         if (TextUtils.isEmpty(confirmPassWord)) {
             edtConfirmPassword.setError("Nhập lại mật khẩu");
             edtConfirmPassword.requestFocus();
@@ -197,6 +202,7 @@ public class RegisterFragment extends Fragment implements LoginView {
                                 object.put("password", password);
                                 object.put("email", email);
                                 object.put("nameUser", accountName);
+//                                object.put("avartar",null);
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }

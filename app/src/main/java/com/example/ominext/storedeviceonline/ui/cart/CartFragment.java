@@ -1,8 +1,6 @@
 package com.example.ominext.storedeviceonline.ui.cart;
 
 import android.content.DialogInterface;
-import android.content.Intent;
-import android.location.LocationProvider;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
@@ -10,12 +8,9 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,7 +27,6 @@ import com.example.ominext.storedeviceonline.ui.home.HomeActivity;
 import com.example.ominext.storedeviceonline.ui.loginandregister.LoginAndRegisterFragment;
 import com.example.ominext.storedeviceonline.ui.main.MainFragment;
 import com.example.ominext.storedeviceonline.ui.order.OrderFragment;
-import com.example.ominext.storedeviceonline.ui.userinfo.UserInfoFragment;
 import com.mikepenz.actionitembadge.library.ActionItemBadge;
 
 import java.io.File;
@@ -258,7 +252,7 @@ public class CartFragment extends Fragment implements CartView, OnItemClickListe
                     fragmentTransaction.commit();
                 } else {
                     Fragment fragment = LoginAndRegisterFragment.newInstance();
-                    ((HomeActivity) getActivity()).addFragment(fragment);
+                    ((HomeActivity) getActivity()).replaceFragment(fragment);
                     getActivity().setTitle("Đăng nhập");
                 }
                 break;

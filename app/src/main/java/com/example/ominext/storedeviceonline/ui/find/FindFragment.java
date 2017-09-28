@@ -48,6 +48,7 @@ public class FindFragment extends Fragment implements FindView, OnItemClickListe
     @BindView(R.id.rv_list_find)
     RecyclerView rvListFind;
     Unbinder unbinder;
+
     public FindFragment() {
     }
 
@@ -73,6 +74,7 @@ public class FindFragment extends Fragment implements FindView, OnItemClickListe
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        KeyboardUtil.hideKeyBoard(getView(), getActivity());
         init();
     }
 

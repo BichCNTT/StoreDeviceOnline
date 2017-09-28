@@ -57,8 +57,6 @@ public class OrderFragment extends Fragment implements OrderConfirmView {
     TextView tvPhone;
     @BindView(R.id.tv_address)
     TextView tvAddress;
-    //    @BindView(R.id.tv_edit)
-//    TextView tvEdit;
     @BindView(R.id.rv_product)
     RecyclerView rvProduct;
     @BindView(R.id.tv_total_money)
@@ -80,7 +78,7 @@ public class OrderFragment extends Fragment implements OrderConfirmView {
     OrderConfirmPresenter mPresenter;
 
     public OrderFragment() {
-        // Required empty public constructor
+
     }
 
     public static OrderFragment newInstance() {
@@ -96,7 +94,7 @@ public class OrderFragment extends Fragment implements OrderConfirmView {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+
         View view = inflater.inflate(R.layout.fragment_order, container, false);
         unbinder = ButterKnife.bind(this, view);
         return view;
@@ -118,7 +116,7 @@ public class OrderFragment extends Fragment implements OrderConfirmView {
         unbinder.unbind();
     }
 
-    //thêm dữ liệu lên bảng có khóa đã điền thông tin ->kbiết
+
     @OnClick(R.id.btn_order_product)
     public void onViewClicked() {
         if (CheckConnectionInternet.haveNetWorkConnection(getContext())) {

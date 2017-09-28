@@ -7,13 +7,17 @@ package com.example.ominext.storedeviceonline.until;
 public class Server {
     public static String localhost = "192.168.0.51";
     public static String urlProductType = "http://" + localhost + "/server/getproducttype.php";
+
     public static String urlNewProduct = "http://" + localhost + "/server/getnewproduct.php";
     public static String urlProduct = "http://" + localhost + "/server/getproduct.php";
+
     public static String urlPostOrderProduct = "http://" + localhost + "/server/postorderproduct.php";
+    public static String urlGetIdOrderProduct = "http://" + localhost + "/server/getidorderproduct.php";
+
     public static String urlPostDetail = "http://" + localhost + "/server/postdetail.php";
+
     public static String urlUser = "http://" + localhost + "/server/postuserinfo.php";
     public static String urlGetUser = "http://" + localhost + "/server/getuserinfo.php";
-    public static String urlGetIdOrderProduct = "http://" + localhost + "/server/getidorderproduct.php";
 
     public static String urlSortUpLaptop = "http://" + localhost + "/server/sortuplaptop.php";
     public static String urlSortDownLaptop = "http://" + localhost + "/server/sortdownlaptop.php";

@@ -42,7 +42,6 @@ public class FashionFragment extends Fragment implements OnItemClickListener, Pr
     RecyclerView rvProduct;
     Unbinder unbinder;
     ProductAdapter adapter;
-    //    View itemView;
     List<Product> productList = new ArrayList<>();
     ProductPresenter mPresenter;
     @BindView(R.id.img_change)

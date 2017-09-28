@@ -100,7 +100,7 @@ public class LoginFragment extends Fragment implements LoginView {
                 }
                 break;
             case R.id.btn_login:
-                email = edtEmail.getText().toString();
+                email = edtEmail.getText().toString().toLowerCase();
                 password = edtPassword.getText().toString();
                 if (TextUtils.isEmpty(email)) {
                     edtEmail.setError("Nhập vào một email");

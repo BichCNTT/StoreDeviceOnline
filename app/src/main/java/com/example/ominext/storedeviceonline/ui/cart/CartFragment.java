@@ -39,7 +39,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
 
-public class CartFragment extends Fragment implements CartView, OnItemClickListener {
+public class CartFragment extends Fragment implements OnItemClickListener {
     @BindView(R.id.rv_cart)
     RecyclerView rvCart;
     @BindView(R.id.tv_money)
@@ -62,7 +62,6 @@ public class CartFragment extends Fragment implements CartView, OnItemClickListe
     public TextView tvNoData;
     @BindView(R.id.tv_total)
     TextView tvTotal;
-
     String path = null;
     String fileName = "cart.txt";
     File file = null;
@@ -105,6 +104,7 @@ public class CartFragment extends Fragment implements CartView, OnItemClickListe
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         initFile();
+        getActivity().setTitle("Giỏ hàng");
         tvNoData.setVisibility(View.GONE);
         Bundle bundle = getArguments();
         key = bundle.getInt("key");
@@ -115,8 +115,9 @@ public class CartFragment extends Fragment implements CartView, OnItemClickListe
             image = bundle.getString("image");
             number = bundle.getInt("number");
             cartList = Cache.readFile(path + fileName);
-//            them vao nay->doc file txt ra xog ktra
-            int check = 0;//check de ktra xem cai tong so luong co lon hon so luong san pham toi da co the co hay khong neu lon hon thi thong bao khong duoc vuot qua 10 sp
+            //them vao nay->doc file txt ra xog ktra
+            //check de ktra xem cai tong so luong co lon hon so luong san pham toi da co the co hay khong neu lon hon thi thong bao khong duoc vuot qua 10 sp
+            int check = 0;
             if (!cartList.isEmpty()) {
                 for (int i = 0; i < cartList.size(); i++) {
                     if ((cartList.get(i).getName().equals(name)) && (cartList.get(i).getImage().equals(image)) && (cartList.get(i).getPrice() == price)) {
@@ -261,16 +262,6 @@ public class CartFragment extends Fragment implements CartView, OnItemClickListe
                 ((HomeActivity) getActivity()).addFragment(fragment);
                 getActivity().setTitle("Trang chủ");
         }
-    }
-
-    @Override
-    public void getListCartSuccess(List<Product> products) {
-
-    }
-
-    @Override
-    public void getListCartFailed(String s) {
-
     }
 
     @Override

@@ -115,7 +115,7 @@ public class RegisterFragment extends Fragment implements LoginView {
         name = edtName.getText().toString();
         address = edtAddress.getText().toString();
         password = edtPassword.getText().toString();
-        email = edtEmail.getText().toString();
+        email = edtEmail.getText().toString().toLowerCase();
         accountName = edtAccountName.getText().toString();
         confirmPassWord = edtConfirmPassword.getText().toString();
 

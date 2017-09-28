@@ -109,7 +109,7 @@ public class OrderConfirmFragment extends Fragment implements OrderConfirmView {
                     Fragment fragment = NotificationFragment.newInstance();
                     fragment.setArguments(bundle);
                     ((HomeActivity) getActivity()).addFragment(fragment);
-//                    sau khi đặt hàng xong xóa giỏ hàng khỏi bộ nhớ đệm
+//                  sau khi đặt hàng xong xóa giỏ hàng khỏi bộ nhớ đệm
                     File f = new File(path + fileName);
                     f.delete();
                     ActionItemBadge.update(((HomeActivity) getActivity()).optionsMenu.findItem(R.id.menu_cart), Integer.MIN_VALUE);

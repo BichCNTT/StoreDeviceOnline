@@ -58,7 +58,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 //Nếu chuyển từ màn đầu tiên sang màn hình đăng nhập thì sẽ là add, còn chuyển từ màn hình giỏ hàng qua màn đăng nhập thì sẽ là replace
-//TASK 1: chuyển nút thành progress bar
 public class HomeActivity extends AppCompatActivity implements HomeView, OnItemClickListener, FragmentManager.OnBackStackChangedListener {
     @BindView(R.id.list_item)
     ListView listItem;
@@ -258,21 +257,20 @@ public class HomeActivity extends AppCompatActivity implements HomeView, OnItemC
         addFragment(fragment);
     }
 
-    //xử lý cùng cấp (khi replace) -> màn menu
+//  xử lý cùng cấp (khi replace) -> màn menu
+//  khi ấn nút back nếu fragment hiện tại là main fragment thì out ra
+//  ngược lại nếu trong ngăn xếp vẫn còn thì quay lại fragment trước đó
+//  ngược lại nếu tab hiện tại khác 0 thì quay về màn home để set lại title cho nó và thay nó về màn home
     @Override
     public void onBackPressed() {
-//        khi ấn nút back nếu fragment hiện tại là main fragment thì out ra
         if (fragmentCurrent instanceof MainFragment) {
             finish();
             Log.e("------>", "thoát");
         } else {
-//          ngược lại nếu trong ngăn xếp vẫn còn thì quay lại fragment trước đó
             if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
                 super.onBackPressed();
                 Log.e("------>", "quay lại");
-            }
-//            ngược lại nếu tab hiện tại khác 0 thì quay về màn home để set lại title cho nó và thay nó về màn home
-            else if (tabCurrent != 1) {
+            } else if (tabCurrent != 1) {
                 changeHome(1);
             }
         }
@@ -282,11 +280,11 @@ public class HomeActivity extends AppCompatActivity implements HomeView, OnItemC
     @Override
     public void onBackStackChanged() {
         FragmentManager frm = getSupportFragmentManager();
-//        Log.e("-------->", frm.getBackStackEntryCount() + "");
-//        nếu trong ngăn xếp số các fragment được add vào =0 -> không còn thì set tiêu đề bằng tiêu đề hiện tại
+//      Log.e("-------->", frm.getBackStackEntryCount() + "");
+//      nếu trong ngăn xếp số các fragment được add vào =0 -> không còn thì set tiêu đề bằng tiêu đề hiện tại
+//      nếu tab hiện tại bằng 0 thì setFragmentCurrent= MainFragment
         if (frm.getBackStackEntryCount() == 0) {
             setTitle(listProductType.get(tabCurrent).getNameProductType());
-//            nếu tab hiện tại bằng 0 thì setFragmentCurrent= MainFragment
             if (tabCurrent == 0) {
                 fragmentCurrent = MainFragment.newInstance();
             }
@@ -296,6 +294,30 @@ public class HomeActivity extends AppCompatActivity implements HomeView, OnItemC
             setTitle("Tìm kiếm");
             return;
         }
+//        if (fragment instanceof CleanningStuffFragment) {
+//            setTitle("Dụng cụ vệ sinh");
+//            return;
+//        }
+//        if (fragment instanceof FashionFragment) {
+//            setTitle("Thời trang");
+//            return;
+//        }
+//        if (fragment instanceof FurnitureFragment) {
+//            setTitle("Đồ nội thất");
+//            return;
+//        }
+//        if (fragment instanceof JewelryFragment) {
+//            setTitle("Trang sức");
+//            return;
+//        }
+//        if (fragment instanceof KitchenFragment) {
+//            setTitle("Bếp & phòng ăn");
+//            return;
+//        }
+//        if (fragment instanceof TechnologyEquipmentFragment) {
+//            setTitle("Thiết bị công nghệ");
+//            return;
+//        }
         if (fragment instanceof DetailProductFragment) {
             setTitle("Chi tiết sản phẩm");
             return;
@@ -312,24 +334,26 @@ public class HomeActivity extends AppCompatActivity implements HomeView, OnItemC
             setTitle("Đơn hàng của tôi");
             return;
         }
-        if (fragment instanceof UserInfoFragment) {
-            setTitle("Thông tin khách hàng");
-            return;
-        }
+//        if (fragment instanceof LoginAndRegisterFragment) {
+//            setTitle("Đăng nhập");
+//            return;
+//        }
+//        if (fragment instanceof UserInfoFragment) {
+//            setTitle("Thông tin khách hàng");
+//            return;
+//        }
     }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         switch (requestCode) {
             case 1: {
-
                 // If request is cancelled, the result arrays are empty.
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     // permission was granted, yay! Do the
                     // contacts-related task you need to do.
                 } else {
-
                     // permission denied, boo! Disable the
                     // functionality that depends on this permission.
                     Toast.makeText(HomeActivity.this, "Permission denied to read your External storage", Toast.LENGTH_SHORT).show();
@@ -339,10 +363,3 @@ public class HomeActivity extends AppCompatActivity implements HomeView, OnItemC
         }
     }
 }
-//sư khác biệt giữa replace và add
-//replace là thay thế hoàn toàn: khi chạy nó sẽ vào hàm onCreateView -> OnResume
-//add: là thêm mới, các fragment vẫn đang chạy song song khi thêm add to backstack thì nó cũng sẽ không phải gọi lại các hàm trong vòng đời để dừng hđộng của fragment hiện tại lại
-//khi ấn onbackpress thì ko phải dectach lần lượt từng fragment mà theo cơ chế xen kẽ
-//replace: là remove hoàn toàn sau đó khi ta add to backstack thì nó sẽ ktạo lại toàn bộ tức là chạy lại các hàm như oncreateView->...->onResume
-//add thì thêm addToBackStack
-//replace thì k thêm addToBackStack

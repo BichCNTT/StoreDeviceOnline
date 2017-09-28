@@ -5,9 +5,6 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.widget.Toast;
 
-/**
- * Created by Ominext on 8/17/2017.
- */
 // Dùng để kiểm tra có kết nối internet hay không
 public class CheckConnectionInternet {
     public static boolean haveNetWorkConnection(Context context){

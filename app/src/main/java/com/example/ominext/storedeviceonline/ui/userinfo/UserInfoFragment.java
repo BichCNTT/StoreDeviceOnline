@@ -21,8 +21,6 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
 
-//TASK 1: Sửa lại màn đăng nhập có thêm dòng đăng kí tài khoản. Chuyển từ màn đăng nhập -> đăng kí (add)
-//TASK 2: Cho 1 nút check đồng ý vào màn đơn hàng của tôi. Hoặc chuyển màn sử dụng progressbar. created activity thì cho progressbar chạy, trong khi progressbar chạy thì update lên detail. Done thì dừng progressbar và chuyển màn thông báo
 public class UserInfoFragment extends Fragment {
     @BindView(R.id.edt_name_user)
     EditText edtNameUser;
@@ -76,7 +74,6 @@ public class UserInfoFragment extends Fragment {
         unbinder.unbind();
     }
 
-    //nếu lấy dữ liệu từ lần click xác nhận thông tin thì khi click sửa thông tin sẽ phải s
     @OnClick(R.id.btn_accept)
     public void onViewClicked() {
         if ((!edtNameUser.getText().toString().isEmpty()) && (!edtAddress.getText().toString().isEmpty()) && (!edtPhone.getText().toString().isEmpty())) {

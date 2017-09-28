@@ -31,9 +31,6 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-/**
- * Created by Ominext on 8/29/2017.
- */
 // tính tổng tiền của các mặt hàng đã thêm vào giỏ hàng
 public class CartAdapter extends RecyclerView.Adapter<CartAdapter.RecyclerViewHolder> {
     List<Cart> cartList = new ArrayList<>();

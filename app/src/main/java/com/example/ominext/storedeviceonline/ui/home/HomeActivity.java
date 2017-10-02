@@ -27,7 +27,6 @@ import com.example.ominext.storedeviceonline.listener.OnItemClickListener;
 import com.example.ominext.storedeviceonline.model.Product;
 import com.example.ominext.storedeviceonline.model.ProductType;
 import com.example.ominext.storedeviceonline.ui.login.LoginFragment;
-import com.example.ominext.storedeviceonline.ui.loginandregister.LoginAndRegisterFragment;
 import com.example.ominext.storedeviceonline.ui.cart.CartFragment;
 import com.example.ominext.storedeviceonline.ui.cleanningstuff.CleanningStuffFragment;
 import com.example.ominext.storedeviceonline.ui.contact.ContactFragment;
@@ -48,7 +47,6 @@ import com.example.ominext.storedeviceonline.ui.sport.SportFragment;
 import com.example.ominext.storedeviceonline.ui.stationery.StationeryFragment;
 import com.example.ominext.storedeviceonline.ui.storeinfo.StoreInfoFragment;
 import com.example.ominext.storedeviceonline.ui.technologyequipment.TechnologyEquipmentFragment;
-import com.example.ominext.storedeviceonline.ui.userinfo.UserInfoFragment;
 import com.mikepenz.actionitembadge.library.ActionItemBadge;
 
 import java.util.ArrayList;
@@ -58,6 +56,13 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 //Nếu chuyển từ màn đầu tiên sang màn hình đăng nhập thì sẽ là add, còn chuyển từ màn hình giỏ hàng qua màn đăng nhập thì sẽ là replace
+//Task1: Sửa lại màn login và logout
+
+//đăng kí xong thì quay về màn đăng nhập
+//đăng nhập xong thì quay về trang chủ
+
+//Task2: Người dùng có thể đăng hàng lên bán
+//Đăng nhập xong thì có thể đăng hàng lên bán
 public class HomeActivity extends AppCompatActivity implements HomeView, OnItemClickListener, FragmentManager.OnBackStackChangedListener {
     @BindView(R.id.list_item)
     ListView listItem;
@@ -114,7 +119,7 @@ public class HomeActivity extends AppCompatActivity implements HomeView, OnItemC
         tabCurrent = pos;
         switch (pos) {
             case 0:
-                fragmentCurrent = LoginAndRegisterFragment.newInstance();
+                fragmentCurrent = LoginFragment.newInstance();
                 break;
             case 1:
                 fragmentCurrent = MainFragment.newInstance();
@@ -202,7 +207,7 @@ public class HomeActivity extends AppCompatActivity implements HomeView, OnItemC
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         optionsMenu = menu;
-        getMenuInflater().inflate(R.menu.main_menu, menu);
+        getMenuInflater().inflate(R.menu.menu_main, menu);
         if (count == 0) {
             count = Integer.MIN_VALUE;
         }
@@ -257,7 +262,7 @@ public class HomeActivity extends AppCompatActivity implements HomeView, OnItemC
         addFragment(fragment);
     }
 
-//  xử lý cùng cấp (khi replace) -> màn menu
+    //  xử lý cùng cấp (khi replace) -> màn menu
 //  khi ấn nút back nếu fragment hiện tại là main fragment thì out ra
 //  ngược lại nếu trong ngăn xếp vẫn còn thì quay lại fragment trước đó
 //  ngược lại nếu tab hiện tại khác 0 thì quay về màn home để set lại title cho nó và thay nó về màn home
@@ -294,30 +299,6 @@ public class HomeActivity extends AppCompatActivity implements HomeView, OnItemC
             setTitle("Tìm kiếm");
             return;
         }
-//        if (fragment instanceof CleanningStuffFragment) {
-//            setTitle("Dụng cụ vệ sinh");
-//            return;
-//        }
-//        if (fragment instanceof FashionFragment) {
-//            setTitle("Thời trang");
-//            return;
-//        }
-//        if (fragment instanceof FurnitureFragment) {
-//            setTitle("Đồ nội thất");
-//            return;
-//        }
-//        if (fragment instanceof JewelryFragment) {
-//            setTitle("Trang sức");
-//            return;
-//        }
-//        if (fragment instanceof KitchenFragment) {
-//            setTitle("Bếp & phòng ăn");
-//            return;
-//        }
-//        if (fragment instanceof TechnologyEquipmentFragment) {
-//            setTitle("Thiết bị công nghệ");
-//            return;
-//        }
         if (fragment instanceof DetailProductFragment) {
             setTitle("Chi tiết sản phẩm");
             return;
@@ -334,14 +315,14 @@ public class HomeActivity extends AppCompatActivity implements HomeView, OnItemC
             setTitle("Đơn hàng của tôi");
             return;
         }
-//        if (fragment instanceof LoginAndRegisterFragment) {
-//            setTitle("Đăng nhập");
-//            return;
-//        }
-//        if (fragment instanceof UserInfoFragment) {
-//            setTitle("Thông tin khách hàng");
-//            return;
-//        }
+        if (fragment instanceof LoginFragment) {
+            setTitle("Đăng nhập");
+            return;
+        }
+        if (fragment instanceof MainFragment){
+            setTitle("Trang chủ");
+            return;
+        }
     }
 
     @Override

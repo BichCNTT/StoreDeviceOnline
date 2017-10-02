@@ -24,6 +24,7 @@ import com.example.ominext.storedeviceonline.R;
 import com.example.ominext.storedeviceonline.helper.KeyboardUtil;
 import com.example.ominext.storedeviceonline.model.User;
 import com.example.ominext.storedeviceonline.ui.home.HomeActivity;
+import com.example.ominext.storedeviceonline.ui.login.LoginFragment;
 import com.example.ominext.storedeviceonline.ui.login.LoginPresenter;
 import com.example.ominext.storedeviceonline.ui.login.LoginView;
 import com.example.ominext.storedeviceonline.ui.main.MainFragment;
@@ -99,6 +100,7 @@ public class RegisterFragment extends Fragment implements LoginView {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        getActivity().setTitle("Đăng kí");
         mPresenter = new LoginPresenter(getContext(), this);
         mPresenter.getListUser();
     }
@@ -178,9 +180,8 @@ public class RegisterFragment extends Fragment implements LoginView {
                         @Override
                         public void onResponse(String response) {
                             Toast.makeText(getContext(), "Đăng kí thành công", Toast.LENGTH_SHORT).show();
-                            MainFragment mainFragment = MainFragment.newInstance();
-                            ((HomeActivity) getActivity()).addFragment(mainFragment);
-                            getActivity().setTitle("Trang chủ");
+                            LoginFragment loginFragment = LoginFragment.newInstance();
+                            ((HomeActivity) getActivity()).replaceFragment(loginFragment);
                             KeyboardUtil.hideKeyBoard(getView(), getActivity());
                         }
                     }, new Response.ErrorListener() {
@@ -202,7 +203,6 @@ public class RegisterFragment extends Fragment implements LoginView {
                                 object.put("password", password);
                                 object.put("email", email);
                                 object.put("nameUser", accountName);
-//                                object.put("avartar",null);
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }

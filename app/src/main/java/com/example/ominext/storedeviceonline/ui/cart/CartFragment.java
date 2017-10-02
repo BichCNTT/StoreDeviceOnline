@@ -22,9 +22,8 @@ import com.example.ominext.storedeviceonline.helper.PriceFormatUtil;
 import com.example.ominext.storedeviceonline.listener.OnItemClickListener;
 import com.example.ominext.storedeviceonline.model.Cache;
 import com.example.ominext.storedeviceonline.model.Cart;
-import com.example.ominext.storedeviceonline.model.Product;
 import com.example.ominext.storedeviceonline.ui.home.HomeActivity;
-import com.example.ominext.storedeviceonline.ui.loginandregister.LoginAndRegisterFragment;
+import com.example.ominext.storedeviceonline.ui.login.LoginFragment;
 import com.example.ominext.storedeviceonline.ui.main.MainFragment;
 import com.example.ominext.storedeviceonline.ui.order.OrderFragment;
 import com.mikepenz.actionitembadge.library.ActionItemBadge;
@@ -252,15 +251,13 @@ public class CartFragment extends Fragment implements OnItemClickListener {
                     fragmentTransaction.addToBackStack(null);
                     fragmentTransaction.commit();
                 } else {
-                    Fragment fragment = LoginAndRegisterFragment.newInstance();
-                    ((HomeActivity) getActivity()).replaceFragment(fragment);
-                    getActivity().setTitle("Đăng nhập");
+                    Fragment fragment = LoginFragment.newInstance();
+                    ((HomeActivity) getActivity()).addFragment(fragment);
                 }
                 break;
             case R.id.btn_continue:
                 Fragment fragment = MainFragment.newInstance();
                 ((HomeActivity) getActivity()).addFragment(fragment);
-                getActivity().setTitle("Trang chủ");
         }
     }
 

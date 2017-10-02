@@ -26,6 +26,7 @@ import com.example.ominext.storedeviceonline.R;
 import com.example.ominext.storedeviceonline.listener.OnItemClickListener;
 import com.example.ominext.storedeviceonline.model.Product;
 import com.example.ominext.storedeviceonline.model.ProductType;
+import com.example.ominext.storedeviceonline.ui.addproduct.AddProductFragment;
 import com.example.ominext.storedeviceonline.ui.login.LoginFragment;
 import com.example.ominext.storedeviceonline.ui.cart.CartFragment;
 import com.example.ominext.storedeviceonline.ui.cleanningstuff.CleanningStuffFragment;
@@ -319,8 +320,12 @@ public class HomeActivity extends AppCompatActivity implements HomeView, OnItemC
             setTitle("Đăng nhập");
             return;
         }
-        if (fragment instanceof MainFragment){
+        if (fragment instanceof MainFragment) {
             setTitle("Trang chủ");
+            return;
+        }
+        if (fragment instanceof AddProductFragment) {
+            setTitle("Thêm mặt hàng");
             return;
         }
     }

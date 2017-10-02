@@ -3,6 +3,7 @@ package com.example.ominext.storedeviceonline.ui.main;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
@@ -20,6 +21,7 @@ import com.example.ominext.storedeviceonline.R;
 import com.example.ominext.storedeviceonline.helper.ImageViewUtil;
 import com.example.ominext.storedeviceonline.listener.OnItemClickListener;
 import com.example.ominext.storedeviceonline.model.Product;
+import com.example.ominext.storedeviceonline.ui.addproduct.AddProductFragment;
 import com.example.ominext.storedeviceonline.ui.detail.DetailProductFragment;
 import com.example.ominext.storedeviceonline.ui.home.HomeActivity;
 
@@ -27,6 +29,7 @@ import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import butterknife.Unbinder;
 
 //khi mà refresh thì gọi lại cái page đầu tiên trong loadmore. Viết lại loadmore. Sửa api, sửa ở trong
@@ -44,6 +47,8 @@ public class MainFragment extends Fragment implements MainFragmentView, OnItemCl
     MainFragmentPresenter mPresenter;
     @BindView(R.id.swipe_refresh_layout_main)
     SwipeRefreshLayout mSwipeRefreshLayoutMain;
+    @BindView(R.id.fab_add_product)
+    FloatingActionButton fabAddProduct;
 
     public MainFragment() {
 
@@ -158,5 +163,11 @@ public class MainFragment extends Fragment implements MainFragmentView, OnItemCl
     @Override
     public void onRefresh() {
         refreshContent();
+    }
+
+    @OnClick(R.id.fab_add_product)
+    public void onViewClicked() {
+        Fragment fragment = AddProductFragment.newInstance();
+        ((HomeActivity) getActivity()).addFragment(fragment);
     }
 }

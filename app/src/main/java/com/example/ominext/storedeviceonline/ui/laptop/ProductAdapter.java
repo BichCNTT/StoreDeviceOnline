@@ -2,6 +2,7 @@ package com.example.ominext.storedeviceonline.ui.laptop;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +14,7 @@ import com.example.ominext.storedeviceonline.model.Product;
 import com.example.ominext.storedeviceonline.helper.ImageViewUtil;
 import com.example.ominext.storedeviceonline.helper.PriceFormatUtil;
 import com.example.ominext.storedeviceonline.listener.OnItemClickListener;
+import com.example.ominext.storedeviceonline.until.Server;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -54,6 +56,9 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.Recycler
     @Override
     public void onBindViewHolder(RecyclerViewHolder holder, int position) {
         Product product = productList.get(position);
+        if(!product.getImageProduct().contains("http")){
+            product.setImageProduct("http://" + Server.localhost+"/server/"+product.getImageProduct());
+        }
         if (change == 1) {
             ImageViewUtil.loadImg(context, product.getImageProduct(), holder.imgLaptop);
             holder.tvName.setText(product.getNameProduct());
@@ -65,7 +70,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.Recycler
             PriceFormatUtil.priceFormat(holder.tvPrice, product.getPriceProduct());
             holder.tvDescribe.setVisibility(View.GONE);
         }
-
+        Log.e("====================>",product.getImageProduct());
     }
 
     public void setClickListener(OnItemClickListener itemClickListener) {

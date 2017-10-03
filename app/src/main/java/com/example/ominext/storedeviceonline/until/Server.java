@@ -10,7 +10,7 @@ public class Server {
 
     public static String urlNewProduct = "http://" + localhost + "/server/getnewproduct.php";
     public static String urlProduct = "http://" + localhost + "/server/getproduct.php";
-
+    public static String urlPostProduct = "http://" + localhost + "/server/postproduct.php";
     public static String urlPostOrderProduct = "http://" + localhost + "/server/postorderproduct.php";
     public static String urlGetIdOrderProduct = "http://" + localhost + "/server/getidorderproduct.php";
 

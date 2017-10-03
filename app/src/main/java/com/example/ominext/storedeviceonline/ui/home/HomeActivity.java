@@ -57,11 +57,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 //Nếu chuyển từ màn đầu tiên sang màn hình đăng nhập thì sẽ là add, còn chuyển từ màn hình giỏ hàng qua màn đăng nhập thì sẽ là replace
-//Task1: Sửa lại màn login và logout
-
-//đăng kí xong thì quay về màn đăng nhập
-//đăng nhập xong thì quay về trang chủ
-
 //Task2: Người dùng có thể đăng hàng lên bán
 //Đăng nhập xong thì có thể đăng hàng lên bán
 public class HomeActivity extends AppCompatActivity implements HomeView, OnItemClickListener, FragmentManager.OnBackStackChangedListener {

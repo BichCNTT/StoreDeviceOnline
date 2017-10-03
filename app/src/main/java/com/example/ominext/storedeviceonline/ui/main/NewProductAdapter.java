@@ -13,6 +13,7 @@ import com.example.ominext.storedeviceonline.helper.ImageViewUtil;
 import com.example.ominext.storedeviceonline.model.Product;
 import com.example.ominext.storedeviceonline.helper.PriceFormatUtil;
 import com.example.ominext.storedeviceonline.listener.OnItemClickListener;
+import com.example.ominext.storedeviceonline.until.Server;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,6 +45,9 @@ public class NewProductAdapter extends RecyclerView.Adapter<NewProductAdapter.Re
     @Override
     public void onBindViewHolder(RecyclerViewHolder holder, int position) {
         Product product = productList.get(position);
+        if (!product.getImageProduct().contains("http")) {
+            product.setImageProduct("http://" + Server.localhost + "/server/" + product.getImageProduct());
+        }
         holder.tvNameNewProduct.setText(product.getNameProduct());
         PriceFormatUtil.priceFormat(holder.tvPriceNewProduct, product.getPriceProduct());
         ImageViewUtil.loadImg(context, product.getImageProduct(), holder.imgNewProduct);

@@ -123,6 +123,9 @@ public class StationeryFragment extends Fragment implements OnItemClickListener,
         bundle.putInt("price", product.getPriceProduct());
         bundle.putString("describe", product.getDescribeProduct());
         bundle.putString("image", product.getImageProduct());
+        bundle.putInt("auction", product.getAuction());
+        bundle.putString("dateStart", product.getDateStart());
+        bundle.putString("dateStop", product.getDateStop());
         fragment.setArguments(bundle);
         ((HomeActivity) getActivity()).addFragment(fragment);
     }

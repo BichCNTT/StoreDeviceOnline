@@ -8,8 +8,6 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 public class Product {
-
-
     @SerializedName("IdProduct")
     private int idProduct;
     @SerializedName("nameProduct")
@@ -22,13 +20,47 @@ public class Product {
     private String describeProduct;
     @SerializedName("IdProductType")
     private int idProductType;
-    public Product(int idProduct, String nameProduct, int priceProduct, String imageProduct, String describeProduct, int idProductType) {
+    @SerializedName("auction")
+    private int auction;
+    @SerializedName("dateStart")
+    private String dateStart;
+    @SerializedName("dateStop")
+    private String dateStop;
+
+    public Product(int idProduct, String nameProduct, int priceProduct, String imageProduct, String describeProduct, int idProductType, int auction, String dateStart, String dateStop) {
         this.idProduct = idProduct;
         this.nameProduct = nameProduct;
         this.priceProduct = priceProduct;
         this.imageProduct = imageProduct;
         this.describeProduct = describeProduct;
         this.idProductType = idProductType;
+        this.auction = auction;
+        this.dateStart = dateStart;
+        this.dateStop = dateStop;
+    }
+
+    public int getAuction() {
+        return auction;
+    }
+
+    public void setAuction(int auction) {
+        this.auction = auction;
+    }
+
+    public String getDateStart() {
+        return dateStart;
+    }
+
+    public void setDateStart(String dateStart) {
+        this.dateStart = dateStart;
+    }
+
+    public String getDateStop() {
+        return dateStop;
+    }
+
+    public void setDateStop(String dateStop) {
+        this.dateStop = dateStop;
     }
 
     public int getIdProduct() {

@@ -153,6 +153,9 @@ public class FindFragment extends Fragment implements FindView, OnItemClickListe
         bundle.putInt("price", product.getPriceProduct());
         bundle.putString("describe", product.getDescribeProduct());
         bundle.putString("image", product.getImageProduct());
+        bundle.putInt("auction", product.getAuction());
+        bundle.putString("dateStart", product.getDateStart());
+        bundle.putString("dateStop", product.getDateStop());
         fragment.setArguments(bundle);
         FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();

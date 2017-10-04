@@ -28,6 +28,9 @@ public class MainFragmentPresenter {
     int priceProduct = 0;
     String imageProduct = "";
     String describeProduct = "";
+    int auction = 0;
+    String dateStart = "";
+    String dateStop = "";
     int idProductType = 0;
     ArrayList<Product> listProduct;
     private Context mContext;
@@ -54,7 +57,10 @@ public class MainFragmentPresenter {
                             priceProduct = jsonObject.getInt("priceProduct");
                             imageProduct = jsonObject.getString("imageProduct");
                             describeProduct = jsonObject.getString("describeProduct");
-                            listProduct.add(new Product(idProduct, nameProduct, priceProduct, imageProduct, describeProduct, idProductType));
+                            auction = jsonObject.getInt("auction");
+                            dateStart = jsonObject.getString("dateStart");
+                            dateStop = jsonObject.getString("dateStop");
+                            listProduct.add(new Product(idProduct, nameProduct, priceProduct, imageProduct, describeProduct, idProductType, auction, dateStart, dateStop));
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }

@@ -24,6 +24,7 @@ import com.example.ominext.storedeviceonline.model.Product;
 import com.example.ominext.storedeviceonline.ui.addproduct.AddProductFragment;
 import com.example.ominext.storedeviceonline.ui.detail.DetailProductFragment;
 import com.example.ominext.storedeviceonline.ui.home.HomeActivity;
+import com.example.ominext.storedeviceonline.ui.login.LoginFragment;
 
 import java.util.ArrayList;
 
@@ -144,6 +145,9 @@ public class MainFragment extends Fragment implements MainFragmentView, OnItemCl
         bundle.putInt("price", product.getPriceProduct());
         bundle.putString("describe", product.getDescribeProduct());
         bundle.putString("image", product.getImageProduct());
+        bundle.putInt("auction", product.getAuction());
+        bundle.putString("dateStart", product.getDateStart());
+        bundle.putString("dateStop", product.getDateStop());
         fragment.setArguments(bundle);
         ((HomeActivity) getActivity()).addFragment(fragment);
     }
@@ -167,7 +171,12 @@ public class MainFragment extends Fragment implements MainFragmentView, OnItemCl
 
     @OnClick(R.id.fab_add_product)
     public void onViewClicked() {
-        Fragment fragment = AddProductFragment.newInstance();
-        ((HomeActivity) getActivity()).addFragment(fragment);
+        if (HomeActivity.listProductType.get(0).getNameProductType().equals("Đăng nhập")) {
+            Toast.makeText(getContext(),"Bạn cần đăng nhập trước khi tiến hành thêm một mặt h",Toast.LENGTH_SHORT).show();
+        } else {
+            Fragment fragment = AddProductFragment.newInstance();
+            ((HomeActivity) getActivity()).addFragment(fragment);
+            getActivity().setTitle("Thêm mặt hàng");
+        }
     }
 }

@@ -33,6 +33,9 @@ public class ProductPresenter {
     String imageProduct = "";
     String describeProduct = "";
     RequestQueue requestQueue;
+    int auction = 0;
+    String dateStart = "";
+    String dateStop = "";
 //    int requestCount = 1;
 
     public ProductPresenter(Context mContext, ProductView mLaptopView) {
@@ -57,7 +60,10 @@ public class ProductPresenter {
                             priceProduct = jsonObject.getInt("priceProduct");
                             imageProduct = jsonObject.getString("imageProduct");
                             describeProduct = jsonObject.getString("describeProduct");
-                            productList.add(new Product(idProduct, nameProduct, priceProduct, imageProduct, describeProduct, idProductType));
+                            auction = jsonObject.getInt("auction");
+                            dateStart = jsonObject.getString("dateStart");
+                            dateStop = jsonObject.getString("dateStop");
+                            productList.add(new Product(idProduct, nameProduct, priceProduct, imageProduct, describeProduct, idProductType, auction, dateStart, dateStop));
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }

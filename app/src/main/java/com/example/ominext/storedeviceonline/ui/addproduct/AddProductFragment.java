@@ -1,9 +1,9 @@
 package com.example.ominext.storedeviceonline.ui.addproduct;
 
 import android.app.Activity;
+import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
@@ -11,16 +11,16 @@ import android.support.v4.app.Fragment;
 import android.text.TextUtils;
 import android.util.Base64;
 import android.util.Log;
-import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Adapter;
-import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -33,23 +33,18 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.ominext.storedeviceonline.R;
+import com.example.ominext.storedeviceonline.helper.DatePickerDialogUtil;
 import com.example.ominext.storedeviceonline.ui.home.HomeActivity;
 import com.example.ominext.storedeviceonline.ui.login.LoginFragment;
 import com.example.ominext.storedeviceonline.ui.main.MainFragment;
-import com.example.ominext.storedeviceonline.ui.orderconfirm.OrderConfirmFragment;
-import com.example.ominext.storedeviceonline.ui.orderconfirm.OrderConfirmPresenter;
-import com.example.ominext.storedeviceonline.ui.orderconfirm.OrderConfirmView;
 import com.example.ominext.storedeviceonline.until.CheckConnectionInternet;
 import com.example.ominext.storedeviceonline.until.Server;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.io.ByteArrayOutputStream;
-import java.util.ArrayList;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import butterknife.BindView;
@@ -71,12 +66,22 @@ public class AddProductFragment extends Fragment {
     @BindView(R.id.btn_add_product)
     Button btnAddProduct;
     Unbinder unbinder;
+    @BindView(R.id.cb_add_auction)
+    CheckBox cbAddAuction;
+    @BindView(R.id.tv_from)
+    TextView tvFrom;
+    @BindView(R.id.tv_to)
+    TextView tvTo;
+    @BindView(R.id.linear_layout_add_auction)
+    LinearLayout linearLayoutAddAuction;
     private String image = null;
     private int idProductType = 3;
     private String nameProduct = "";
     private String priceProduct = "";
     private String describeProduct = "";
-    List<Integer> listId = new ArrayList<>();
+    private String dateFrom = "";
+    private String dateTo = "";
+    private int check = 0;
 
     public AddProductFragment() {
 
@@ -104,6 +109,7 @@ public class AddProductFragment extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        linearLayoutAddAuction.setVisibility(View.GONE);
     }
 
     @Override
@@ -112,7 +118,7 @@ public class AddProductFragment extends Fragment {
         unbinder.unbind();
     }
 
-    @OnClick({R.id.img_add_product, R.id.tv_type, R.id.btn_add_product})
+    @OnClick({R.id.img_add_product, R.id.tv_type, R.id.btn_add_product, R.id.cb_add_auction, R.id.tv_from, R.id.tv_to})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.img_add_product:
@@ -161,9 +167,10 @@ public class AddProductFragment extends Fragment {
                             StringRequest orderProductStringRequest = new StringRequest(Request.Method.POST, Server.urlPostProduct, new Response.Listener<String>() {
                                 @Override
                                 public void onResponse(String response) {
-                                Log.e("============>", response);
-//                                    Fragment fragment = MainFragment.newInstance();
-//                                    ((HomeActivity) getActivity()).addFragment(fragment);
+                                    Log.e("============>", response);
+                                    Toast.makeText(getContext(), "Đăng mặt hàng thành công", Toast.LENGTH_SHORT).show();
+                                    Fragment fragment = MainFragment.newInstance();
+                                    ((HomeActivity) getActivity()).addFragment(fragment);
                                 }
                             }, new Response.ErrorListener() {
                                 @Override
@@ -180,7 +187,13 @@ public class AddProductFragment extends Fragment {
                                     hashMap.put("imageProduct", image);
                                     hashMap.put("describeProduct", describeProduct);
                                     hashMap.put("IdProductType", idProductType + "");
-                                    hashMap.put("idUser", String.valueOf(HomeActivity.listProductType.get(0).getId()));
+                                    hashMap.put("idUser", LoginFragment.user.getId() + "");
+                                    hashMap.put("auction", null);
+                                    hashMap.put("dateStart", dateFrom);
+                                    hashMap.put("dateStop", dateTo);
+                                    if (check == 1) {
+                                        hashMap.put("auction", 1 + "");
+                                    }
                                     return hashMap;
                                 }
                             };
@@ -193,9 +206,49 @@ public class AddProductFragment extends Fragment {
                     }
                 }
                 break;
+            case R.id.tv_from:
+                android.app.DialogFragment FromFragment;
+                FromFragment = new DatePickerDialogUtil(new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                        Calendar cal = GregorianCalendar.getInstance();
+                        cal.set(year, monthOfYear, dayOfMonth);
+                        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+                        dateFrom = formatter.format(cal.getTime());
+                        tvFrom.setText(dateFrom);
+                        formatter = new SimpleDateFormat("yyyy/MM/dd");
+                        dateFrom = formatter.format(cal.getTime());
+                    }
+                }, getContext());
+                FromFragment.show(getActivity().getFragmentManager(), "FromDate");
+                break;
+            case R.id.tv_to:
+                android.app.DialogFragment ToFragment;
+                ToFragment = new DatePickerDialogUtil(new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                        Calendar cal = GregorianCalendar.getInstance();
+                        cal.set(year, monthOfYear, dayOfMonth);
+                        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+                        dateTo = formatter.format(cal.getTime());
+                        tvTo.setText(dateTo);
+                        formatter = new SimpleDateFormat("yyyy/MM/dd");
+                        dateTo = formatter.format(cal.getTime());
+                    }
+                }, getContext());
+                ToFragment.show(getActivity().getFragmentManager(), "ToDate");
+                break;
+            case R.id.cb_add_auction:
+                if (check == 0) {
+                    linearLayoutAddAuction.setVisibility(View.VISIBLE);
+                    check = 1;
+                } else {
+                    linearLayoutAddAuction.setVisibility(View.GONE);
+                    check = 0;
+                }
+                break;
         }
     }
-
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == 1995 && resultCode == Activity.RESULT_OK) {

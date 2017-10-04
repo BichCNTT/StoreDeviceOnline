@@ -57,8 +57,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 //Nếu chuyển từ màn đầu tiên sang màn hình đăng nhập thì sẽ là add, còn chuyển từ màn hình giỏ hàng qua màn đăng nhập thì sẽ là replace
-//Task2: Người dùng có thể đăng hàng lên bán
-//Đăng nhập xong thì có thể đăng hàng lên bán
+//Task: Thêm bảng đấu giá
 public class HomeActivity extends AppCompatActivity implements HomeView, OnItemClickListener, FragmentManager.OnBackStackChangedListener {
     @BindView(R.id.list_item)
     ListView listItem;
@@ -258,7 +257,7 @@ public class HomeActivity extends AppCompatActivity implements HomeView, OnItemC
         addFragment(fragment);
     }
 
-    //  xử lý cùng cấp (khi replace) -> màn menu
+//  xử lý cùng cấp (khi replace) -> màn menu
 //  khi ấn nút back nếu fragment hiện tại là main fragment thì out ra
 //  ngược lại nếu trong ngăn xếp vẫn còn thì quay lại fragment trước đó
 //  ngược lại nếu tab hiện tại khác 0 thì quay về màn home để set lại title cho nó và thay nó về màn home

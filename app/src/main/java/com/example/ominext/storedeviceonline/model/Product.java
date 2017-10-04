@@ -39,6 +39,15 @@ public class Product {
         this.dateStop = dateStop;
     }
 
+    public Product(int idProduct, String nameProduct, int priceProduct, String imageProduct, String describeProduct, int idProductType) {
+        this.idProduct = idProduct;
+        this.nameProduct = nameProduct;
+        this.priceProduct = priceProduct;
+        this.imageProduct = imageProduct;
+        this.describeProduct = describeProduct;
+        this.idProductType = idProductType;
+    }
+
     public int getAuction() {
         return auction;
     }

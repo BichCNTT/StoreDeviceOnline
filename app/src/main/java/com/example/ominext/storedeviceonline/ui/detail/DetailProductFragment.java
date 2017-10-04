@@ -18,7 +18,9 @@ import android.widget.TextView;
 import com.example.ominext.storedeviceonline.R;
 import com.example.ominext.storedeviceonline.helper.ImageViewUtil;
 import com.example.ominext.storedeviceonline.helper.PriceFormatUtil;
+import com.example.ominext.storedeviceonline.ui.auction.AuctionFragment;
 import com.example.ominext.storedeviceonline.ui.cart.CartFragment;
+import com.example.ominext.storedeviceonline.ui.home.HomeActivity;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -38,12 +40,6 @@ public class DetailProductFragment extends Fragment {
     Button btnOrder;
     @BindView(R.id.tv_product_detail)
     TextView tvProductDetail;
-    Unbinder unbinder;
-    String name = "";
-    int price = 0;
-    String describe = "";
-    String image = "";
-    int id = 0;
     @BindView(R.id.img_product)
     ImageView imgProduct;
     @BindView(R.id.spinner_quantity)
@@ -52,6 +48,15 @@ public class DetailProductFragment extends Fragment {
     TextView tvAuction;
     @BindView(R.id.linear_layout_auction)
     LinearLayout linearLayoutAuction;
+    Unbinder unbinder;
+    String name = "";
+    int price = 0;
+    String describe = "";
+    String image = "";
+    int id = 0;
+    int auction = 0;
+    String dateStart = "";
+    String dateStop = "";
 
     public DetailProductFragment() {
     }
@@ -70,12 +75,19 @@ public class DetailProductFragment extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 //        getActivity().setTitle("Chi tiết sản phẩm");
+        linearLayoutAuction.setVisibility(View.GONE);
         Bundle bundle = this.getArguments();
         id = bundle.getInt("id");
         name = bundle.getString("name");
         price = bundle.getInt("price");
         describe = bundle.getString("describe");
         image = bundle.getString("image");
+        auction = bundle.getInt("auction");
+        dateStart = bundle.getString("dateStart");
+        dateStop = bundle.getString("dateStop");
+        if (auction == 1) {
+            linearLayoutAuction.setVisibility(View.VISIBLE);
+        }
         tvName.setText(name);
         PriceFormatUtil.priceFormat(tvPrice, price);
         tvProductDetail.setText(describe);
@@ -121,7 +133,12 @@ public class DetailProductFragment extends Fragment {
                 fragmentTransaction.commit();
                 break;
             case R.id.tv_auction:
-
+                Bundle bundleAuction = new Bundle();
+                bundleAuction.putString("dateStart", dateStart);
+                bundleAuction.putString("dateStop", dateStop);
+                AuctionFragment auctionFragment = new AuctionFragment();
+                auctionFragment.setArguments(bundleAuction);
+                ((HomeActivity) getActivity()).addFragment(auctionFragment);
                 break;
         }
     }

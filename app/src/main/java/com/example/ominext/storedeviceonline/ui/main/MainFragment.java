@@ -172,7 +172,7 @@ public class MainFragment extends Fragment implements MainFragmentView, OnItemCl
     @OnClick(R.id.fab_add_product)
     public void onViewClicked() {
         if (HomeActivity.listProductType.get(0).getNameProductType().equals("Đăng nhập")) {
-            Toast.makeText(getContext(),"Bạn cần đăng nhập trước khi tiến hành thêm một mặt h",Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(),"Bạn cần đăng nhập trước khi tiến hành thêm một mặt hàng",Toast.LENGTH_SHORT).show();
         } else {
             Fragment fragment = AddProductFragment.newInstance();
             ((HomeActivity) getActivity()).addFragment(fragment);

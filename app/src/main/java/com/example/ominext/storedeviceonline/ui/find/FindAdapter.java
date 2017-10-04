@@ -12,6 +12,7 @@ import com.example.ominext.storedeviceonline.R;
 import com.example.ominext.storedeviceonline.helper.ImageViewUtil;
 import com.example.ominext.storedeviceonline.listener.OnItemClickListener;
 import com.example.ominext.storedeviceonline.model.Product;
+import com.example.ominext.storedeviceonline.until.Server;
 import com.example.ominext.storedeviceonline.until.VietNamese;
 
 import java.util.List;
@@ -68,6 +69,9 @@ public class FindAdapter extends RecyclerView.Adapter<FindAdapter.RecyclerViewHo
     @Override
     public void onBindViewHolder(RecyclerViewHolder holder, int position) {
         holder.tvNameFind.setText(mFilteredList.get(position).getNameProduct());
+        if (!mFilteredList.get(position).getImageProduct().contains("http")) {
+            mFilteredList.get(position).setImageProduct("http://" + Server.localhost + "/server/" + mFilteredList.get(position).getImageProduct());
+        }
         ImageViewUtil.loadImg(mContext, mFilteredList.get(position).getImageProduct(), holder.imgFind);
     }
 

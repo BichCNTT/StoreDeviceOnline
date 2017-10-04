@@ -26,6 +26,9 @@ public class FindPresenter {
     String mDescribeProduct = "";
     String mImgProduct = "";
     int mPriceProduct = 0;
+    int mAuction = 0;
+    String mDateStart = "";
+    String mDateStop = "";
     private Context mContext;
     private FindView mFindView;
     private RequestQueue mRequestQueue;
@@ -53,7 +56,10 @@ public class FindPresenter {
                             mImgProduct = jsonObject.getString("imageProduct");
                             mPriceProduct = jsonObject.getInt("priceProduct");
                             mNameProduct = jsonObject.getString("nameProduct");
-                            listFind.add(new Product(mIdProduct, mNameProduct, mPriceProduct, mImgProduct, mDescribeProduct, mTdProductType));
+                            mAuction = jsonObject.getInt("auction");
+                            mDateStart = jsonObject.getString("dateStart");
+                            mDateStop = jsonObject.getString("dateStop");
+                            listFind.add(new Product(mIdProduct, mNameProduct, mPriceProduct, mImgProduct, mDescribeProduct, mTdProductType, mAuction, mDateStart, mDateStop));
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }

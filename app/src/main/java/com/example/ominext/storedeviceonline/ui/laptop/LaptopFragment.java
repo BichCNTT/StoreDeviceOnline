@@ -33,11 +33,6 @@ import butterknife.Unbinder;
 public class LaptopFragment extends Fragment implements OnItemClickListener, ProductView, SwipeRefreshLayout.OnRefreshListener {
     @BindView(R.id.rv_product)
     RecyclerView rvProduct;
-    Unbinder unbinder;
-    ProductAdapter adapter;
-    //    View itemView;
-    List<Product> productList = new ArrayList<>();
-    ProductPresenter mPresenter;
     @BindView(R.id.img_change)
     ImageView imgChange;
     @BindView(R.id.spinner_sort)
@@ -47,6 +42,10 @@ public class LaptopFragment extends Fragment implements OnItemClickListener, Pro
     int change = 1;
     @BindView(R.id.swipe_refresh_layout_product)
     SwipeRefreshLayout swipeRefreshLayoutProduct;
+    Unbinder unbinder;
+    ProductAdapter adapter;
+    List<Product> productList = new ArrayList<>();
+    ProductPresenter mPresenter;
 
     //kích vào change -> ẩn text trong row đi
     public LaptopFragment() {
@@ -85,7 +84,7 @@ public class LaptopFragment extends Fragment implements OnItemClickListener, Pro
 
     private void init() {
         change(change);
-        mPresenter = new ProductPresenter(LaptopFragment.this.getContext(), this);
+        mPresenter = new ProductPresenter(getContext(), this);
         final ArrayAdapter<CharSequence> adapterFilter = ArrayAdapter.createFromResource(getContext(),
                 R.array.fitter_array, android.R.layout.simple_spinner_item);
         adapterFilter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);

@@ -27,6 +27,7 @@ import com.example.ominext.storedeviceonline.listener.OnItemClickListener;
 import com.example.ominext.storedeviceonline.model.Product;
 import com.example.ominext.storedeviceonline.model.ProductType;
 import com.example.ominext.storedeviceonline.ui.addproduct.AddProductFragment;
+import com.example.ominext.storedeviceonline.ui.auction.AuctionFragment;
 import com.example.ominext.storedeviceonline.ui.login.LoginFragment;
 import com.example.ominext.storedeviceonline.ui.cart.CartFragment;
 import com.example.ominext.storedeviceonline.ui.cleanningstuff.CleanningStuffFragment;
@@ -257,10 +258,6 @@ public class HomeActivity extends AppCompatActivity implements HomeView, OnItemC
         addFragment(fragment);
     }
 
-//  xử lý cùng cấp (khi replace) -> màn menu
-//  khi ấn nút back nếu fragment hiện tại là main fragment thì out ra
-//  ngược lại nếu trong ngăn xếp vẫn còn thì quay lại fragment trước đó
-//  ngược lại nếu tab hiện tại khác 0 thì quay về màn home để set lại title cho nó và thay nó về màn home
     @Override
     public void onBackPressed() {
         if (fragmentCurrent instanceof MainFragment) {
@@ -280,9 +277,6 @@ public class HomeActivity extends AppCompatActivity implements HomeView, OnItemC
     @Override
     public void onBackStackChanged() {
         FragmentManager frm = getSupportFragmentManager();
-//      Log.e("-------->", frm.getBackStackEntryCount() + "");
-//      nếu trong ngăn xếp số các fragment được add vào =0 -> không còn thì set tiêu đề bằng tiêu đề hiện tại
-//      nếu tab hiện tại bằng 0 thì setFragmentCurrent= MainFragment
         if (frm.getBackStackEntryCount() == 0) {
             setTitle(listProductType.get(tabCurrent).getNameProductType());
             if (tabCurrent == 0) {
@@ -320,6 +314,10 @@ public class HomeActivity extends AppCompatActivity implements HomeView, OnItemC
         }
         if (fragment instanceof AddProductFragment) {
             setTitle("Thêm mặt hàng");
+            return;
+        }
+        if (fragment instanceof AuctionFragment) {
+            setTitle("Đấu giá");
             return;
         }
     }

@@ -220,24 +220,6 @@ public class CartFragment extends Fragment implements OnItemClickListener {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.btn_pay:
-//                if (cartList.isEmpty()) {
-//                    AlertDialog.Builder builder;
-//                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-//                        builder = new AlertDialog.Builder(getContext(), android.R.style.Theme_Material_Dialog_Alert);
-//                    } else {
-//                        builder = new AlertDialog.Builder(getContext());
-//                    }
-//                    builder.setTitle("Thông báo")
-//                            .setMessage("Bạn cần thêm hàng vào giỏ để tiến hành đặt hàng")
-//                            .setNegativeButton("Thoát", new DialogInterface.OnClickListener() {
-//                                @Override
-//                                public void onClick(DialogInterface dialogInterface, int i) {
-//
-//                                }
-//                            })
-//                            .setIcon(android.R.drawable.ic_dialog_alert)
-//                            .show();
-//                } else {
                 if (!HomeActivity.listProductType.get(0).getNameProductType().equals("Đăng nhập")) {
                     Bundle bundle = new Bundle();
                     bundle.putInt("key", 1);

@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/green"
+    android:background="@color/white"
     tools:context="com.example.ominext.storedeviceonline.ui.auction.AuctionFragment">
 
     <LinearLayout
@@ -17,7 +17,7 @@
             android:fontFamily="serif"
             android:gravity="center"
             android:text="Bảng đấu giá"
-            android:textColor="@color/white"
+            android:textColor="@color/red"
             android:textSize="20sp"
             android:textStyle="bold" />
 
@@ -31,7 +31,8 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="STT"
-                android:textColor="@color/white"
+                android:textColor="@color/green"
+                android:textSize="15sp"
                 android:textStyle="bold" />
 
             <TextView
@@ -39,7 +40,8 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="3"
                 android:text="Tài khoản"
-                android:textColor="@color/white"
+                android:textColor="@color/green"
+                android:textSize="15sp"
                 android:textStyle="bold" />
 
             <TextView
@@ -47,7 +49,8 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="3"
                 android:text="Giá trả"
-                android:textColor="@color/white"
+                android:textColor="@color/green"
+                android:textSize="15sp"
                 android:textStyle="bold" />
 
             <TextView
@@ -55,20 +58,24 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="3"
                 android:text="Vào lúc"
-                android:textColor="@color/white"
+                android:textColor="@color/green"
+                android:textSize="15sp"
                 android:textStyle="bold" />
 
         </LinearLayout>
 
         <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_list_user_auction"
             android:layout_width="match_parent"
-            android:layout_height="450dp"></android.support.v7.widget.RecyclerView>
+            android:layout_height="470dp"></android.support.v7.widget.RecyclerView>
 
         <Button
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:id="@+id/btn_auction"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|center"
             android:background="@drawable/border"
-            android:text="Đấu giá"
+            android:text="Vào đấu giá"
             android:textColor="@color/white"
             android:textStyle="bold" />
     </LinearLayout>

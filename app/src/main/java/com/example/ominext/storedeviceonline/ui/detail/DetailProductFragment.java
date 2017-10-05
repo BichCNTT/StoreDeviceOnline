@@ -134,6 +134,9 @@ public class DetailProductFragment extends Fragment {
                 break;
             case R.id.tv_auction:
                 Bundle bundleAuction = new Bundle();
+                bundleAuction.putString("name", name);
+                bundleAuction.putInt("price", price);
+                bundleAuction.putString("image", image);
                 bundleAuction.putString("dateStart", dateStart);
                 bundleAuction.putString("dateStop", dateStop);
                 AuctionFragment auctionFragment = new AuctionFragment();

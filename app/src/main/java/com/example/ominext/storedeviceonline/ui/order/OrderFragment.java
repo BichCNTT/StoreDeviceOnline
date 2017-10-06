@@ -6,7 +6,6 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,13 +13,6 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.volley.AuthFailureError;
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
 import com.example.ominext.storedeviceonline.R;
 import com.example.ominext.storedeviceonline.helper.PriceFormatUtil;
 import com.example.ominext.storedeviceonline.model.Cache;
@@ -30,26 +22,18 @@ import com.example.ominext.storedeviceonline.ui.login.LoginFragment;
 import com.example.ominext.storedeviceonline.ui.orderconfirm.OrderConfirmFragment;
 import com.example.ominext.storedeviceonline.ui.orderconfirm.OrderConfirmPresenter;
 import com.example.ominext.storedeviceonline.ui.orderconfirm.OrderConfirmView;
-import com.example.ominext.storedeviceonline.until.CheckConnectionInternet;
-import com.example.ominext.storedeviceonline.until.Server;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
 
-public class OrderFragment extends Fragment implements OrderConfirmView {
+public class OrderFragment extends Fragment implements OrderView, OrderConfirmView {
 
     @BindView(R.id.tv_name_user)
     TextView tvNameUser;
@@ -75,7 +59,8 @@ public class OrderFragment extends Fragment implements OrderConfirmView {
     List<Cart> cartList = new ArrayList<>();
     OrderAdapter adapter;
     List<Integer> listId = new ArrayList<>();
-    OrderConfirmPresenter mPresenter;
+    OrderConfirmPresenter mOrderConfirmPresenter;
+    OrderPresenter mOrderPresenter;
 
     public OrderFragment() {
 
@@ -104,7 +89,8 @@ public class OrderFragment extends Fragment implements OrderConfirmView {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         getActivity().setTitle("Đơn hàng của tôi");
-        mPresenter = new OrderConfirmPresenter(getContext(), this);
+        mOrderConfirmPresenter = new OrderConfirmPresenter(getContext(), this);
+        mOrderPresenter = new OrderPresenter(getContext(), this);
         init();
         initFile();
         setMoney();
@@ -116,47 +102,9 @@ public class OrderFragment extends Fragment implements OrderConfirmView {
         unbinder.unbind();
     }
 
-
     @OnClick(R.id.btn_order_product)
     public void onViewClicked() {
-        if (CheckConnectionInternet.haveNetWorkConnection(getContext())) {
-            RequestQueue requestQueue = Volley.newRequestQueue(getContext());
-            StringRequest orderProductStringRequest = new StringRequest(Request.Method.POST, Server.urlPostOrderProduct, new Response.Listener<String>() {
-                @Override
-                public void onResponse(String response) {
-                    Bundle bundle = new Bundle();
-                    bundle.putString("name", name);
-                    Fragment fragment = OrderConfirmFragment.newInstance();
-                    fragment.setArguments(bundle);
-                    ((HomeActivity) getActivity()).addFragment(fragment);
-                }
-            }, new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    Log.e("=========>error", error.toString());
-                    Toast.makeText(getContext(), "Đơn hàng chưa được đặt. Không thể kết nối được với máy chủ", Toast.LENGTH_SHORT).show();
-                }
-            }) {
-                @Override
-                protected Map<String, String> getParams() throws AuthFailureError {
-                    HashMap<String, String> hashMap = new HashMap<>();
-                    JSONArray jsonArray = new JSONArray();
-                    JSONObject object = new JSONObject();
-                    try {
-                        object.put("id", null);
-                        object.put("idUser", LoginFragment.user.getId());
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                    jsonArray.put(object);
-                    hashMap.put("json", jsonArray.toString());
-                    return hashMap;
-                }
-            };
-            requestQueue.add(orderProductStringRequest);
-        } else {
-            Toast.makeText(getContext(), "Đơn hàng chưa được đặt. Kiểm tra lại kết nối", Toast.LENGTH_LONG).show();
-        }
+        mOrderPresenter.postOrderProduct(name);
     }
 
     private void setMoney() {
@@ -178,21 +126,6 @@ public class OrderFragment extends Fragment implements OrderConfirmView {
         tvNameUser.setText(name);
         tvPhone.setText(phone + "");
         tvAddress.setText(address);
-//        tvEdit.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Bundle bundle = new Bundle();
-//                bundle.putInt("key", 0);
-//                bundle.putInt("id", id);
-//                bundle.putInt("totalMoney", totalMoney);
-//                bundle.putString("nameUser", name);
-//                bundle.putString("addressUser", address);
-//                bundle.putInt("phoneUser", phone);
-//                Fragment fragment = UserInfoFragment.newInstance();
-//                fragment.setArguments(bundle);
-//                ((HomeActivity) getActivity()).addFragment(fragment);
-//            }
-//        });
     }
 
     public void initFile() {
@@ -230,5 +163,19 @@ public class OrderFragment extends Fragment implements OrderConfirmView {
     @Override
     public void getIdOrderProductFailed(String s) {
 
+    }
+
+    @Override
+    public void postOrderProductSuccessfully() {
+        Bundle bundle = new Bundle();
+        bundle.putString("name", name);
+        Fragment fragment = OrderConfirmFragment.newInstance();
+        fragment.setArguments(bundle);
+        ((HomeActivity) getActivity()).addFragment(fragment);
+    }
+
+    @Override
+    public void postOrderProductFailed(String s) {
+        Toast.makeText(getContext(), "Đơn hàng chưa được đặt. Không thể kết nối được với máy chủ", Toast.LENGTH_SHORT).show();
     }
 }

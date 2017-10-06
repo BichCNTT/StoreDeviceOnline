@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
-import android.util.Log;
 import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,35 +12,15 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.android.volley.AuthFailureError;
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
 import com.example.ominext.storedeviceonline.R;
-import com.example.ominext.storedeviceonline.helper.KeyboardUtil;
 import com.example.ominext.storedeviceonline.model.User;
 import com.example.ominext.storedeviceonline.ui.home.HomeActivity;
 import com.example.ominext.storedeviceonline.ui.login.LoginFragment;
 import com.example.ominext.storedeviceonline.ui.login.LoginPresenter;
 import com.example.ominext.storedeviceonline.ui.login.LoginView;
-import com.example.ominext.storedeviceonline.ui.main.MainFragment;
-import com.example.ominext.storedeviceonline.ui.notifi.NotificationFragment;
-import com.example.ominext.storedeviceonline.until.CheckConnectionInternet;
-import com.example.ominext.storedeviceonline.until.Server;
-import com.mikepenz.actionitembadge.library.ActionItemBadge;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.File;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -52,7 +31,7 @@ import butterknife.Unbinder;
  * Created by Ominext on 9/21/2017.
  */
 //Đẩy dữ liệu lên bảng user gồm id, email, password, name, address.
-public class RegisterFragment extends Fragment implements LoginView {
+public class RegisterFragment extends Fragment implements LoginView, RegisterView {
 
     @BindView(R.id.edt_account_name)
     EditText edtAccountName;
@@ -79,7 +58,8 @@ public class RegisterFragment extends Fragment implements LoginView {
     String accountName;
     String confirmPassWord;
     List<User> listUser = new ArrayList<>();
-    LoginPresenter mPresenter;
+    LoginPresenter mLoginPresenter;
+    RegisterPresenter mRegisterPresenter;
 
     public RegisterFragment() {
     }
@@ -101,8 +81,9 @@ public class RegisterFragment extends Fragment implements LoginView {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         getActivity().setTitle("Đăng kí");
-        mPresenter = new LoginPresenter(getContext(), this);
-        mPresenter.getListUser();
+        mLoginPresenter = new LoginPresenter(getContext(), this);
+        mLoginPresenter.getListUser();
+        mRegisterPresenter = new RegisterPresenter(getContext(), this);
     }
 
     @Override
@@ -167,59 +148,7 @@ public class RegisterFragment extends Fragment implements LoginView {
             return;
         }
         if (confirmPassWord.equals(password)) {
-            if (CheckConnectionInternet.haveNetWorkConnection(getContext())) {
-                int check = 0;
-                for (int i = 0; i < listUser.size(); i++) {
-                    if (String.valueOf(listUser.get(i).getId()) == phone || listUser.get(i).getEmail().equals(email)) {
-                        check = 1;
-                    }
-                }
-                if (check != 1) {
-                    RequestQueue requestQueue = Volley.newRequestQueue(getContext());
-                    StringRequest clientInfoStringRequest = new StringRequest(Request.Method.POST, Server.urlUser, new Response.Listener<String>() {
-                        @Override
-                        public void onResponse(String response) {
-                            Toast.makeText(getContext(), "Đăng kí thành công", Toast.LENGTH_SHORT).show();
-                            LoginFragment loginFragment = LoginFragment.newInstance();
-                            ((HomeActivity) getActivity()).replaceFragment(loginFragment);
-                            KeyboardUtil.hideKeyBoard(getView(), getActivity());
-                        }
-                    }, new Response.ErrorListener() {
-                        @Override
-                        public void onErrorResponse(VolleyError error) {
-                            Log.e("=========>error", error.toString());
-                            Toast.makeText(getContext(), "Số điện thoại hoặc tài khoản đã được sử dụng", Toast.LENGTH_SHORT).show();
-                        }
-                    }) {
-                        @Override
-                        protected Map<String, String> getParams() throws AuthFailureError {
-                            HashMap<String, String> hashMap;
-                            JSONArray jsonArray = new JSONArray();
-                            JSONObject object = new JSONObject();
-                            try {
-                                object.put("id", phone);
-                                object.put("name", name);
-                                object.put("address", address);
-                                object.put("password", password);
-                                object.put("email", email);
-                                object.put("nameUser", accountName);
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                            }
-                            jsonArray.put(object);
-                            hashMap = new HashMap<>();
-                            hashMap.put("json", jsonArray.toString());
-                            return hashMap;
-                        }
-                    };
-                    requestQueue.add(clientInfoStringRequest);
-                } else {
-                    Toast.makeText(getContext(), "Tài khoản đã tồn tại", Toast.LENGTH_SHORT).show();
-                }
-
-            } else {
-                Toast.makeText(getContext(), "Kiểm tra lại kết nối của bạn", Toast.LENGTH_LONG).show();
-            }
+            mRegisterPresenter.registerAccount(listUser, phone, email, name, address, password, accountName);
         } else {
             edtConfirmPassword.setText("");
             edtConfirmPassword.setError("Nhập lại mật khẩu");
@@ -236,5 +165,17 @@ public class RegisterFragment extends Fragment implements LoginView {
     @Override
     public void getListUserFailed(String s) {
 
+    }
+
+    @Override
+    public void registerSuccessfully() {
+        Toast.makeText(getContext(), "Đăng kí thành công", Toast.LENGTH_SHORT).show();
+        LoginFragment loginFragment = LoginFragment.newInstance();
+        ((HomeActivity) getActivity()).replaceFragment(loginFragment);
+    }
+
+    @Override
+    public void registerFailed(String s) {
+        Toast.makeText(getContext(), "Số điện thoại hoặc tài khoản đã được sử dụng", Toast.LENGTH_SHORT).show();
     }
 }

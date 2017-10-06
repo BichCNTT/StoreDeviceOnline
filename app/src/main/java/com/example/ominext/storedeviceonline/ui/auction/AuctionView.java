@@ -10,6 +10,5 @@ import java.util.List;
 
 public interface AuctionView {
     void getUserAuctionSuccessfully(List<UserAuction> userAuctionList);
-
     void getUserAuctionFailed(String s);
 }

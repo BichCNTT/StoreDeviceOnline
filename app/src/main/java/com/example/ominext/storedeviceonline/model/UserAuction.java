@@ -1,26 +1,24 @@
 package com.example.ominext.storedeviceonline.model;
 
-import com.android.volley.toolbox.StringRequest;
-
-/**
- * Created by Ominext on 10/4/2017.
- */
-//lấy dữ liệu từ bảng đấu giá về
 public class UserAuction {
     private int mId;
+    private int mIdProduct;
     private int mIdUser;
     private int mPrice;
     private int mNumber;
     private String mNameAccount;
     private String mDateUpload;
+    private String mNameProduct;
 
-    public UserAuction(int id, int mIdUser, int mPrice, int mNumber, String mNameAccount, String mDateUpload) {
+    public UserAuction(int id, int mIdProduct, int mIdUser, int mPrice, int mNumber, String mNameAccount, String mDateUpload, String mNameProduct) {
         this.mId = id;
+        this.mIdProduct = mIdProduct;
         this.mIdUser = mIdUser;
         this.mPrice = mPrice;
         this.mNumber = mNumber;
         this.mNameAccount = mNameAccount;
         this.mDateUpload = mDateUpload;
+        this.mNameProduct = mNameProduct;
     }
 
     public int getId() {
@@ -29,6 +27,14 @@ public class UserAuction {
 
     public void setId(int mId) {
         this.mId = mId;
+    }
+
+    public int getIdProduct() {
+        return mIdProduct;
+    }
+
+    public void setIdProduct(int mIdProduct) {
+        this.mIdProduct = mIdProduct;
     }
 
     public int getIdUser() {
@@ -71,4 +77,11 @@ public class UserAuction {
         this.mDateUpload = mDateUpload;
     }
 
+    public String getNameProduct() {
+        return mNameProduct;
+    }
+
+    public void setNameProduct(String mNameProduct) {
+        this.mNameProduct = mNameProduct;
+    }
 }

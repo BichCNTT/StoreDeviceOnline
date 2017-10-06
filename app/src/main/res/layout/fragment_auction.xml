@@ -12,8 +12,10 @@
         android:orientation="vertical">
 
         <TextView
+            android:id="@+id/textView3"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
             android:fontFamily="serif"
             android:gravity="center"
             android:text="Bảng đấu giá"
@@ -39,6 +41,15 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="3"
+                android:text="Sản phẩm"
+                android:textColor="@color/green"
+                android:textSize="15sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
                 android:text="Tài khoản"
                 android:textColor="@color/green"
                 android:textSize="15sp"
@@ -47,7 +58,7 @@
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="3"
+                android:layout_weight="2"
                 android:text="Giá trả"
                 android:textColor="@color/green"
                 android:textSize="15sp"
@@ -56,7 +67,7 @@
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="3"
+                android:layout_weight="2"
                 android:text="Vào lúc"
                 android:textColor="@color/green"
                 android:textSize="15sp"
@@ -67,7 +78,7 @@
         <android.support.v7.widget.RecyclerView
             android:id="@+id/rv_list_user_auction"
             android:layout_width="match_parent"
-            android:layout_height="470dp"></android.support.v7.widget.RecyclerView>
+            android:layout_height="450dp"></android.support.v7.widget.RecyclerView>
 
         <Button
             android:id="@+id/btn_auction"

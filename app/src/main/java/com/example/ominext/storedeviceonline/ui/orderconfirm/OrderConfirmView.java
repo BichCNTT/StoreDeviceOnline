@@ -10,6 +10,6 @@ import java.util.List;
 
 public interface OrderConfirmView {
     void getIdOrderProductSuccessfully(List<Integer> listId);
-    void getIdOrderProductFailed(String s);
 
+    void getIdOrderProductFailed(String s);
 }

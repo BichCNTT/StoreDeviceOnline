@@ -5,8 +5,8 @@ package com.example.ominext.storedeviceonline.ui.auction;
  */
 
 import android.content.Context;
+import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,11 +26,13 @@ public class AuctionAdapter extends RecyclerView.Adapter<AuctionAdapter.Recycler
     Context mContext;
     LayoutInflater mInflater;
     List<UserAuction> mUserAuctionList = new ArrayList<>();
+    int idProduct;
 
-    public AuctionAdapter(Context context, List<UserAuction> userAuctionList) {
+    public AuctionAdapter(int idProduct, Context context, List<UserAuction> userAuctionList) {
         this.mContext = context;
         this.mUserAuctionList = userAuctionList;
         this.mInflater = LayoutInflater.from(context);
+        this.idProduct = idProduct;
     }
 
     @Override
@@ -47,6 +49,12 @@ public class AuctionAdapter extends RecyclerView.Adapter<AuctionAdapter.Recycler
         holder.tvAccountName.setText(userAuction.getNameAccount());
         PriceFormatUtil.priceFormat(holder.tvPricePay, userAuction.getPrice());
         holder.tvTime.setText(userAuction.getDateUpload());
+        holder.tvNameProduct.setText(userAuction.getNameProduct());
+//        for (int i = 0; i < mUserAuctionList.size(); i++) {
+//            if (idProduct == mUserAuctionList.get(i).getIdProduct()) {
+//                holder.itemView.setBackgroundColor(Color.parseColor("#d65907"));
+//            }
+//        }
     }
 
     @Override
@@ -63,11 +71,14 @@ public class AuctionAdapter extends RecyclerView.Adapter<AuctionAdapter.Recycler
         TextView tvPricePay;
         @BindView(R.id.tv_time)
         TextView tvTime;
+        @BindView(R.id.tv_name_product)
+        TextView tvNameProduct;
 
         public RecyclerViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
             itemView.setTag(itemView);
+
         }
     }
 }

@@ -24,7 +24,6 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
 
-//danh sách đấu giá phải
 public class AuctionFragment extends Fragment implements AuctionView {
 
     @BindView(R.id.rv_list_user_auction)
@@ -33,7 +32,7 @@ public class AuctionFragment extends Fragment implements AuctionView {
     Button btnAuction;
     Unbinder unbinder;
     AuctionPresenter mAuctionPresenter;
-    AuctionAdapter mAuctionAdapter;
+    public static AuctionAdapter mAuctionAdapter;
     List<UserAuction> mUserAuctionList = new ArrayList<>();
     int id = 0;
     String name = "";
@@ -78,12 +77,12 @@ public class AuctionFragment extends Fragment implements AuctionView {
         image = bundle.getString("image");
         dateStart = bundle.getString("dateStart");
         dateStop = bundle.getString("dateStop");
-        mAuctionAdapter = new AuctionAdapter(getContext(), mUserAuctionList);
+        mAuctionAdapter = new AuctionAdapter(id, getContext(), mUserAuctionList);
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getContext(), 1);
         rvListUserAuction.setLayoutManager(layoutManager);
         rvListUserAuction.setHasFixedSize(true);
         rvListUserAuction.setAdapter(mAuctionAdapter);
-        mAuctionPresenter = new AuctionPresenter(id, getContext(), this);
+        mAuctionPresenter = new AuctionPresenter(getContext(), this);
         mAuctionPresenter.getUserAuction();
     }
 
@@ -112,6 +111,7 @@ public class AuctionFragment extends Fragment implements AuctionView {
 
     public void showDialog() {
         Bundle bundle = new Bundle();
+        bundle.putInt("id", id);
         bundle.putString("name", name);
         bundle.putInt("price", price);
         bundle.putString("image", image);

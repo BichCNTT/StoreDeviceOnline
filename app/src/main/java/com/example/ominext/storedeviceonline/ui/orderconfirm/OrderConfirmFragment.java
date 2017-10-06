@@ -98,56 +98,7 @@ public class OrderConfirmFragment extends Fragment implements OrderConfirmView {
 
     @OnClick(R.id.btn_confirm)
     public void onViewClicked() {
-        if (CheckConnectionInternet.haveNetWorkConnection(getContext())) {
-            RequestQueue requestQueue = Volley.newRequestQueue(getContext());
-            StringRequest detailStringRequest = new StringRequest(Request.Method.POST, Server.urlPostDetail, new Response.Listener<String>() {
-                @Override
-                public void onResponse(String response) {
-                    Log.e("========>", response);
-                    Bundle bundle = new Bundle();
-                    bundle.putString("name", name);
-                    Fragment fragment = NotificationFragment.newInstance();
-                    fragment.setArguments(bundle);
-                    ((HomeActivity) getActivity()).addFragment(fragment);
-//                  sau khi đặt hàng xong xóa giỏ hàng khỏi bộ nhớ đệm
-                    File f = new File(path + fileName);
-                    f.delete();
-                    ActionItemBadge.update(((HomeActivity) getActivity()).optionsMenu.findItem(R.id.menu_cart), Integer.MIN_VALUE);
-                }
-            }, new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    Log.e("=========>error", error.toString());
-                    Toast.makeText(getContext(), "Đơn hàng chưa được đặt. Có lỗi trong quá trình xác nhận đặt hàng", Toast.LENGTH_SHORT).show();
-                }
-            }) {
-                @Override
-                protected Map<String, String> getParams() throws AuthFailureError {
-                    HashMap<String, String> hashMap;
-                    JSONArray jsonArray = new JSONArray();
-                    for (int i = 0; i < cartList.size(); i++) {
-                        JSONObject object = null;
-                        try {
-                            object = new JSONObject();
-                            object.put("id", null);
-                            object.put("idOrder", listId.get(listId.size() - 1));
-                            object.put("idProduct", cartList.get(i).getId());
-                            object.put("number", cartList.get(i).getNumber());
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                        jsonArray.put(object);
-                    }
-                    hashMap = new HashMap<>();
-                    hashMap.put("json", jsonArray.toString());
-                    return hashMap;
-                }
-            };
-            requestQueue.add(detailStringRequest);
-        } else {
-            Toast.makeText(getContext(), "Đơn hàng chưa được đặt. Kiểm tra lại kết nối", Toast.LENGTH_LONG).show();
-        }
-
+        mPresenter.postOrderDetail(name, path, fileName, cartList, listId);
     }
 
     public void initFile() {

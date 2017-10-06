@@ -14,10 +14,12 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.ominext.storedeviceonline.R;
 import com.example.ominext.storedeviceonline.helper.ImageViewUtil;
 import com.example.ominext.storedeviceonline.helper.PriceFormatUtil;
+import com.example.ominext.storedeviceonline.ui.addproduct.AddProductFragment;
 import com.example.ominext.storedeviceonline.ui.auction.AuctionFragment;
 import com.example.ominext.storedeviceonline.ui.cart.CartFragment;
 import com.example.ominext.storedeviceonline.ui.home.HomeActivity;
@@ -49,14 +51,14 @@ public class DetailProductFragment extends Fragment {
     @BindView(R.id.linear_layout_auction)
     LinearLayout linearLayoutAuction;
     Unbinder unbinder;
-    String name = "";
-    int price = 0;
-    String describe = "";
-    String image = "";
-    int id = 0;
-    int auction = 0;
-    String dateStart = "";
-    String dateStop = "";
+    String name;
+    int price;
+    String describe;
+    String image;
+    int id;
+    int auction;
+    String dateStart;
+    String dateStop;
 
     public DetailProductFragment() {
     }
@@ -74,7 +76,6 @@ public class DetailProductFragment extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-//        getActivity().setTitle("Chi tiết sản phẩm");
         linearLayoutAuction.setVisibility(View.GONE);
         Bundle bundle = this.getArguments();
         id = bundle.getInt("id");
@@ -116,7 +117,6 @@ public class DetailProductFragment extends Fragment {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.btn_order:
-//        kích vào đặt hàng thì truyền list và số lượng sp sang -> dùng bundle
                 Bundle bundle = new Bundle();
                 bundle.putInt("id", id);
                 bundle.putInt("number", Integer.parseInt(spinnerQuantity.getSelectedItem().toString()));
@@ -133,15 +133,20 @@ public class DetailProductFragment extends Fragment {
                 fragmentTransaction.commit();
                 break;
             case R.id.tv_auction:
-                Bundle bundleAuction = new Bundle();
-                bundleAuction.putString("name", name);
-                bundleAuction.putInt("price", price);
-                bundleAuction.putString("image", image);
-                bundleAuction.putString("dateStart", dateStart);
-                bundleAuction.putString("dateStop", dateStop);
-                AuctionFragment auctionFragment = new AuctionFragment();
-                auctionFragment.setArguments(bundleAuction);
-                ((HomeActivity) getActivity()).addFragment(auctionFragment);
+                if (HomeActivity.listProductType.get(0).getNameProductType().equals("Đăng nhập")) {
+                    Toast.makeText(getContext(), "Bạn cần đăng nhập trước khi tiến hành đấu giá cho sản phẩm", Toast.LENGTH_SHORT).show();
+                } else {
+                    Bundle bundleAuction = new Bundle();
+                    bundleAuction.putInt("id", id);
+                    bundleAuction.putString("name", name);
+                    bundleAuction.putInt("price", price);
+                    bundleAuction.putString("image", image);
+                    bundleAuction.putString("dateStart", dateStart);
+                    bundleAuction.putString("dateStop", dateStop);
+                    AuctionFragment auctionFragment = new AuctionFragment();
+                    auctionFragment.setArguments(bundleAuction);
+                    ((HomeActivity) getActivity()).addFragment(auctionFragment);
+                }
                 break;
         }
     }

@@ -52,7 +52,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
 
-public class AddProductFragment extends Fragment {
+public class AddProductFragment extends Fragment implements AddProductView {
     @BindView(R.id.img_add_product)
     ImageView imgAddProduct;
     @BindView(R.id.edt_name_product)
@@ -82,6 +82,7 @@ public class AddProductFragment extends Fragment {
     private String dateFrom = "";
     private String dateTo = "";
     private int check = 0;
+    private AddProductPresenter mPresenter;
 
     public AddProductFragment() {
 
@@ -109,6 +110,7 @@ public class AddProductFragment extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        mPresenter = new AddProductPresenter(getContext(), this);
         linearLayoutAddAuction.setVisibility(View.GONE);
     }
 
@@ -162,45 +164,7 @@ public class AddProductFragment extends Fragment {
                         return;
                     }
                     if (image != null) {
-                        if (CheckConnectionInternet.haveNetWorkConnection(getContext())) {
-                            RequestQueue requestQueue = Volley.newRequestQueue(getContext());
-                            StringRequest orderProductStringRequest = new StringRequest(Request.Method.POST, Server.urlPostProduct, new Response.Listener<String>() {
-                                @Override
-                                public void onResponse(String response) {
-                                    Log.e("============>", response);
-                                    Toast.makeText(getContext(), "Đăng mặt hàng thành công", Toast.LENGTH_SHORT).show();
-                                    Fragment fragment = MainFragment.newInstance();
-                                    ((HomeActivity) getActivity()).addFragment(fragment);
-                                }
-                            }, new Response.ErrorListener() {
-                                @Override
-                                public void onErrorResponse(VolleyError error) {
-                                    Log.e("=========>error", error.toString());
-                                    Toast.makeText(getContext(), "Mặt hàng chưa được đăng. Không thể kết nối được với máy chủ", Toast.LENGTH_SHORT).show();
-                                }
-                            }) {
-                                @Override
-                                protected Map<String, String> getParams() throws AuthFailureError {
-                                    HashMap<String, String> hashMap = new HashMap<>();
-                                    hashMap.put("nameProduct", nameProduct);
-                                    hashMap.put("priceProduct", priceProduct);
-                                    hashMap.put("imageProduct", image);
-                                    hashMap.put("describeProduct", describeProduct);
-                                    hashMap.put("IdProductType", idProductType + "");
-                                    hashMap.put("idUser", LoginFragment.user.getId() + "");
-                                    hashMap.put("auction", null);
-                                    hashMap.put("dateStart", dateFrom);
-                                    hashMap.put("dateStop", dateTo);
-                                    if (check == 1) {
-                                        hashMap.put("auction", 1 + "");
-                                    }
-                                    return hashMap;
-                                }
-                            };
-                            requestQueue.add(orderProductStringRequest);
-                        } else {
-                            Toast.makeText(getContext(), "Mặt hàng chưa được đăng. Kiểm tra lại kết nối", Toast.LENGTH_LONG).show();
-                        }
+                        mPresenter.postProduct(nameProduct, Integer.valueOf(priceProduct), image, idProductType, describeProduct, dateFrom, dateTo, check);
                     } else {
                         Toast.makeText(getContext(), "Bạn chưa thêm ảnh cho mặt hàng", Toast.LENGTH_SHORT).show();
                     }
@@ -249,6 +213,7 @@ public class AddProductFragment extends Fragment {
                 break;
         }
     }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == 1995 && resultCode == Activity.RESULT_OK) {
@@ -261,5 +226,15 @@ public class AddProductFragment extends Fragment {
             imgAddProduct.setImageBitmap(bitmap);
         }
         super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    @Override
+    public void postProductSuccessfully(String s) {
+
+    }
+
+    @Override
+    public void postProductFailed(String s) {
+
     }
 }

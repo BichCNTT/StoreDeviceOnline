@@ -25,6 +25,7 @@
 
         <EditText
             android:id="@+id/edt_email"
+            android:text="bich@gmail.com"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="textEmailAddress"
@@ -41,6 +42,7 @@
             android:layout_height="wrap_content"
             android:inputType="textPassword"
             android:password="true"
+            android:text="000000"
             android:singleLine="true" />
 
         <CheckBox
@@ -101,7 +103,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="5dp"
+            android:layout_margin="2dp"
             android:text="Họ tên khách hàng"
             android:textColor="@color/blue"
             android:textSize="11sp" />
@@ -110,7 +112,7 @@
             android:id="@+id/tv_name_user"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="5dp"
+            android:layout_margin="2dp"
             android:singleLine="true"
             android:textColor="@color/black"
             android:textSize="14dp" />
@@ -127,7 +129,7 @@
             android:id="@+id/tv_phone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="5dp"
+            android:layout_margin="2dp"
             android:inputType="phone"
             android:singleLine="true"
             android:textColor="@color/black"
@@ -136,7 +138,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="5dp"
+            android:layout_margin="2dp"
             android:text="Địa chỉ giao hàng"
             android:textColor="@color/blue"
             android:textSize="11sp" />
@@ -145,7 +147,7 @@
             android:id="@+id/tv_address"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="5dp"
+            android:layout_margin="2dp"
             android:singleLine="true"
             android:textColor="@color/black"
             android:textSize="14dp" />
@@ -154,13 +156,13 @@
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_marginBottom="5dp"
-            android:layout_marginTop="5dp"
+            android:layout_marginTop="2dp"
             android:background="@color/red" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="5dp"
+            android:layout_margin="2dp"
             android:text="Tên tài khoản"
             android:textColor="@color/blue"
             android:textSize="11sp" />
@@ -169,7 +171,7 @@
             android:id="@+id/tv_account_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="5dp"
+            android:layout_margin="2dp"
             android:singleLine="true"
             android:textColor="@color/black"
             android:textSize="14dp" />
@@ -177,7 +179,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="5dp"
+            android:layout_margin="2dp"
             android:text="Email"
             android:textColor="@color/blue"
             android:textSize="11sp" />
@@ -186,7 +188,7 @@
             android:id="@+id/tv_email"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="5dp"
+            android:layout_margin="2dp"
             android:singleLine="true"
             android:textColor="@color/black"
             android:textSize="14sp" />
@@ -194,7 +196,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="5dp"
+            android:layout_margin="2dp"
             android:text="Mật khẩu"
             android:textColor="@color/blue"
             android:textSize="11sp" />
@@ -203,7 +205,7 @@
             android:id="@+id/tv_pass_word"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="5dp"
+            android:layout_margin="2dp"
             android:singleLine="true"
             android:textColor="@color/black"
             android:textSize="14dp" />

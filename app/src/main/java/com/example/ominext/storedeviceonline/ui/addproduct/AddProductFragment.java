@@ -52,7 +52,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
 
-public class AddProductFragment extends Fragment implements AddProductView {
+public class AddProductFragment extends Fragment{
     @BindView(R.id.img_add_product)
     ImageView imgAddProduct;
     @BindView(R.id.edt_name_product)
@@ -79,8 +79,8 @@ public class AddProductFragment extends Fragment implements AddProductView {
     private String nameProduct = "";
     private String priceProduct = "";
     private String describeProduct = "";
-    private String dateFrom = "";
-    private String dateTo = "";
+    private String dateFrom = null;
+    private String dateTo = null;
     private int check = 0;
     private AddProductPresenter mPresenter;
 
@@ -110,7 +110,7 @@ public class AddProductFragment extends Fragment implements AddProductView {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        mPresenter = new AddProductPresenter(getContext(), this);
+        mPresenter = new AddProductPresenter(getContext());
         linearLayoutAddAuction.setVisibility(View.GONE);
     }
 
@@ -226,15 +226,5 @@ public class AddProductFragment extends Fragment implements AddProductView {
             imgAddProduct.setImageBitmap(bitmap);
         }
         super.onActivityResult(requestCode, resultCode, data);
-    }
-
-    @Override
-    public void postProductSuccessfully(String s) {
-
-    }
-
-    @Override
-    public void postProductFailed(String s) {
-
     }
 }

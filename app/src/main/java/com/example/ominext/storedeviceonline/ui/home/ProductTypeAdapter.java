@@ -58,7 +58,6 @@ public class ProductTypeAdapter extends BaseAdapter {
             view = inflater.inflate(R.layout.row_listview_producttype, null);
             holder.tvProductType = (TextView) view.findViewById(R.id.tv_product_type);
             holder.imgProductType = (ImageView) view.findViewById(R.id.img_product_type);
-            //   set tag để xoay màn hình k bị mất HomeView
             view.setTag(holder);
         } else {
         //   ngược lại nếu giữ HomeView thì lấy ra

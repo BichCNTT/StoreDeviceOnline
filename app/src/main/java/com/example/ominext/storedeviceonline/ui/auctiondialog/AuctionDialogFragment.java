@@ -1,5 +1,6 @@
 package com.example.ominext.storedeviceonline.ui.auctiondialog;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
@@ -16,8 +17,13 @@ import android.widget.Toast;
 import com.example.ominext.storedeviceonline.R;
 import com.example.ominext.storedeviceonline.helper.ImageViewUtil;
 import com.example.ominext.storedeviceonline.helper.PriceFormatUtil;
+import com.example.ominext.storedeviceonline.model.UserAuction;
 import com.example.ominext.storedeviceonline.ui.auction.AuctionAdapter;
 import com.example.ominext.storedeviceonline.ui.auction.AuctionFragment;
+import com.example.ominext.storedeviceonline.ui.auction.AuctionPresenter;
+import com.example.ominext.storedeviceonline.ui.auction.AuctionView;
+
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -25,7 +31,7 @@ import butterknife.OnClick;
 import butterknife.Unbinder;
 
 
-public class AuctionDialogFragment extends DialogFragment implements AuctionDialogView {
+public class AuctionDialogFragment extends DialogFragment implements AuctionDialogView, AuctionView {
     @BindView(R.id.image)
     ImageView image;
     @BindView(R.id.name)
@@ -41,6 +47,7 @@ public class AuctionDialogFragment extends DialogFragment implements AuctionDial
     int id;
     @BindView(R.id.number)
     EditText number;
+    private int mPrice;
 
     public AuctionDialogFragment() {
     }
@@ -75,7 +82,8 @@ public class AuctionDialogFragment extends DialogFragment implements AuctionDial
         Bundle bundle = getArguments();
         name.setText(bundle.getString("name"));
         id = bundle.getInt("id");
-        PriceFormatUtil.priceFormat(price, bundle.getInt("price"));
+        mPrice = bundle.getInt("price");
+        PriceFormatUtil.priceFormat(price, mPrice);
         ImageViewUtil.loadImg(getContext(), bundle.getString("image"), image);
     }
 
@@ -87,11 +95,12 @@ public class AuctionDialogFragment extends DialogFragment implements AuctionDial
 
     @OnClick(R.id.btn_accept)
     public void onViewClicked() {
-        if (!pay.getText().toString().isEmpty() && !number.getText().toString().isEmpty()) {
+        if (!pay.getText().toString().isEmpty() && (Integer.parseInt(pay.getText().toString()) >= mPrice) && !number.getText().toString().isEmpty() && (Integer.parseInt(number.getText().toString()) > 0)) {
             mPresenter.postUserAuction(id, Integer.parseInt(pay.getText().toString()), Integer.parseInt(number.getText().toString()));
             Toast.makeText(getContext(), "Đấu giá thành công", Toast.LENGTH_SHORT).toString();
             getDialog().dismiss();
-
+            AuctionPresenter mAuctionPresenter = new AuctionPresenter(getContext(), this);
+            mAuctionPresenter.getUserAuction();
         } else {
             String pay = this.pay.getText().toString();
             String number = this.number.getText().toString();
@@ -100,8 +109,18 @@ public class AuctionDialogFragment extends DialogFragment implements AuctionDial
                 this.pay.requestFocus();
                 return;
             }
+            if (Integer.parseInt(this.pay.getText().toString()) < mPrice) {
+                this.pay.setError("Giá trả phải lớn hơn hoặc bằng giá hiện tại");
+                this.pay.requestFocus();
+                return;
+            }
             if (TextUtils.isEmpty(number)) {
-                this.number.setError("Nhập giá");
+                this.number.setError("Nhập số lượng");
+                this.number.requestFocus();
+                return;
+            }
+            if (!(Integer.parseInt(this.number.getText().toString()) > 0)) {
+                this.number.setError("Số lượng phải lớn hơn 0");
                 this.number.requestFocus();
                 return;
             }
@@ -116,5 +135,20 @@ public class AuctionDialogFragment extends DialogFragment implements AuctionDial
     @Override
     public void postUserAuctionFailed(String s) {
         Toast.makeText(getContext(), "Đấu giá thất bại. Không thể kết nối được với máy chủ", Toast.LENGTH_SHORT).toString();
+    }
+
+    @Override
+    public void getUserAuctionSuccessfully(List<UserAuction> userAuctionList) {
+        AuctionFragment.mUserAuctionList.clear();
+        for (int i = 0; i < userAuctionList.size(); i++) {
+            if (id == userAuctionList.get(i).getIdProduct()) {
+                AuctionFragment.mUserAuctionList.add(userAuctionList.get(i));
+            }
+        }
+        AuctionFragment.mAuctionAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void getUserAuctionFailed(String s) {
     }
 }

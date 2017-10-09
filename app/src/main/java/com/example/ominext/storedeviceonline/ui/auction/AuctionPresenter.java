@@ -34,6 +34,7 @@ public class AuctionPresenter {
     }
 
     public void getUserAuction() {
+        AuctionFragment.mUserAuctionList.clear();
         final RequestQueue requestQueue = Volley.newRequestQueue(mContext);
         JsonArrayRequest arrayRequest = new JsonArrayRequest(Server.urlgetUserAuction, new Response.Listener<JSONArray>() {
             @Override
@@ -51,6 +52,8 @@ public class AuctionPresenter {
                             mDateUpload = object.getString("auctiondate");
                             mNameProduct = object.getString("nameProduct");
                             mUserAuctionList.add(new UserAuction(mId, mIdProduct, mIdUser, mPrice, mNumber, mNameAccount, mDateUpload, mNameProduct));
+                            AuctionFragment.mAuctionAdapter.notifyDataSetChanged();
+
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }

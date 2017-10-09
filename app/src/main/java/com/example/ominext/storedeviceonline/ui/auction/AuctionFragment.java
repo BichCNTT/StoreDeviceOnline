@@ -1,5 +1,6 @@
 package com.example.ominext.storedeviceonline.ui.auction;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -31,9 +32,9 @@ public class AuctionFragment extends Fragment implements AuctionView {
     @BindView(R.id.btn_auction)
     Button btnAuction;
     Unbinder unbinder;
-    AuctionPresenter mAuctionPresenter;
+    public static AuctionPresenter mAuctionPresenter;
     public static AuctionAdapter mAuctionAdapter;
-    List<UserAuction> mUserAuctionList = new ArrayList<>();
+    public static List<UserAuction> mUserAuctionList = new ArrayList<>();
     int id = 0;
     String name = "";
     int price = 0;
@@ -89,7 +90,11 @@ public class AuctionFragment extends Fragment implements AuctionView {
     @Override
     public void getUserAuctionSuccessfully(List<UserAuction> userAuctionList) {
         mUserAuctionList.clear();
-        mUserAuctionList.addAll(userAuctionList);
+        for (int i = 0; i < userAuctionList.size(); i++) {
+            if (id == userAuctionList.get(i).getIdProduct()) {
+                mUserAuctionList.add(userAuctionList.get(i));
+            }
+        }
         mAuctionAdapter.notifyDataSetChanged();
     }
 

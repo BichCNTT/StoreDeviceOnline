@@ -58,7 +58,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 //Nếu chuyển từ màn đầu tiên sang màn hình đăng nhập thì sẽ là add, còn chuyển từ màn hình giỏ hàng qua màn đăng nhập thì sẽ là replace
-//Task: Thêm bảng đấu giá
 public class HomeActivity extends AppCompatActivity implements HomeView, OnItemClickListener, FragmentManager.OnBackStackChangedListener {
     @BindView(R.id.list_item)
     ListView listItem;
@@ -79,7 +78,7 @@ public class HomeActivity extends AppCompatActivity implements HomeView, OnItemC
     private int tabCurrent = 0;
     public int count = 0;
     public Menu optionsMenu;
-
+// notification:
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

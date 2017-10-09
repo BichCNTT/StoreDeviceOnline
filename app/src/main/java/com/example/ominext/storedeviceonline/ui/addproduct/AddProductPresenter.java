@@ -27,11 +27,9 @@ import java.util.Map;
 
 public class AddProductPresenter {
     Context mContext;
-    AddProductView mAddProductView;
 
-    public AddProductPresenter(Context mContext, AddProductView mAddProductView) {
+    public AddProductPresenter(Context mContext) {
         this.mContext = mContext;
-        this.mAddProductView = mAddProductView;
     }
 
     public void postProduct(final String nameProduct, final int priceProduct, final String image, final int idProductType, final String describeProduct, final String dateFrom, final String dateTo, final int check) {

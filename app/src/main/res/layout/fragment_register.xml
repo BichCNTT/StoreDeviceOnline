@@ -8,8 +8,8 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="5dp"
-        android:layout_marginTop="5dp"
+        android:layout_marginBottom="2dp"
+        android:layout_marginTop="2dp"
         android:text="Cần điền đầy đủ tất cả các mục"
         android:textColor="@color/red"
         android:textSize="10sp"
@@ -19,88 +19,102 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Tên tài khoản"
-        android:textColor="@color/blue" />
+        android:textColor="@color/blue"
+        android:textSize="12sp" />
 
     <EditText
         android:id="@+id/edt_account_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:singleLine="true" />
+        android:singleLine="true"
+        android:textSize="12sp" />
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Email"
-        android:textColor="@color/blue" />
+        android:textColor="@color/blue"
+        android:textSize="12sp" />
 
     <EditText
         android:id="@+id/edt_email"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:singleLine="true" />
+        android:singleLine="true"
+        android:textSize="12sp" />
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Mật khẩu"
-        android:textColor="@color/blue" />
+        android:textColor="@color/blue"
+        android:textSize="12sp" />
 
     <EditText
         android:id="@+id/edt_password"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:inputType="textPassword"
-        android:singleLine="true" />
+        android:singleLine="true"
+        android:textSize="12sp" />
 
     <TextView
         android:id="@+id/textView2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Nhập lại mật khẩu"
-        android:textColor="@color/blue" />
+        android:textColor="@color/blue"
+        android:textSize="12sp" />
 
     <EditText
         android:id="@+id/edt_confirm_password"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:inputType="textPassword"
-        android:singleLine="true" />
+        android:singleLine="true"
+        android:textSize="12sp" />
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Họ và tên"
-        android:textColor="@color/blue" />
+        android:textColor="@color/blue"
+        android:textSize="12sp" />
 
     <EditText
         android:id="@+id/edt_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:singleLine="true" />
+        android:singleLine="true"
+        android:textSize="12sp" />
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Số điện thoại"
-        android:textColor="@color/blue" />
+        android:textColor="@color/blue"
+        android:textSize="12sp" />
 
     <EditText
         android:id="@+id/edt_phone"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:inputType="phone"
-        android:singleLine="true" />
+        android:singleLine="true"
+        android:textSize="12sp" />
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Địa chỉ"
-        android:textColor="@color/blue" />
+        android:textColor="@color/blue"
+        android:textSize="12sp" />
 
     <EditText
         android:id="@+id/edt_address"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:textSize="12sp" />
 
     <Button
         android:id="@+id/btn_register"

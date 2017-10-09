@@ -10,6 +10,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Adapter;
 import android.widget.TextView;
 
 import com.example.ominext.storedeviceonline.R;
@@ -45,16 +46,11 @@ public class AuctionAdapter extends RecyclerView.Adapter<AuctionAdapter.Recycler
     @Override
     public void onBindViewHolder(RecyclerViewHolder holder, int position) {
         UserAuction userAuction = mUserAuctionList.get(position);
-        holder.tvNumber.setText(userAuction.getId() + "");
+        holder.tvNumber.setText((position + 1) + "");
         holder.tvAccountName.setText(userAuction.getNameAccount());
         PriceFormatUtil.priceFormat(holder.tvPricePay, userAuction.getPrice());
         holder.tvTime.setText(userAuction.getDateUpload());
         holder.tvNameProduct.setText(userAuction.getNameProduct());
-//        for (int i = 0; i < mUserAuctionList.size(); i++) {
-//            if (idProduct == mUserAuctionList.get(i).getIdProduct()) {
-//                holder.itemView.setBackgroundColor(Color.parseColor("#d65907"));
-//            }
-//        }
     }
 
     @Override

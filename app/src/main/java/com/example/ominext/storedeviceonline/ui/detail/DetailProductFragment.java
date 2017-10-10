@@ -19,7 +19,6 @@ import android.widget.Toast;
 import com.example.ominext.storedeviceonline.R;
 import com.example.ominext.storedeviceonline.helper.ImageViewUtil;
 import com.example.ominext.storedeviceonline.helper.PriceFormatUtil;
-import com.example.ominext.storedeviceonline.ui.addproduct.AddProductFragment;
 import com.example.ominext.storedeviceonline.ui.auction.AuctionFragment;
 import com.example.ominext.storedeviceonline.ui.cart.CartFragment;
 import com.example.ominext.storedeviceonline.ui.home.HomeActivity;
@@ -29,9 +28,6 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
 
-//nhận dữ liệu từ listview sản phẩm mới nhất:
-//tên sản phẩm, giá, chi tiết sản phẩm, hình ảnh
-//nhận dữ liệu từ FragmentLaptop, FragmentPhone
 public class DetailProductFragment extends Fragment {
 
     @BindView(R.id.tv_name)
@@ -46,10 +42,10 @@ public class DetailProductFragment extends Fragment {
     ImageView imgProduct;
     @BindView(R.id.spinner_quantity)
     Spinner spinnerQuantity;
-    @BindView(R.id.tv_auction)
-    TextView tvAuction;
     @BindView(R.id.linear_layout_auction)
     LinearLayout linearLayoutAuction;
+    @BindView(R.id.btn_auction)
+    Button btnAuction;
     Unbinder unbinder;
     String name;
     int price;
@@ -88,6 +84,8 @@ public class DetailProductFragment extends Fragment {
         dateStop = bundle.getString("dateStop");
         if (auction == 1) {
             linearLayoutAuction.setVisibility(View.VISIBLE);
+            btnOrder.setVisibility(View.GONE);
+            spinnerQuantity.setVisibility(View.GONE);
         }
         tvName.setText(name);
         PriceFormatUtil.priceFormat(tvPrice, price);
@@ -113,7 +111,7 @@ public class DetailProductFragment extends Fragment {
         unbinder.unbind();
     }
 
-    @OnClick({R.id.btn_order, R.id.tv_auction})
+    @OnClick({R.id.btn_order, R.id.btn_auction})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.btn_order:
@@ -132,7 +130,7 @@ public class DetailProductFragment extends Fragment {
                 fragmentTransaction.addToBackStack(null);
                 fragmentTransaction.commit();
                 break;
-            case R.id.tv_auction:
+            case R.id.btn_auction:
                 if (HomeActivity.listProductType.get(0).getNameProductType().equals("Đăng nhập")) {
                     Toast.makeText(getContext(), "Bạn cần đăng nhập trước khi tiến hành đấu giá cho sản phẩm", Toast.LENGTH_SHORT).show();
                 } else {
@@ -150,4 +148,5 @@ public class DetailProductFragment extends Fragment {
                 break;
         }
     }
+
 }

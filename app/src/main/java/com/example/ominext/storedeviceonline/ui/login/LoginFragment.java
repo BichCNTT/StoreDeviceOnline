@@ -85,6 +85,7 @@ public class LoginFragment extends Fragment implements LoginView {
         View view = inflater.inflate(R.layout.fragment_login, container, false);
         unbinder = ButterKnife.bind(this, view);
         return view;
+
     }
 
     @Override

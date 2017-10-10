@@ -23,6 +23,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.example.ominext.storedeviceonline.R;
+import com.example.ominext.storedeviceonline.fcm.FirebaseInstanceIDService;
 import com.example.ominext.storedeviceonline.listener.OnItemClickListener;
 import com.example.ominext.storedeviceonline.model.Product;
 import com.example.ominext.storedeviceonline.model.ProductType;
@@ -78,7 +79,9 @@ public class HomeActivity extends AppCompatActivity implements HomeView, OnItemC
     private int tabCurrent = 0;
     public int count = 0;
     public Menu optionsMenu;
-// notification:
+    private FirebaseInstanceIDService mInstanceIDService;
+
+    // notification:
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -106,6 +109,10 @@ public class HomeActivity extends AppCompatActivity implements HomeView, OnItemC
         count = mPresenter.getSizeProduct();
         ActionBar();
         mPresenter.getListProductType();
+        mInstanceIDService = new FirebaseInstanceIDService();
+        mInstanceIDService.onTokenRefresh();
+//        lấy ra token
+        String a = mInstanceIDService.getToken();
     }
 
     //truyền dữ liệu giữa main activity và fragmentCurrent

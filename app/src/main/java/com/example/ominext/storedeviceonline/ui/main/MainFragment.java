@@ -25,6 +25,8 @@ import com.example.ominext.storedeviceonline.ui.addproduct.AddProductFragment;
 import com.example.ominext.storedeviceonline.ui.detail.DetailProductFragment;
 import com.example.ominext.storedeviceonline.ui.home.HomeActivity;
 import com.example.ominext.storedeviceonline.ui.login.LoginFragment;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 import java.util.ArrayList;
 
@@ -52,7 +54,6 @@ public class MainFragment extends Fragment implements MainFragmentView, OnItemCl
     FloatingActionButton fabAddProduct;
 
     public MainFragment() {
-
     }
 
     public static MainFragment newInstance() {
@@ -172,7 +173,7 @@ public class MainFragment extends Fragment implements MainFragmentView, OnItemCl
     @OnClick(R.id.fab_add_product)
     public void onViewClicked() {
         if (HomeActivity.listProductType.get(0).getNameProductType().equals("Đăng nhập")) {
-            Toast.makeText(getContext(),"Bạn cần đăng nhập trước khi tiến hành thêm một mặt hàng",Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), "Bạn cần đăng nhập trước khi tiến hành thêm một mặt hàng", Toast.LENGTH_SHORT).show();
         } else {
             Fragment fragment = AddProductFragment.newInstance();
             ((HomeActivity) getActivity()).addFragment(fragment);

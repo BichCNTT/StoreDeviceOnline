@@ -87,7 +87,9 @@ public class AddProductFragment extends Fragment{
     public AddProductFragment() {
 
     }
-
+//notification: đến hết hạn đấu giá kiểm tra xem ai là người trả giá cao nhất thì bán cho người đó.
+// Đồng thời gửi notification về máy là mặt hàng đã được bán.
+// Cũng gửi notification về máy kia là bạn đấu giá thành công
     public static AddProductFragment newInstance() {
         AddProductFragment fragment = new AddProductFragment();
         return fragment;

@@ -68,6 +68,7 @@ public class Server {
     public static String urlSortUpSport = "http://" + localhost + "/server/sortupsport.php";
 
     public static String urlgetUserAuction = "http://" + localhost + "/server/getuserauction.php";
-    public static String getUrlPostUserAuction = "http://" + localhost + "/server/postuserauction.php";
+    public static String urlPostUserAuction = "http://" + localhost + "/server/postuserauction.php";
 
+    public static String urlRegister = "http://" + localhost + "/server/register.php";
 }

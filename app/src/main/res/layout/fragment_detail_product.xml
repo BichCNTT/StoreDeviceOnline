@@ -81,53 +81,22 @@
 
                     <LinearLayout
                         android:id="@+id/linear_layout_auction"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:layout_margin="5dp"
                         android:orientation="vertical">
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="(*)Mặt hàng này đang được đấu giá."
-                            android:textColor="@color/magenta"
-                            android:textSize="12sp" />
-
-                        <LinearLayout
+                        <Button
+                            android:id="@+id/btn_auction"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:orientation="horizontal">
+                            android:layout_margin="20dp"
+                            android:background="@drawable/border"
+                            android:text="Vào đấu giá"
+                            android:textColor="@color/white"
+                            android:textSize="15sp"
+                            android:textStyle="bold" />
 
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="Click "
-                                android:textColor="@color/magenta"
-                                android:textSize="12sp" />
-
-                            <TextView
-                                android:id="@+id/tv_auction"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="vào đây "
-                                android:textColor="@color/red"
-                                android:textSize="12sp" />
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="để tiến hành đấu giá"
-                                android:textColor="@color/magenta"
-                                android:textSize="12sp" />
-                        </LinearLayout>
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="cho sản phẩm."
-                            android:textColor="@color/magenta"
-                            android:textSize="12sp" />
                     </LinearLayout>
 
                 </LinearLayout>

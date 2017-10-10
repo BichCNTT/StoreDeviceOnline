@@ -11,12 +11,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.ominext.storedeviceonline.R;
 import com.example.ominext.storedeviceonline.model.UserAuction;
 import com.example.ominext.storedeviceonline.ui.auctiondialog.AuctionDialogFragment;
 
+import java.text.Format;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,6 +34,10 @@ public class AuctionFragment extends Fragment implements AuctionView {
     RecyclerView rvListUserAuction;
     @BindView(R.id.btn_auction)
     Button btnAuction;
+    @BindView(R.id.tv_dateFrom)
+    TextView tvDateFrom;
+    @BindView(R.id.tv_dateTo)
+    TextView tvDateTo;
     Unbinder unbinder;
     public static AuctionPresenter mAuctionPresenter;
     public static AuctionAdapter mAuctionAdapter;
@@ -78,6 +85,8 @@ public class AuctionFragment extends Fragment implements AuctionView {
         image = bundle.getString("image");
         dateStart = bundle.getString("dateStart");
         dateStop = bundle.getString("dateStop");
+        tvDateFrom.setText(dateStart);
+        tvDateTo.setText(dateStop);
         mAuctionAdapter = new AuctionAdapter(id, getContext(), mUserAuctionList);
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getContext(), 1);
         rvListUserAuction.setLayoutManager(layoutManager);

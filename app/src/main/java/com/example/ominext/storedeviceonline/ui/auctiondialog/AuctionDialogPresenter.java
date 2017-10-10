@@ -34,7 +34,7 @@ public class AuctionDialogPresenter {
     public void postUserAuction(final int idProduct, final int price, final int number) {
         if (CheckConnectionInternet.haveNetWorkConnection(mContext)) {
             RequestQueue requestQueue = Volley.newRequestQueue(mContext);
-            StringRequest stringRequest = new StringRequest(Request.Method.POST, Server.getUrlPostUserAuction, new Response.Listener<String>() {
+            StringRequest stringRequest = new StringRequest(Request.Method.POST, Server.urlPostUserAuction, new Response.Listener<String>() {
                 @Override
                 public void onResponse(String response) {
                 }

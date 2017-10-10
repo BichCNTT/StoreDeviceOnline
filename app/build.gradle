@@ -1,8 +1,10 @@
 apply plugin: 'com.android.application'
-
 android {
     compileSdkVersion 26
     buildToolsVersion "26.0.1"
+    defaultConfig {
+        multiDexEnabled true
+    }
     defaultConfig {
         applicationId "com.example.ominext.storedeviceonline"
         minSdkVersion 16
@@ -24,10 +26,8 @@ dependencies {
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    compile 'com.google.firebase:firebase-messaging:9.0.2'
     //dùng để load file ảnh
     //dùng để gửi và nhận phản hồi từ http
-
     //glide
     compile 'com.android.support:appcompat-v7:26.+'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
@@ -40,9 +40,10 @@ dependencies {
     compile 'com.google.code.gson:gson:2.6.2'
     compile 'com.android.support:support-v4:26.+'
     compile 'com.squareup.retrofit2:retrofit:2.3.0'
+    compile 'com.squareup.okhttp3:okhttp:3.4.1'
     compile 'com.squareup.retrofit2:converter-gson:2.3.0'
     compile 'com.amitshekhar.android:android-networking:0.3.0'
-    compile 'com.google.android.gms:play-services-maps:11.0.4'
+    compile 'com.google.android.gms:play-services-maps:10.0.1'
     compile 'com.github.bumptech.glide:glide:3.7.0'
     compile 'com.miguelcatalan:materialsearchview:1.4.0'
     testCompile 'junit:junit:4.12'
@@ -91,14 +92,9 @@ dependencies {
     compile 'com.android.support:support-v4:26.+'
 }
 dependencies {
-    compile 'com.android.support:support-v4:26.+'
+    compile 'com.google.firebase:firebase-core:10.0.1'
 }
 dependencies {
-    compile 'com.android.support:support-v4:26.+'
+    compile 'com.google.firebase:firebase-messaging:10.0.1'
 }
-dependencies {
-    compile 'com.android.support:support-v4:26.+'
-}
-dependencies {
-    compile 'com.android.support:support-v4:26.+'
-}
+apply plugin: 'com.google.gms.google-services'

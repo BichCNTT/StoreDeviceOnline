@@ -6,11 +6,11 @@ android {
         multiDexEnabled true
     }
     defaultConfig {
-        applicationId "com.example.ominext.storedeviceonline"
+        applicationId "com.example.ominext.store"
         minSdkVersion 16
         targetSdkVersion 26
-        versionCode 1
-        versionName "1.0"
+        versionCode 2
+        versionName "2.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -26,9 +26,18 @@ dependencies {
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    //dùng để load file ảnh
-    //dùng để gửi và nhận phản hồi từ http
-    //glide
+    compile 'com.mikepenz:actionitembadge:3.3.1@aar'
+    compile 'com.mikepenz:iconics-core:2.8.1@aar'
+    compile "com.android.support:appcompat-v7:${rootProject}"
+    compile 'com.mikepenz:materialize:1.0.0@aar'
+    compile 'com.mikepenz:fastadapter:2.1.5@aar'
+    compile 'com.mikepenz:iconics-core:2.8.1@aar'
+    compile 'com.mikepenz:materialdrawer:5.8.1@aar'
+    compile 'com.mikepenz:aboutlibraries:5.9.1@aar'
+    compile 'com.mikepenz:google-material-typeface:2.2.0.1@aar'
+    compile 'com.mikepenz:fontawesome-typeface:4.4.0.1@aar'
+    compile 'com.mikepenz:crossfader:1.5.0@aar'
+    compile 'com.android.support:support-v4:26.+'
     compile 'com.android.support:appcompat-v7:26.+'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
     compile 'com.squareup.picasso:picasso:2.5.2'
@@ -38,63 +47,21 @@ dependencies {
     compile 'com.android.support:recyclerview-v7:26.+'
     compile 'com.jakewharton:butterknife:8.4.0'
     compile 'com.google.code.gson:gson:2.6.2'
-    compile 'com.android.support:support-v4:26.+'
     compile 'com.squareup.retrofit2:retrofit:2.3.0'
     compile 'com.squareup.okhttp3:okhttp:3.4.1'
     compile 'com.squareup.retrofit2:converter-gson:2.3.0'
     compile 'com.amitshekhar.android:android-networking:0.3.0'
-    compile 'com.google.android.gms:play-services-maps:10.0.1'
     compile 'com.github.bumptech.glide:glide:3.7.0'
     compile 'com.miguelcatalan:materialsearchview:1.4.0'
+
+    compile 'com.google.firebase:firebase-core:11.4.2'
+    compile 'com.google.firebase:firebase-messaging:11.4.2'
+    compile 'com.google.android.gms:play-services-location:11.4.2'
+    compile 'com.google.android.gms:play-services-places:11.4.2'
+    compile 'com.google.android.gms:play-services-maps:11.4.2'
+
+
     testCompile 'junit:junit:4.12'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.4.0'
-}
-dependencies {
-    compile 'com.mikepenz:actionitembadge:3.3.1@aar'
-
-    //SUB-DEPENDENCIES
-    //Android-Iconics - used to provide an easy API for icons
-    compile 'com.mikepenz:iconics-core:2.8.1@aar'
-
-    //appcompat
-    compile "com.android.support:appcompat-v7:${rootProject}"
-    // used to base on some backwards compatible themes
-    // contains util classes to support various android versions, and clean up code
-    // comes with the awesome "Holder"-Pattern
-    // https://github.com/mikepenz/Materialize
-    compile 'com.mikepenz:materialize:1.0.0@aar'
-
-    // used to fill the RecyclerView with the DrawerItems
-    // and provides single and multi selection, expandable items
-    // https://github.com/mikepenz/FastAdapter
-    compile 'com.mikepenz:fastadapter:2.1.5@aar'
-
-    // used to provide out of the box icon font support. simplifies development,
-    // and provides scalable icons. the core is very very light
-    // https://github.com/mikepenz/Android-Iconics
-    compile 'com.mikepenz:iconics-core:2.8.1@aar'
-
-    //used to generate the drawer on the left
-    //https://github.com/mikepenz/MaterialDrawer
-    compile 'com.mikepenz:materialdrawer:5.8.1@aar'
-
-    //used to generate the Open Source section
-    //https://github.com/mikepenz/AboutLibraries
-    compile 'com.mikepenz:aboutlibraries:5.9.1@aar'
-
-    //used to display the icons in the drawer and in the menu
-    //https://github.com/mikepenz/Android-Iconics
-    compile 'com.mikepenz:google-material-typeface:2.2.0.1@aar'
-    compile 'com.mikepenz:fontawesome-typeface:4.4.0.1@aar'
-    compile 'com.mikepenz:crossfader:1.5.0@aar'
-}
-dependencies {
-    compile 'com.android.support:support-v4:26.+'
-}
-dependencies {
-    compile 'com.google.firebase:firebase-core:10.0.1'
-}
-dependencies {
-    compile 'com.google.firebase:firebase-messaging:10.0.1'
 }
 apply plugin: 'com.google.gms.google-services'

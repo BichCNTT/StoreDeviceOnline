@@ -1,35 +1,35 @@
 {
   "project_info": {
-    "project_number": "11545037063",
-    "firebase_url": "https://storedeviceonline.firebaseio.com",
-    "project_id": "storedeviceonline",
-    "storage_bucket": "storedeviceonline.appspot.com"
+    "project_number": "1083910184905",
+    "firebase_url": "https://fir-6c02c.firebaseio.com",
+    "project_id": "fir-6c02c",
+    "storage_bucket": "fir-6c02c.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:11545037063:android:6098eebd44d41d09",
+        "mobilesdk_app_id": "1:1083910184905:android:7b32e51d965f7281",
         "android_client_info": {
-          "package_name": "com.example.ominext.storedeviceonline"
+          "package_name": "com.example.ominext.store"
         }
       },
       "oauth_client": [
         {
-          "client_id": "11545037063-c4h8u4nfsvmh4nl23s61het42jst6e4l.apps.googleusercontent.com",
+          "client_id": "1083910184905-31nplaa7gtmn161dhl64l05bv38abphg.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.example.ominext.storedeviceonline",
+            "package_name": "com.example.ominext.store",
             "certificate_hash": "61e50db19ccee3fda6eb869c509cdf775bcf893a"
           }
         },
         {
-          "client_id": "11545037063-gv6qlqk995l5lphjal8mqn7j3e79j3df.apps.googleusercontent.com",
+          "client_id": "1083910184905-h1cjlbebiibksshthit4ckrr2qi2o18g.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyAfeX8nCgK8gE8cHkxbmZyWHVSNM1GIcj0"
+          "current_key": "AIzaSyAhvkfF1ss-A0Br17TQzJzlfhN6ue_Zfzg"
         }
       ],
       "services": {
@@ -40,7 +40,7 @@
           "status": 2,
           "other_platform_oauth_client": [
             {
-              "client_id": "11545037063-gv6qlqk995l5lphjal8mqn7j3e79j3df.apps.googleusercontent.com",
+              "client_id": "1083910184905-h1cjlbebiibksshthit4ckrr2qi2o18g.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

@@ -21,6 +21,8 @@ import com.example.ominext.store.model.User;
 import com.example.ominext.store.ui.home.HomeActivity;
 import com.example.ominext.store.ui.main.MainFragment;
 import com.example.ominext.store.ui.register.RegisterFragment;
+import com.example.ominext.store.ui.register.RegisterView;
+import com.google.firebase.iid.FirebaseInstanceId;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -69,7 +71,7 @@ public class LoginFragment extends Fragment implements LoginView {
     @BindView(R.id.linear_layout_login)
     LinearLayout linearLayoutLogin;
     private boolean mCheck = false;
-    public static User user = new User();
+    public static User user;
 
     public LoginFragment() {
     }
@@ -122,7 +124,8 @@ public class LoginFragment extends Fragment implements LoginView {
 
     @Override
     public void getListUserSuccessfully(final List<User> users) {
-        this.users = users;
+        this.users.clear();
+        this.users.addAll(users);
     }
 
     @Override
@@ -171,6 +174,7 @@ public class LoginFragment extends Fragment implements LoginView {
                         HomeActivity.listProductType.get(0).setNameProductType("Hi! " + users.get(i).getNameUser());
                         HomeActivity.productTypeAdapter.notifyDataSetChanged();
                         check = 1;
+                        mLoginPresenter.updateAccount(user.getId(), FirebaseInstanceId.getInstance().getToken().toString());
                         break;
                     }
                 }
@@ -184,6 +188,7 @@ public class LoginFragment extends Fragment implements LoginView {
                 ((HomeActivity) getActivity()).addFragment(fragment);
                 HomeActivity.listProductType.get(0).setNameProductType("Đăng nhập");
                 HomeActivity.productTypeAdapter.notifyDataSetChanged();
+                mLoginPresenter.updateAccount(user.getId(), "");
                 break;
             case R.id.btn_register:
                 fragment = new RegisterFragment();

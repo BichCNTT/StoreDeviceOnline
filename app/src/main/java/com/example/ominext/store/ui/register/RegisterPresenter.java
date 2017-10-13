@@ -14,6 +14,7 @@ import com.android.volley.toolbox.Volley;
 import com.example.ominext.store.model.User;
 import com.example.ominext.store.until.CheckConnectionInternet;
 import com.example.ominext.store.until.Server;
+import com.google.firebase.iid.FirebaseInstanceId;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -70,6 +71,7 @@ public class RegisterPresenter {
                             object.put("password", password);
                             object.put("email", email);
                             object.put("nameUser", accountName);
+                            object.put("Token", FirebaseInstanceId.getInstance().getToken().toString());
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }

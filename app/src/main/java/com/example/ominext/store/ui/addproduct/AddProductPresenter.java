@@ -17,13 +17,10 @@ import com.example.ominext.store.ui.login.LoginFragment;
 import com.example.ominext.store.ui.main.MainFragment;
 import com.example.ominext.store.until.CheckConnectionInternet;
 import com.example.ominext.store.until.Server;
+import com.google.firebase.iid.FirebaseInstanceId;
 
 import java.util.HashMap;
 import java.util.Map;
-
-/**
- * Created by Ominext on 10/6/2017.
- */
 
 public class AddProductPresenter {
     Context mContext;
@@ -65,6 +62,36 @@ public class AddProductPresenter {
                     if (check == 1) {
                         hashMap.put("auction", 1 + "");
                     }
+                    return hashMap;
+                }
+            };
+            requestQueue.add(orderProductStringRequest);
+        } else {
+            Toast.makeText(mContext, "Mặt hàng chưa được đăng. Kiểm tra lại kết nối", Toast.LENGTH_LONG).show();
+        }
+    }
+
+    public void pushNotification(final String token, final String message) {
+        if (CheckConnectionInternet.haveNetWorkConnection(mContext)) {
+            RequestQueue requestQueue = Volley.newRequestQueue(mContext);
+            StringRequest orderProductStringRequest = new StringRequest(Request.Method.POST, Server.urlPushNotification, new Response.Listener<String>() {
+                @Override
+                public void onResponse(String response) {
+                    Log.e("============>", response);
+                    Fragment fragment = MainFragment.newInstance();
+                    ((HomeActivity) mContext).addFragment(fragment);
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    Log.e("=========>error", error.toString());
+                }
+            }) {
+                @Override
+                protected Map<String, String> getParams() throws AuthFailureError {
+                    HashMap<String, String> hashMap = new HashMap<>();
+                    hashMap.put("token", token);
+                    hashMap.put("message", message);
                     return hashMap;
                 }
             };

@@ -5,18 +5,16 @@ package com.example.ominext.store.model;
  */
 
 public class User {
-    private int mId;
+    private String mId;
     private String mEmail;
     private String mPassword;
     private String mName;
     private String mAddress;
     private String mNameUser;
     private String mAvartar;
+    private String mToken;
 
-    public User() {
-    }
-
-    public User(int mId, String mEmail, String mPassword, String mName, String mAddress, String mNameUser, String mAvartar) {
+    public User(String mId, String mEmail, String mPassword, String mName, String mAddress, String mNameUser, String mAvartar, String mToken) {
         this.mId = mId;
         this.mEmail = mEmail;
         this.mPassword = mPassword;
@@ -24,6 +22,7 @@ public class User {
         this.mAddress = mAddress;
         this.mNameUser = mNameUser;
         this.mAvartar = mAvartar;
+        this.mToken = mToken;
     }
 
     public String getmAvartar() {
@@ -34,11 +33,11 @@ public class User {
         this.mAvartar = mAvartar;
     }
 
-    public int getId() {
+    public String getId() {
         return mId;
     }
 
-    public void setId(int mId) {
+    public void setId(String mId) {
         this.mId = mId;
     }
 
@@ -80,6 +79,14 @@ public class User {
 
     public void setNameUser(String mNameUser) {
         this.mNameUser = mNameUser;
+    }
+
+    public String getToken() {
+        return mToken;
+    }
+
+    public void setToken(String mToken) {
+        this.mToken = mToken;
     }
 
 }

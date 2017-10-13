@@ -50,7 +50,7 @@ public class OrderFragment extends Fragment implements OrderView, OrderConfirmVi
     Unbinder unbinder;
     int totalMoney = 0;
     String name = "";
-    int phone = 0;
+    String phone = "";
     String address = "";
     String path = null;
     int id = 0;

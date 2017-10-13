@@ -26,19 +26,28 @@ import android.widget.Toast;
 
 import com.example.ominext.store.R;
 import com.example.ominext.store.helper.DatePickerDialogUtil;
+import com.example.ominext.store.model.Product;
+import com.example.ominext.store.model.User;
+import com.example.ominext.store.ui.find.FindPresenter;
+import com.example.ominext.store.ui.find.FindView;
 import com.example.ominext.store.ui.home.HomeActivity;
+import com.example.ominext.store.ui.login.LoginPresenter;
+import com.example.ominext.store.ui.login.LoginView;
+import com.google.firebase.iid.FirebaseInstanceId;
 
 import java.io.ByteArrayOutputStream;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
 
-public class AddProductFragment extends Fragment{
+public class AddProductFragment extends Fragment implements LoginView {
     @BindView(R.id.img_add_product)
     ImageView imgAddProduct;
     @BindView(R.id.edt_name_product)
@@ -68,12 +77,15 @@ public class AddProductFragment extends Fragment{
     private String dateFrom = null;
     private String dateTo = null;
     private int check = 0;
-    private AddProductPresenter mPresenter;
+    private AddProductPresenter mAddProductPresenter;
+    private LoginPresenter mLoginPresenter;
+    List<User> mListUser = new ArrayList<>();
 
     public AddProductFragment() {
 
     }
-//notification: đến hết hạn đấu giá kiểm tra xem ai là người trả giá cao nhất thì bán cho người đó.
+
+    //notification: đến hết hạn đấu giá kiểm tra xem ai là người trả giá cao nhất thì bán cho người đó.
 // Đồng thời gửi notification về máy là mặt hàng đã được bán.
 // Cũng gửi notification về máy kia là bạn đấu giá thành công
     public static AddProductFragment newInstance() {
@@ -98,7 +110,9 @@ public class AddProductFragment extends Fragment{
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        mPresenter = new AddProductPresenter(getContext());
+        mAddProductPresenter = new AddProductPresenter(getContext());
+        mLoginPresenter = new LoginPresenter(getContext(), this);
+        mLoginPresenter.getListUser();
         linearLayoutAddAuction.setVisibility(View.GONE);
     }
 
@@ -152,7 +166,12 @@ public class AddProductFragment extends Fragment{
                         return;
                     }
                     if (image != null) {
-                        mPresenter.postProduct(nameProduct, Integer.valueOf(priceProduct), image, idProductType, describeProduct, dateFrom, dateTo, check);
+                        mAddProductPresenter.postProduct(nameProduct, Integer.valueOf(priceProduct), image, idProductType, describeProduct, dateFrom, dateTo, check);
+                        for (int i = 0; i < mListUser.size(); i++) {
+                            if (!mListUser.get(i).getToken().equals(FirebaseInstanceId.getInstance().getToken().toString())) {
+                                mAddProductPresenter.pushNotification(mListUser.get(i).getToken(), nameProduct);
+                            }
+                        }
                     } else {
                         Toast.makeText(getContext(), "Bạn chưa thêm ảnh cho mặt hàng", Toast.LENGTH_SHORT).show();
                     }
@@ -214,5 +233,15 @@ public class AddProductFragment extends Fragment{
             imgAddProduct.setImageBitmap(bitmap);
         }
         super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    @Override
+    public void getListUserSuccessfully(List<User> users) {
+        mListUser = users;
+    }
+
+    @Override
+    public void getListUserFailed(String s) {
+
     }
 }

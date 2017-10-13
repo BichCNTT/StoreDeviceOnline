@@ -59,11 +59,8 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-//thêm token trong bảng user
-//thêm 1 màn cho người dùng nhìn thấy sản phẩm của mình.
-// Nếu họ check bán thì bán sản phẩm đó. Có 2 gian hàng: Gian hàng bán và gian hàng đấu giá.
-// Nếu sản phẩm được mua thì gửi notification về cho máy kia là mặt hàng bạn mua đã thành công
-//
+//đẩy token lên server
+//truyền dl từ server->firebase->máy
 public class HomeActivity extends AppCompatActivity implements HomeView, OnItemClickListener, FragmentManager.OnBackStackChangedListener {
     @BindView(R.id.list_item)
     ListView listItem;
@@ -114,36 +111,7 @@ public class HomeActivity extends AppCompatActivity implements HomeView, OnItemC
             }
         });
         getSupportFragmentManager().addOnBackStackChangedListener(this);
-        FirebaseMessaging.getInstance().subscribeToTopic("news");
-        FirebaseInstanceId.getInstance().getToken();
-//        mInstanceIDService = new FirebaseInstanceIDService();
-//        mInstanceIDService.onTokenRefresh();
-//        mRegistrationBroadcastReceiver = new BroadcastReceiver() {
-//            @Override
-//            public void onReceive(Context context, Intent intent) {
-//                if (intent.getAction().equals(Config.REGISTRATION_COMPLETE)) {
-//                    FirebaseMessaging.getInstance().subscribeToTopic(Config.TOPIC_GLOBAL);
-//                    displayFirebaseRegId();
-//                } else if (intent.getAction().equals(Config.PUSH_NOTIFICATION)) {
-//                    String message = intent.getStringExtra("message");
-//                    Toast.makeText(getApplicationContext(), "Push notification:   " + message, Toast.LENGTH_SHORT).show();
-//                }
-//            }
-//        };
-//        displayFirebaseRegId();
     }
-
-    //    private void displayFirebaseRegId() {
-//        SharedPreferences pref = getApplicationContext().getSharedPreferences(Config.SHARED_PREF, 0);
-//        String regId = pref.getString("regId", null);
-//        Log.e(TAG, "Firebase reg id: " + regId);
-//        if (!TextUtils.isEmpty(regId)) {
-//            Toast.makeText(getApplicationContext(), "Firebase reg id: " + regId, Toast.LENGTH_SHORT).show();
-//        } else {
-//            Toast.makeText(getApplicationContext(), "Firebase reg id is not received yet... ", Toast.LENGTH_SHORT).show();
-//        }
-//    }
-
     //truyền dữ liệu giữa main activity và fragmentCurrent
     public void changeHome(int pos) {
         setTitle(listProductType.get(pos).getNameProductType());
@@ -375,21 +343,4 @@ public class HomeActivity extends AppCompatActivity implements HomeView, OnItemC
             }
         }
     }
-//
-//    @Override
-//    protected void onResume() {
-//        super.onResume();
-//        LocalBroadcastManager.getInstance(this).registerReceiver(mRegistrationBroadcastReceiver, new IntentFilter(Config.REGISTRATION_COMPLETE));
-//        // đăng ký nhận tin nhắn push mới
-//        // bằng cách làm việc này, hoạt động sẽ được thông báo mỗi lần một tin nhắn mới đến
-//        LocalBroadcastManager.getInstance(this).registerReceiver(mRegistrationBroadcastReceiver, new IntentFilter(Config.PUSH_NOTIFICATION));
-////        don sach thong bao khi mo app
-//        NotificationUtils.clearNotifications(getApplicationContext());
-//    }
-//
-//    @Override
-//    protected void onPause() {
-//        LocalBroadcastManager.getInstance(this).unregisterReceiver(mRegistrationBroadcastReceiver);
-//        super.onPause();
-//    }
 }

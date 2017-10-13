@@ -17,6 +17,7 @@ public class Server {
     public static String urlPostDetail = "http://" + localhost + "/server/postdetail.php";
 
     public static String urlUser = "http://" + localhost + "/server/postuserinfo.php";
+    public static String urlUpdateUser = "http://" + localhost + "/server/updateuser.php";
     public static String urlGetUser = "http://" + localhost + "/server/getuserinfo.php";
 
     public static String urlSortUpLaptop = "http://" + localhost + "/server/sortuplaptop.php";
@@ -70,5 +71,5 @@ public class Server {
     public static String urlgetUserAuction = "http://" + localhost + "/server/getuserauction.php";
     public static String urlPostUserAuction = "http://" + localhost + "/server/postuserauction.php";
 
-    public static String urlRegister = "http://" + localhost + "/server/register.php";
+    public static String urlPushNotification = "http://" + localhost + "/server/callpushnotification.php";
 }

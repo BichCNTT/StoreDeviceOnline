@@ -17,11 +17,12 @@ import android.widget.Toast;
 
 import com.example.ominext.store.R;
 import com.example.ominext.store.helper.KeyboardUtil;
+import com.example.ominext.store.model.Account;
 import com.example.ominext.store.model.User;
 import com.example.ominext.store.ui.home.HomeActivity;
 import com.example.ominext.store.ui.main.MainFragment;
+import com.example.ominext.store.ui.mystore.MyStoreFragment;
 import com.example.ominext.store.ui.register.RegisterFragment;
-import com.example.ominext.store.ui.register.RegisterView;
 import com.google.firebase.iid.FirebaseInstanceId;
 
 import java.util.ArrayList;
@@ -31,10 +32,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
+import io.realm.Realm;
 
-/**
- * Created by Ominext on 9/21/2017.
- */
 //sau khi đăng nhập xong lấy thông tin tài khoản lưu ra file text->
 public class LoginFragment extends Fragment implements LoginView {
     public LoginPresenter mLoginPresenter;
@@ -70,8 +69,11 @@ public class LoginFragment extends Fragment implements LoginView {
     LinearLayout linearLayoutUserDetail;
     @BindView(R.id.linear_layout_login)
     LinearLayout linearLayoutLogin;
+    @BindView(R.id.btn_mystore)
+    Button btnMyStore;
     private boolean mCheck = false;
     public static User user;
+    private Realm mRealm;
 
     public LoginFragment() {
     }
@@ -87,13 +89,16 @@ public class LoginFragment extends Fragment implements LoginView {
         View view = inflater.inflate(R.layout.fragment_login, container, false);
         unbinder = ButterKnife.bind(this, view);
         return view;
-
     }
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         if (HomeActivity.listProductType.get(0).getNameProductType().equals("Đăng nhập")) {
+//            mRealm = Realm.getInstance(getContext());
+//            Account account = mRealm.createObject(Account.class);
+//            edtEmail.setText(account.getEmail().toString().trim());
+//            edtPassword.setText(account.getPassword().toString().trim());
             mLoginPresenter = new LoginPresenter(getContext(), this);
             mLoginPresenter.getListUser();
             linearLayoutUserDetail.setVisibility(View.GONE);
@@ -133,7 +138,7 @@ public class LoginFragment extends Fragment implements LoginView {
         Toast.makeText(getContext(), "Không thể kết nối được với máy chủ", Toast.LENGTH_SHORT).show();
     }
 
-    @OnClick({R.id.cb_show_pass_word, R.id.btn_login, R.id.btn_register, R.id.btn_logout})
+    @OnClick({R.id.cb_show_pass_word, R.id.btn_login, R.id.btn_register, R.id.btn_logout, R.id.btn_mystore})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.cb_show_pass_word:
@@ -168,6 +173,12 @@ public class LoginFragment extends Fragment implements LoginView {
                     if (email.equals(users.get(i).getEmail()) && password.equals(users.get(i).getPassword())) {
                         user = users.get(i);
                         Toast.makeText(getContext(), "Đăng nhập thành công", Toast.LENGTH_SHORT).show();
+//                        mRealm = Realm.getInstance(getContext());
+//                        mRealm.beginTransaction();
+//                        Account account = mRealm.createObject(Account.class);
+//                        account.setEmail(email);
+//                        account.setPassword(password);
+//                        mRealm.commitTransaction();
                         KeyboardUtil.hideKeyBoard(view, getActivity());
                         MainFragment fragment = MainFragment.newInstance();
                         ((HomeActivity) getActivity()).addFragment(fragment);
@@ -194,6 +205,15 @@ public class LoginFragment extends Fragment implements LoginView {
                 fragment = new RegisterFragment();
                 ((HomeActivity) getActivity()).replaceFragment(fragment);
                 break;
+            case R.id.btn_mystore:
+                fragment = new MyStoreFragment();
+                ((HomeActivity) getActivity()).replaceFragment(fragment);
+                break;
         }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
     }
 }

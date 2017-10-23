@@ -1,5 +1,7 @@
 package com.example.ominext.store.model;
 
+import io.realm.RealmObject;
+
 /**
  * Created by Ominext on 9/25/2017.
  */

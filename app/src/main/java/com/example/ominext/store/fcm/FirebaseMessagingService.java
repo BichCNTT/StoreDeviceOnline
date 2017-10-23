@@ -18,7 +18,7 @@ public class FirebaseMessagingService extends com.google.firebase.messaging.Fire
     public void onMessageReceived(RemoteMessage remoteMessage) {
         Log.d(TAG, "From: " + remoteMessage.getFrom());
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this)
-                .setSmallIcon(R.drawable.ic_auction)
+                .setSmallIcon(R.drawable.ic_buy)
                 .setContentTitle("Có mặt hàng mới")
                 .setContentText(String.valueOf(remoteMessage.getNotification().getBody()))
                 .setAutoCancel(true);

@@ -5,7 +5,7 @@ package com.example.ominext.store.until;
  */
 
 public class Server {
-    public static String localhost = "192.168.1.136";
+    public static String localhost = "192.168.1.168";
     public static String urlProductType = "http://" + localhost + "/server/getproducttype.php";
 
     public static String urlNewProduct = "http://" + localhost + "/server/getnewproduct.php";
